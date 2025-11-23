@@ -1,9 +1,6 @@
 {
     "version": 2,
     "framework": null,
-    "functions": {
-        "public/index.php": { "runtime": "vercel-php@0.7.2" }
-    },
     "routes": [{
             "src": "/build/(.*)",
             "dest": "/public/build/$1"
