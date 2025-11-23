@@ -94,7 +94,11 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'search_path' => 'public',
-            'sslmode' => 'prefer',
+            'sslmode' => 'require;options=endpoint=ep-sweet-math-a14epe5w',
+            //'sslmode' => 'require',
+            // 'options' => [
+            //     'endpoint=ep-sweet-math-a14epe5w',         
+            // ],
         ],
 
         'sqlsrv' => [
