@@ -1,6 +1,9 @@
 {
     "version": 2,
-    "framework": null,
+    "builds": [{
+        "src": "public/index.php",
+        "use": "@vercel/php"
+    }],
     "routes": [{
             "src": "/build/(.*)",
             "dest": "/public/build/$1"
@@ -31,5 +34,6 @@
         "CACHE_DRIVER": "array",
         "LOG_CHANNEL": "stderr",
         "SESSION_DRIVER": "cookie"
-    }
+    },
+    "outputDirectory": "public"
 }
