@@ -71,7 +71,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('/admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
     Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 
-    Route::get('/cek-sehat', function () {
+});
+
+Route::get('/cek-sehat', function () {
     try {
         // 1. Tes Koneksi Database Neon
         // Ini akan mencoba ping ke server Neon
@@ -102,5 +104,4 @@ Route::middleware(['auth', 'admin'])->group(function () {
             ]
         ], 500);
     }
-});
 });
