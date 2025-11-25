@@ -73,27 +73,32 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::get('/cek-sehat', function () {
     try {
-        // 1. Tes Koneksi Database
+        // 1. Tes Koneksi Database Neon
+        // Ini akan mencoba ping ke server Neon
         DB::connection()->getPdo();
         $dbName = DB::connection()->getDatabaseName();
         
-        // 2. Cek Konfigurasi Vercel (PENTING)
+        // 2. Cek Apakah Config Vercel Terbaca?
+        // Kita lihat apakah env var yang kita setting di Vercel masuk atau tidak
         $config = [
-            'Database' => "✅ Terhubung ke: " . $dbName,
-            'Session_Driver' => config('session.driver'), // Harus 'cookie'
-            'Cache_Driver' => config('cache.default'),   // Harus 'array'
-            'Is_Debug_On' => config('app.debug'),        // Harus true
+            'Status' => '✅ ALHAMDULILLAH SEHAT!',
+            'Database_Neon' => "Terhubung ke: " . $dbName,
+            'Session_Driver' => config('session.driver'), // Target: 'cookie'
+            'Cache_Driver' => config('cache.default'),   // Target: 'array'
+            'App_Debug' => config('app.debug'),          // Target: true
+            'Environment' => config('app.env'),          // Target: production
         ];
 
         return response()->json($config, 200);
 
     } catch (\Exception $e) {
+        // Kalau error, tampilkan detailnya biar kita tahu salahnya dimana
         return response()->json([
-            'Status' => '❌ ERROR FATAL',
-            'Pesan' => $e->getMessage(),
-            'Config_Saat_Ini' => [
-                'Session' => config('session.driver'),
-                'Cache' => config('cache.default'),
+            'Status' => '❌ MASIH SAKIT (ERROR)',
+            'Pesan_Error' => $e->getMessage(),
+            'Analisa_Config' => [
+                'Session_Driver' => config('session.driver'),
+                'Cache_Driver' => config('cache.default'),
             ]
         ], 500);
     }
