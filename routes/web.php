@@ -73,35 +73,35 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 });
 
-Route::get('/cek-sehat', function () {
-    try {
-        // 1. Tes Koneksi Database Neon
-        // Ini akan mencoba ping ke server Neon
-        DB::connection()->getPdo();
-        $dbName = DB::connection()->getDatabaseName();
+// Route::get('/cek-sehat', function () {
+//     try {
+//         // 1. Tes Koneksi Database Neon
+//         // Ini akan mencoba ping ke server Neon
+//         DB::connection()->getPdo();
+//         $dbName = DB::connection()->getDatabaseName();
         
-        // 2. Cek Apakah Config Vercel Terbaca?
-        // Kita lihat apakah env var yang kita setting di Vercel masuk atau tidak
-        $config = [
-            'Status' => '✅ ALHAMDULILLAH SEHAT!',
-            'Database_Neon' => "Terhubung ke: " . $dbName,
-            'Session_Driver' => config('session.driver'), // Target: 'cookie'
-            'Cache_Driver' => config('cache.default'),   // Target: 'array'
-            'App_Debug' => config('app.debug'),          // Target: true
-            'Environment' => config('app.env'),          // Target: production
-        ];
+//         // 2. Cek Apakah Config Vercel Terbaca?
+//         // Kita lihat apakah env var yang kita setting di Vercel masuk atau tidak
+//         $config = [
+//             'Status' => '✅ ALHAMDULILLAH SEHAT!',
+//             'Database_Neon' => "Terhubung ke: " . $dbName,
+//             'Session_Driver' => config('session.driver'), // Target: 'cookie'
+//             'Cache_Driver' => config('cache.default'),   // Target: 'array'
+//             'App_Debug' => config('app.debug'),          // Target: true
+//             'Environment' => config('app.env'),          // Target: production
+//         ];
 
-        return response()->json($config, 200);
+//         return response()->json($config, 200);
 
-    } catch (\Exception $e) {
-        // Kalau error, tampilkan detailnya biar kita tahu salahnya dimana
-        return response()->json([
-            'Status' => '❌ MASIH SAKIT (ERROR)',
-            'Pesan_Error' => $e->getMessage(),
-            'Analisa_Config' => [
-                'Session_Driver' => config('session.driver'),
-                'Cache_Driver' => config('cache.default'),
-            ]
-        ], 500);
-    }
-});
+//     } catch (\Exception $e) {
+//         // Kalau error, tampilkan detailnya biar kita tahu salahnya dimana
+//         return response()->json([
+//             'Status' => '❌ MASIH SAKIT (ERROR)',
+//             'Pesan_Error' => $e->getMessage(),
+//             'Analisa_Config' => [
+//                 'Session_Driver' => config('session.driver'),
+//                 'Cache_Driver' => config('cache.default'),
+//             ]
+//         ], 500);
+//     }
+// });
