@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TugasController;
 use App\Http\Controllers\Admin\UserController; 
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Artisan;
 
 use Illuminate\Support\Facades\DB;
 
@@ -105,3 +106,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
 //         ], 500);
 //     }
 // });
+Route::get('/run-migrate', function () {
+    try {
+        // Menjalankan migrasi database dari dalam server Vercel
+        Artisan::call('migrate', ['--force' => true]);
+        
+        return "✅ MIGRASI SUKSES!<br>" . nl2br(Artisan::output());
+    } catch (\Exception $e) {
+        return "❌ GAGAL: " . $e->getMessage();
+    }
+});
