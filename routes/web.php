@@ -5,6 +5,8 @@ use App\Http\Controllers\TugasController;
 use App\Http\Controllers\Admin\UserController; 
 use App\Http\Controllers\ProfileController;
 
+use Illuminate\Support\Facades\DB;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -68,4 +70,32 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/users/{user}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
     Route::put('/admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
     Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+
+    Route::get('/cek-sehat', function () {
+    try {
+        // 1. Tes Koneksi Database
+        DB::connection()->getPdo();
+        $dbName = DB::connection()->getDatabaseName();
+        
+        // 2. Cek Konfigurasi Vercel (PENTING)
+        $config = [
+            'Database' => "✅ Terhubung ke: " . $dbName,
+            'Session_Driver' => config('session.driver'), // Harus 'cookie'
+            'Cache_Driver' => config('cache.default'),   // Harus 'array'
+            'Is_Debug_On' => config('app.debug'),        // Harus true
+        ];
+
+        return response()->json($config, 200);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'Status' => '❌ ERROR FATAL',
+            'Pesan' => $e->getMessage(),
+            'Config_Saat_Ini' => [
+                'Session' => config('session.driver'),
+                'Cache' => config('cache.default'),
+            ]
+        ], 500);
+    }
+});
 });
