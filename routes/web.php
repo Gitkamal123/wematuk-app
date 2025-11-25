@@ -114,4 +114,4 @@ Route::get('/run-migrate', function () {
     } catch (\Exception $e) {
         return "❌ GAGAL: " . $e->getMessage();
     }
-})
+});
