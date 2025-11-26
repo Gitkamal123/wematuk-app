@@ -31,18 +31,17 @@ Route::get('/cek-sehat', function () {
     }
 });
 
+
+
 Route::get('/run-migrate', function () {
     try {
-        // JURUS NUKLIR: Hapus paksa Schema Public (Wipe Total untuk Postgres)
-        DB::statement('DROP SCHEMA public CASCADE');
-        DB::statement('CREATE SCHEMA public');
+        // migrate:fresh = Hapus semua tabel secara aman, lalu bangun ulang
+        // --force = Wajib untuk mode production (Vercel)
+        Artisan::call('migrate:fresh', ['--force' => true]);
         
-        // Setelah bersih total, baru jalankan migrasi
-        Artisan::call('migrate', ['--force' => true]);
-        
-        return "✅ ALHAMDULILLAH! Database berhasil di-reset paksa (Schema Drop).<br><br>" . nl2br(Artisan::output());
+        return "✅ SUKSES! Database berhasil di-fresh ulang.<br><br>" . nl2br(Artisan::output());
     } catch (\Exception $e) {
-        return "❌ MASIH GAGAL: " . $e->getMessage();
+        return "❌ GAGAL: " . $e->getMessage();
     }
 });
 
