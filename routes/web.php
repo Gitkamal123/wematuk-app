@@ -31,15 +31,12 @@ Route::get('/cek-sehat', function () {
     }
 });
 
-
-
-Route::get('/run-migrate', function () {
+Route::get('/migrate-fresh', function () {
     try {
-        // migrate:fresh = Hapus semua tabel secara aman, lalu bangun ulang
-        // --force = Wajib untuk mode production (Vercel)
         Artisan::call('migrate:fresh', ['--force' => true]);
         
-        return "✅ SUKSES! Database berhasil di-fresh ulang.<br><br>" . nl2br(Artisan::output());
+        return "✅ MIGRASI FRESH BERHASIL!<br><br>" . nl2br(Artisan::output());
+        
     } catch (\Exception $e) {
         return "❌ GAGAL: " . $e->getMessage();
     }
@@ -51,6 +48,31 @@ Route::get('/migrate-status', function () {
         return "<pre>" . Artisan::output() . "</pre>";
     } catch (\Exception $e) {
         return "Error: " . $e->getMessage();
+    }
+});
+
+Route::get('/migrate-test', function () {
+    try {
+        // Coba jalankan migration users dulu
+        Artisan::call('migrate', [
+            '--force' => true,
+            '--path' => 'database/migrations/0001_01_01_000000_create_users_table.php'
+        ]);
+        
+        $output1 = Artisan::output();
+        
+        // Lalu migration berikutnya
+        Artisan::call('migrate', [
+            '--force' => true, 
+            '--path' => 'database/migrations/0001_01_01_000001_create_cache_table.php'
+        ]);
+        
+        $output2 = Artisan::output();
+        
+        return "✅ TEST MIGRATION:<br><br>USERS: " . nl2br($output1) . "<br>CACHE: " . nl2br($output2);
+        
+    } catch (\Exception $e) {
+        return "❌ ERROR: " . $e->getMessage();
     }
 });
 
