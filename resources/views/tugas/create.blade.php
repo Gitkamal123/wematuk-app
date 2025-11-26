@@ -440,8 +440,8 @@
                     const fileSize = (file.size / 1024 / 1024).toFixed(2); // Convert to MB
 
                     // Check file size (max 10MB)
-                    if (file.size > 10 * 1024 * 1024) {
-                        alert('File terlalu besar. Maksimal ukuran file adalah 10MB.');
+                    if (file.size > 2 * 1024 * 1024) {
+                        alert('File terlalu besar. Maksimal ukuran file adalah 2MB.');
                         this.value = '';
                         filePreview.innerHTML = '';
                         return;

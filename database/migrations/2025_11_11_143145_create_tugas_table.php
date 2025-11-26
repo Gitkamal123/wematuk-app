@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('judul');
             $table->text('deskripsi')->nullable();
             $table->dateTime('deadline');
-            $table->string('file_path')->nullable();
+            $table->longText('file_path')->nullable();
             $table->timestamps();
         });
     }

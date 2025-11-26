@@ -31,13 +31,15 @@ Route::get('/cek-sehat', function () {
     }
 });
 
-// --- [DIAGNOSA 2] JALANKAN MIGRASI DATABASE (FIX ERROR 500 SAAT LOGIN) ---
 Route::get('/run-migrate', function () {
     try {
-        Artisan::call('migrate', ['--force' => true]);
-        return "✅ MIGRASI SUKSES!<br><pre>" . Artisan::output() . "</pre>";
+        // PERINGATAN: INI AKAN MENGHAPUS SEMUA DATA LAMA
+        Artisan::call('migrate:fresh', ['--force' => true]);
+        // Kalau ada seeder, tambahkan: Artisan::call('db:seed', ['--force' => true]);
+        
+        return "✅ DATABASE BERHASIL DI-RESET KE LONGTEXT!<br>" . nl2br(Artisan::output());
     } catch (\Exception $e) {
-        return "❌ MIGRASI GAGAL: " . $e->getMessage();
+        return "❌ GAGAL: " . $e->getMessage();
     }
 });
 
