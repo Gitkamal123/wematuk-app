@@ -151,7 +151,35 @@ Route::get('/migrate-step', function () {
     }
 });
 
+Route::get('/migrate-remaining', function () {
+    try {
+        // Jalankan migration yang belum di-execute
+        Artisan::call('migrate', [
+            '--force' => true,
+            '--path' => [
+                'database/migrations/0001_01_01_000001_create_cache_table.php',
+                'database/migrations/0001_01_01_000002_create_jobs_table.php', 
+                'database/migrations/2025_11_11_142239_add_role_to_users_table.php',
+                'database/migrations/2025_11_11_143145_create_tugas_table.php',
+                'database/migrations/2025_11_13_050323_add_soft_deletes_to_tugas_table.php'
+            ]
+        ]);
+        
+        return "✅ MIGRATION REMAINING BERHASIL!<br><br>" . nl2br(Artisan::output());
+        
+    } catch (\Exception $e) {
+        return "❌ GAGAL: " . $e->getMessage();
+    }
+});
 
+Route::get('/migrate-status-now', function () {
+    try {
+        Artisan::call('migrate:status');
+        return "<pre>Migration Status:\n" . Artisan::output() . "</pre>";
+    } catch (\Exception $e) {
+        return "Error: " . $e->getMessage();
+    }
+});
 
 // --- ROUTE USER (WAJIB LOGIN) ---
 Route::middleware(['auth'])->group(function () {
