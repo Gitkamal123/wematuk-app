@@ -72,43 +72,30 @@ Route::get('/db-test', function () {
     }
 });
 
-Route::get('/migrate-normal', function () {
+Route::get('/migrate-direct', function () {
     try {
-        // Reset transaction state
-        DB::statement('DISCARD ALL');
+        // Gunakan koneksi baru
+        config(['database.connections.pgsql.host' => 'ep-sweet-math-al4epe5w.ap-southeast-1.aws.neon.tech']);
+        DB::reconnect();
         
-        // Jalankan migrate normal
-        Artisan::call('migrate', ['--force' => true]);
-        
-        return "✅ MIGRATE NORMAL BERHASIL!<br><br>" . nl2br(Artisan::output());
-        
-    } catch (\Exception $e) {
-        return "❌ GAGAL: " . $e->getMessage() . 
-               "<br><br>File: " . $e->getFile() . ":" . $e->getLine();
-    }
-});
-
-Route::get('/migrate-simple', function () {
-    try {
-        // Step 1: Reset
+        // Reset schema
         DB::statement('DROP SCHEMA IF EXISTS public CASCADE');
         DB::statement('CREATE SCHEMA public');
         
-        // Step 2: Tunggu sebentar
-        sleep(1);
-        
-        // Step 3: Migrate hanya table yang sederhana
+        // Migrate tanpa transaction
         Artisan::call('migrate', [
             '--force' => true,
-            '--path' => 'database/migrations/0001_01_01_000000_create_users_table.php'
+            '--no-transaction' => true  // Non-transactional migration
         ]);
         
-        return "✅ MIGRATE SIMPLE BERHASIL!<br><br>" . nl2br(Artisan::output());
+        return "✅ MIGRATE DIRECT BERHASIL!<br><br>" . nl2br(Artisan::output());
         
     } catch (\Exception $e) {
         return "❌ GAGAL: " . $e->getMessage();
     }
 });
+
+
 
 
 
