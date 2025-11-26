@@ -31,18 +31,18 @@ Route::get('/cek-sehat', function () {
     }
 });
 
-// --- ROUTE PERBAIKAN DATABASE (WIPE & MIGRATE) ---
 Route::get('/run-migrate', function () {
     try {
-        // 1. Hapus SEMUA Tabel (Drop All) - Solusi untuk error transaction aborted
-        Artisan::call('db:wipe', ['--force' => true]);
+        // JURUS NUKLIR: Hapus paksa Schema Public (Wipe Total untuk Postgres)
+        DB::statement('DROP SCHEMA public CASCADE');
+        DB::statement('CREATE SCHEMA public');
         
-        // 2. Jalankan Migrasi dari Nol
+        // Setelah bersih total, baru jalankan migrasi
         Artisan::call('migrate', ['--force' => true]);
         
-        return "✅ DATABASE BERHASIL DI-WIPE & DI-RESET!<br>Tabel sudah bersih dan struktur baru (LongText) sudah terpasang.<br><br>" . nl2br(Artisan::output());
+        return "✅ ALHAMDULILLAH! Database berhasil di-reset paksa (Schema Drop).<br><br>" . nl2br(Artisan::output());
     } catch (\Exception $e) {
-        return "❌ GAGAL: " . $e->getMessage();
+        return "❌ MASIH GAGAL: " . $e->getMessage();
     }
 });
 
