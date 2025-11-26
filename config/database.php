@@ -94,7 +94,14 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'search_path' => 'public',
-            'sslmode' => 'require', 
+            
+            // --- LOGIKA PINTAR (SMART CONFIG) ---
+            // Jika di Local (Laptop), pakai trik Endpoint ID.
+            // Jika di Production (Vercel), pakai standar Require.
+            'sslmode' => env('APP_ENV') === 'local' 
+                ? 'require;options=endpoint=' . explode('.', env('DB_HOST'))[0] 
+                : 'require',
+            // ------------------------------------
         ],
 
         'sqlsrv' => [

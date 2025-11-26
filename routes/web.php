@@ -33,48 +33,64 @@ Route::get('/cek-sehat', function () {
 
 Route::get('/migrate-fresh', function () {
     try {
+        // Reset transaction state dulu
+        DB::statement('DISCARD ALL');
+        
+        // Jalankan migrate fresh
         Artisan::call('migrate:fresh', ['--force' => true]);
         
-        return "✅ MIGRASI FRESH BERHASIL!<br><br>" . nl2br(Artisan::output());
+        return "✅ MIGRATE FRESH BERHASIL!<br><br>" . nl2br(Artisan::output());
         
     } catch (\Exception $e) {
         return "❌ GAGAL: " . $e->getMessage();
     }
 });
 
-Route::get('/migrate-status', function () {
+Route::get('/db-reset', function () {
     try {
-        Artisan::call('migrate:status');
-        return "<pre>" . Artisan::output() . "</pre>";
+        // Method lebih agresif untuk reset
+        DB::statement('DROP SCHEMA IF EXISTS public CASCADE');
+        DB::statement('CREATE SCHEMA public');
+        DB::statement('GRANT ALL ON SCHEMA public TO postgres');
+        DB::statement('GRANT ALL ON SCHEMA public TO public');
+        
+        return "✅ DATABASE RESET BERHASIL! Schema public telah dihapus dan dibuat ulang.";
+        
     } catch (\Exception $e) {
-        return "Error: " . $e->getMessage();
+        return "❌ GAGAL RESET: " . $e->getMessage();
     }
 });
 
-Route::get('/migrate-test', function () {
+Route::get('/db-test', function () {
     try {
-        // Coba jalankan migration users dulu
-        Artisan::call('migrate', [
-            '--force' => true,
-            '--path' => 'database/migrations/0001_01_01_000000_create_users_table.php'
-        ]);
+        DB::statement('DISCARD ALL'); // Reset transaction
+        DB::connection()->getPdo();
         
-        $output1 = Artisan::output();
-        
-        // Lalu migration berikutnya
-        Artisan::call('migrate', [
-            '--force' => true, 
-            '--path' => 'database/migrations/0001_01_01_000001_create_cache_table.php'
-        ]);
-        
-        $output2 = Artisan::output();
-        
-        return "✅ TEST MIGRATION:<br><br>USERS: " . nl2br($output1) . "<br>CACHE: " . nl2br($output2);
-        
+        return "✅ DATABASE CONNECTION OK!<br>" .
+               "Database: " . DB::connection()->getDatabaseName();
+               
     } catch (\Exception $e) {
-        return "❌ ERROR: " . $e->getMessage();
+        return "❌ CONNECTION FAILED: " . $e->getMessage();
     }
 });
+
+Route::get('/migrate-normal', function () {
+    try {
+        // Reset transaction state
+        DB::statement('DISCARD ALL');
+        
+        // Jalankan migrate normal
+        Artisan::call('migrate', ['--force' => true]);
+        
+        return "✅ MIGRATE NORMAL BERHASIL!<br><br>" . nl2br(Artisan::output());
+        
+    } catch (\Exception $e) {
+        return "❌ GAGAL: " . $e->getMessage() . 
+               "<br><br>File: " . $e->getFile() . ":" . $e->getLine();
+    }
+});
+
+
 
 // --- ROUTE USER (WAJIB LOGIN) ---
 Route::middleware(['auth'])->group(function () {
