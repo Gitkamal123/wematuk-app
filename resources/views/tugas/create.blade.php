@@ -130,7 +130,7 @@
                                             d="M7.646 4.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V14.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3z" />
                                     </svg>
                                     <p class="mb-2 fw-medium">Upload file pendukung (opsional)</p>
-                                    <p class="text-muted small">PDF, Word, Excel, PPT, ZIP, RAR (Maks. 10MB)</p>
+                                    <p class="text-muted small">PDF, Word, Excel, PPT, ZIP, RAR (Maks. 2MB)</p>
                                 </div>
                                 <input class="form-control d-none @error('file_tugas') is-invalid @enderror" type="file"
                                     id="file_tugas" name="file_tugas"
