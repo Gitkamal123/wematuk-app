@@ -194,6 +194,21 @@ Route::get('/skip-cache-table', function () {
         return "❌ GAGAL: " . $e->getMessage();
     }
 });
+Route::get('/test-app', function () {
+    try {
+        // Test basic functionality
+        $userCount = DB::table('users')->count();
+        $tugasCount = DB::table('tugas')->count();
+        
+        return "✅ APLIKASI READY!<br>" .
+               "Users: $userCount<br>" .
+               "Tugas: $tugasCount<br>" .
+               "Cache table bisa di-skip tidak masalah.";
+               
+    } catch (\Exception $e) {
+        return "❌ APLIKASI ERROR: " . $e->getMessage();
+    }
+});
 
 // --- ROUTE USER (WAJIB LOGIN) ---
 Route::middleware(['auth'])->group(function () {
