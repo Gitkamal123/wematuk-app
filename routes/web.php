@@ -48,16 +48,14 @@ Route::get('/migrate-fresh', function () {
 
 Route::get('/db-reset', function () {
     try {
-        // Method lebih agresif untuk reset
+        // Reset sederhana untuk Neon
         DB::statement('DROP SCHEMA IF EXISTS public CASCADE');
         DB::statement('CREATE SCHEMA public');
-        DB::statement('GRANT ALL ON SCHEMA public TO postgres');
-        DB::statement('GRANT ALL ON SCHEMA public TO public');
         
-        return "✅ DATABASE RESET BERHASIL! Schema public telah dihapus dan dibuat ulang.";
+        return "✅ DATABASE RESET SIMPLE BERHASIL!";
         
     } catch (\Exception $e) {
-        return "❌ GAGAL RESET: " . $e->getMessage();
+        return "❌ GAGAL: " . $e->getMessage();
     }
 });
 
