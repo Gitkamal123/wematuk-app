@@ -31,13 +31,16 @@ Route::get('/cek-sehat', function () {
     }
 });
 
+// --- ROUTE PERBAIKAN DATABASE (WIPE & MIGRATE) ---
 Route::get('/run-migrate', function () {
     try {
-        // PERINGATAN: INI AKAN MENGHAPUS SEMUA DATA LAMA
-        Artisan::call('migrate:fresh', ['--force' => true]);
-        // Kalau ada seeder, tambahkan: Artisan::call('db:seed', ['--force' => true]);
+        // 1. Hapus SEMUA Tabel (Drop All) - Solusi untuk error transaction aborted
+        Artisan::call('db:wipe', ['--force' => true]);
         
-        return "✅ DATABASE BERHASIL DI-RESET KE LONGTEXT!<br>" . nl2br(Artisan::output());
+        // 2. Jalankan Migrasi dari Nol
+        Artisan::call('migrate', ['--force' => true]);
+        
+        return "✅ DATABASE BERHASIL DI-WIPE & DI-RESET!<br>Tabel sudah bersih dan struktur baru (LongText) sudah terpasang.<br><br>" . nl2br(Artisan::output());
     } catch (\Exception $e) {
         return "❌ GAGAL: " . $e->getMessage();
     }
