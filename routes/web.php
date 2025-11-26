@@ -46,6 +46,15 @@ Route::get('/run-migrate', function () {
     }
 });
 
+Route::get('/migrate-status', function () {
+    try {
+        Artisan::call('migrate:status');
+        return "<pre>" . Artisan::output() . "</pre>";
+    } catch (\Exception $e) {
+        return "Error: " . $e->getMessage();
+    }
+});
+
 // --- ROUTE USER (WAJIB LOGIN) ---
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', [TugasController::class, 'index'])->name('home');
