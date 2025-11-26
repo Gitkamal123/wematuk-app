@@ -357,6 +357,46 @@ Route::get('/verify-all-tables', function () {
     }
 });
 
+Route::get('/add-unique-nrp-simple', function () {
+    try {
+        // Step 1: Hapus data duplikat (jika ada)
+        $duplicates = DB::table('users')
+            ->select('nrp', DB::raw('COUNT(*) as count'))
+            ->groupBy('nrp')
+            ->having('count', '>', 1)
+            ->get();
+
+        if ($duplicates->isNotEmpty()) {
+            foreach ($duplicates as $dup) {
+                // Keep the oldest record, delete newer duplicates
+                DB::table('users')
+                    ->where('nrp', $dup->nrp)
+                    ->where('id', '!=', function($query) use ($dup) {
+                        $query->select('id')
+                            ->from('users')
+                            ->where('nrp', $dup->nrp)
+                            ->orderBy('created_at')
+                            ->limit(1);
+                    })
+                    ->delete();
+            }
+        }
+
+        // Step 2: Tambahkan unique constraint
+        Schema::table('users', function (Blueprint $table) {
+            if (!Schema::hasIndex('users', 'users_nrp_unique')) {
+                $table->unique('nrp', 'users_nrp_unique');
+            }
+        });
+
+        return "✅ UNIQUE CONSTRAINT BERHASIL DITAMBAH!<br>" .
+               "NRP sekarang unique untuk setiap user.";
+
+    } catch (\Exception $e) {
+        return "❌ GAGAL: " . $e->getMessage();
+    }
+});
+
 // --- ROUTE USER (WAJIB LOGIN) ---
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', [TugasController::class, 'index'])->name('home');

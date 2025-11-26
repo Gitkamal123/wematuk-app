@@ -27,14 +27,6 @@ return new class extends Migration
         // $table->unique('nrp', 'users_nrp_unique');
     });
 
-    // HAPUS password_reset_tokens untuk sementara
-    // Schema::create('password_reset_tokens', function (Blueprint $table) {
-    //     $table->string('nrp');
-    //     $table->primary('nrp');
-    //     $table->string('token');
-    //     $table->timestamp('created_at')->nullable();
-    // });
-
     Schema::create('sessions', function (Blueprint $table) {
         $table->string('id')->primary();
         $table->foreignId('user_id')->nullable()->index();
