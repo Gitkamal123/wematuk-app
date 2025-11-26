@@ -95,7 +95,61 @@ Route::get('/migrate-direct', function () {
     }
 });
 
-
+Route::get('/migrate-step', function () {
+    try {
+        DB::statement('DROP SCHEMA IF EXISTS public CASCADE');
+        DB::statement('CREATE SCHEMA public');
+        
+        // Step 1: Create users table (tanpa unique)
+        DB::statement('
+            CREATE TABLE users (
+                id BIGSERIAL PRIMARY KEY,
+                name VARCHAR(255) NOT NULL,
+                nrp VARCHAR(255) NOT NULL,
+                password VARCHAR(255) NOT NULL,
+                role VARCHAR(255) DEFAULT \'user\',
+                remember_token VARCHAR(100) NULL,
+                created_at TIMESTAMP(0) NULL,
+                updated_at TIMESTAMP(0) NULL
+            )
+        ');
+        
+        // Step 2: Create sessions table
+        DB::statement('
+            CREATE TABLE sessions (
+                id VARCHAR(255) PRIMARY KEY,
+                user_id BIGINT NULL,
+                ip_address VARCHAR(45) NULL,
+                user_agent TEXT NULL,
+                payload TEXT NOT NULL,
+                last_activity INTEGER NOT NULL
+            )
+        ');
+        
+        // Step 3: Create migrations table
+        DB::statement('
+            CREATE TABLE migrations (
+                id SERIAL PRIMARY KEY,
+                migration VARCHAR(255) NOT NULL,
+                batch INTEGER NOT NULL
+            )
+        ');
+        
+        // Step 4: Insert migration records
+        DB::table('migrations')->insert([
+            ['migration' => '0001_01_01_000000_create_users_table', 'batch' => 1],
+            ['migration' => '0001_01_01_000002_create_jobs_table', 'batch' => 1],
+            ['migration' => '2025_11_11_142239_add_role_to_users_table', 'batch' => 1],
+            ['migration' => '2025_11_11_143145_create_tugas_table', 'batch' => 1],
+            ['migration' => '2025_11_13_050323_add_soft_deletes_to_tugas_table', 'batch' => 1],
+        ]);
+        
+        return "✅ MANUAL MIGRATION BERHASIL! Database siap digunakan.";
+        
+    } catch (\Exception $e) {
+        return "❌ GAGAL: " . $e->getMessage();
+    }
+});
 
 
 
