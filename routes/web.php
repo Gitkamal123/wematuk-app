@@ -230,6 +230,131 @@ Route::get('/check-tables', function () {
     }
 });
 
+Route::get('/create-all-missing-tables', function () {
+    try {
+        // Step 1: Hapus migration records yang salah
+        DB::table('migrations')->truncate();
+
+        // Step 2: Buat jobs tables (dari 0001_01_01_000002_create_jobs_table.php)
+        if (!Schema::hasTable('jobs')) {
+            Schema::create('jobs', function (Blueprint $table) {
+                $table->id();
+                $table->string('queue')->index();
+                $table->longText('payload');
+                $table->unsignedTinyInteger('attempts');
+                $table->unsignedInteger('reserved_at')->nullable();
+                $table->unsignedInteger('available_at');
+                $table->unsignedInteger('created_at');
+            });
+        }
+
+        if (!Schema::hasTable('job_batches')) {
+            Schema::create('job_batches', function (Blueprint $table) {
+                $table->string('id')->primary();
+                $table->string('name');
+                $table->integer('total_jobs');
+                $table->integer('pending_jobs');
+                $table->integer('failed_jobs');
+                $table->longText('failed_job_ids');
+                $table->mediumText('options')->nullable();
+                $table->integer('cancelled_at')->nullable();
+                $table->integer('created_at');
+                $table->integer('finished_at')->nullable();
+            });
+        }
+
+        if (!Schema::hasTable('failed_jobs')) {
+            Schema::create('failed_jobs', function (Blueprint $table) {
+                $table->id();
+                $table->string('uuid')->unique();
+                $table->text('connection');
+                $table->text('queue');
+                $table->longText('payload');
+                $table->longText('exception');
+                $table->timestamp('failed_at')->useCurrent();
+            });
+        }
+
+        // Step 3: Pastikan table users punya kolom role
+        if (Schema::hasTable('users') && !Schema::hasColumn('users', 'role')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->string('role')->default('user');
+            });
+        }
+
+        // Step 4: Buat table tugas (dari create_tugas_table.php)
+        if (!Schema::hasTable('tugas')) {
+            Schema::create('tugas', function (Blueprint $table) {
+                $table->id();
+                $table->string('judul');
+                $table->text('deskripsi')->nullable();
+                $table->dateTime('deadline');
+                $table->longText('file_path')->nullable();
+                $table->timestamps();
+            });
+        }
+
+        // Step 5: Tambah soft deletes ke tugas (dari add_soft_deletes_to_tugas_table.php)
+        if (Schema::hasTable('tugas') && !Schema::hasColumn('tugas', 'deleted_at')) {
+            Schema::table('tugas', function (Blueprint $table) {
+                $table->softDeletes();
+            });
+        }
+
+        // Step 6: Insert migration records yang benar
+        $migrations = [
+            '0001_01_01_000000_create_users_table',
+            '0001_01_01_000002_create_jobs_table',
+            '2025_11_11_142239_add_role_to_users_table',
+            '2025_11_11_143145_create_tugas_table',
+            '2025_11_13_050323_add_soft_deletes_to_tugas_table'
+        ];
+
+        foreach ($migrations as $migration) {
+            DB::table('migrations')->insert([
+                'migration' => $migration,
+                'batch' => 1
+            ]);
+        }
+
+        return "✅ SEMUA TABLE BERHASIL DIBUAT!<br><br>" .
+               "Table yang dibuat:<br>" .
+               "- jobs<br>" .
+               "- job_batches<br>" .
+               "- failed_jobs<br>" .
+               "- role column di users<br>" .
+               "- tugas<br>" .
+               "- softDeletes di tugas";
+
+    } catch (\Exception $e) {
+        return "❌ GAGAL: " . $e->getMessage() . "<br><br>File: " . $e->getFile() . ":" . $e->getLine();
+    }
+});
+
+Route::get('/verify-all-tables', function () {
+    try {
+        $tables = ['users', 'sessions', 'migrations', 'jobs', 'job_batches', 'failed_jobs', 'tugas'];
+        
+        $results = [];
+        foreach ($tables as $table) {
+            $exists = DB::select("SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = '$table')")[0]->exists;
+            $results[] = "$table: " . ($exists ? '✅ ADA' : '❌ TIDAK ADA');
+        }
+        
+        // Check columns
+        $usersHasRole = Schema::hasColumn('users', 'role');
+        $tugasHasSoftDeletes = Schema::hasColumn('tugas', 'deleted_at');
+        
+        $results[] = "users.role: " . ($usersHasRole ? '✅ ADA' : '❌ TIDAK ADA');
+        $results[] = "tugas.deleted_at: " . ($tugasHasSoftDeletes ? '✅ ADA' : '❌ TIDAK ADA');
+        
+        return "✅ VERIFIKASI TABLES:<br>" . implode('<br>', $results);
+        
+    } catch (\Exception $e) {
+        return "❌ GAGAL: " . $e->getMessage();
+    }
+});
+
 // --- ROUTE USER (WAJIB LOGIN) ---
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', [TugasController::class, 'index'])->name('home');
