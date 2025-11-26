@@ -181,6 +181,20 @@ Route::get('/migrate-status-now', function () {
     }
 });
 
+Route::get('/skip-cache-table', function () {
+    try {
+        // Mark cache migration as done tanpa menjalankannya
+        DB::table('migrations')->insert([
+            ['migration' => '0001_01_01_000001_create_cache_table', 'batch' => 1],
+        ]);
+        
+        return "✅ CACHE TABLE DI-SKIP! Migration marked as completed.";
+        
+    } catch (\Exception $e) {
+        return "❌ GAGAL: " . $e->getMessage();
+    }
+});
+
 // --- ROUTE USER (WAJIB LOGIN) ---
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', [TugasController::class, 'index'])->name('home');
