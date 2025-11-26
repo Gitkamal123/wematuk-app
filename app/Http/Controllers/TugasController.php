@@ -153,4 +153,41 @@ class TugasController extends Controller
 
         return redirect()->route('tugas.trash')->with('success', 'Semua sampah dibersihkan!');
     }
+    public function downloadFile(Tugas $tugas)
+    {
+        // 1. Cek apakah ada file
+        if (!$tugas->file_path) {
+            return back()->with('error', 'File tidak ditemukan.');
+        }
+
+        // 2. Pecah string Base64 (Format: "data:application/pdf;base64,JVBERi...")
+        // Kita perlu memisahkan "Header" dan "Isi Data"
+        @list($type, $file_data) = explode(';', $tugas->file_path);
+        @list(, $file_data)      = explode(',', $file_data);
+
+        // 3. Decode Base64 kembali menjadi file fisik (binary)
+        $decoded_file = base64_decode($file_data);
+
+        // 4. Deteksi Mime Type untuk menentukan ekstensi file
+        // $type isinya seperti "data:application/pdf"
+        $mime_type = str_replace('data:', '', $type); 
+        
+        // Tentukan ekstensi berdasarkan mime type
+        $extension = 'bin'; // Default
+        if (str_contains($mime_type, 'pdf')) $extension = 'pdf';
+        elseif (str_contains($mime_type, 'word') || str_contains($mime_type, 'doc')) $extension = 'docx';
+        elseif (str_contains($mime_type, 'sheet') || str_contains($mime_type, 'excel')) $extension = 'xlsx';
+        elseif (str_contains($mime_type, 'presentation') || str_contains($mime_type, 'powerpoint')) $extension = 'pptx';
+        elseif (str_contains($mime_type, 'image/jpeg')) $extension = 'jpg';
+        elseif (str_contains($mime_type, 'image/png')) $extension = 'png';
+        elseif (str_contains($mime_type, 'zip')) $extension = 'zip';
+
+        // 5. Buat nama file yang cantik
+        $filename = 'Tugas-' . preg_replace('/[^A-Za-z0-9\-]/', '', $tugas->judul) . '.' . $extension;
+
+        // 6. Kirim ke browser sebagai download stream
+        return response($decoded_file)
+            ->header('Content-Type', $mime_type)
+            ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
+    }
 }

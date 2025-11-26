@@ -3,8 +3,7 @@
 @section('title', 'Daftar Tugas - WeMaTuK')
 
 @section('content')
-    <style>       
-
+    <style>
         body {
             background: #f8f9fa;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -566,8 +565,8 @@
                                     </td>
                                     <td>
                                         @if($t->file_path)
-                                            <a href="{{ Storage::url($t->file_path) }}" target="_blank" download
-                                                class="btn-download">
+                                            <a href="{{ route('tugas.download', $t->id) }}" class="btn-download">
+
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                                     viewBox="0 0 16 16">
                                                     <path
