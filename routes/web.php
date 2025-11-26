@@ -88,6 +88,28 @@ Route::get('/migrate-normal', function () {
     }
 });
 
+Route::get('/migrate-simple', function () {
+    try {
+        // Step 1: Reset
+        DB::statement('DROP SCHEMA IF EXISTS public CASCADE');
+        DB::statement('CREATE SCHEMA public');
+        
+        // Step 2: Tunggu sebentar
+        sleep(1);
+        
+        // Step 3: Migrate hanya table yang sederhana
+        Artisan::call('migrate', [
+            '--force' => true,
+            '--path' => 'database/migrations/0001_01_01_000000_create_users_table.php'
+        ]);
+        
+        return "✅ MIGRATE SIMPLE BERHASIL!<br><br>" . nl2br(Artisan::output());
+        
+    } catch (\Exception $e) {
+        return "❌ GAGAL: " . $e->getMessage();
+    }
+});
+
 
 
 // --- ROUTE USER (WAJIB LOGIN) ---

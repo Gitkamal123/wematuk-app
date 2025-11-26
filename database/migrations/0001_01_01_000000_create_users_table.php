@@ -9,44 +9,41 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-        // 1. Tabel Users
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            
-            // UBAH DISINI: Jangan pakai ->unique() dulu
-            $table->string('nrp'); 
-            
-            $table->string('password');
-            $table->string('role')->default('user');
-            $table->rememberToken();
-            $table->timestamps();
+   public function up(): void
+{
+    Schema::create('users', function (Blueprint $table) {
+        $table->id();
+        $table->string('name');
+        
+        // UBAH: Hapus unique() sementara untuk bypass error
+        $table->string('nrp'); // TANPA ->unique()
+        
+        $table->string('password');
+        $table->string('role')->default('user');
+        $table->rememberToken();
+        $table->timestamps();
+        
+        // HAPUS: Jangan tambahkan unique constraint di sini
+        // $table->unique('nrp', 'users_nrp_unique');
+    });
 
-            // DEFINISIKAN UNIQUE SECARA TERPISAH DI BAWAH
-            // Ini lebih aman untuk mencegah error duplikasi constraint
-            $table->unique('nrp', 'users_nrp_unique'); 
-        });
+    // HAPUS password_reset_tokens untuk sementara
+    // Schema::create('password_reset_tokens', function (Blueprint $table) {
+    //     $table->string('nrp');
+    //     $table->primary('nrp');
+    //     $table->string('token');
+    //     $table->timestamp('created_at')->nullable();
+    // });
 
-        // 2. Tabel Password Reset (Pakai NRP)
-        Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('nrp'); // Buat kolom dulu
-            $table->primary('nrp'); // Baru jadikan primary
-            $table->string('token');
-            $table->timestamp('created_at')->nullable();
-        });
-
-        // 3. Tabel Sessions
-        Schema::create('sessions', function (Blueprint $table) {
-            $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
-            $table->string('ip_address', 45)->nullable();
-            $table->text('user_agent')->nullable();
-            $table->longText('payload');
-            $table->integer('last_activity')->index();
-        });
-    }
+    Schema::create('sessions', function (Blueprint $table) {
+        $table->string('id')->primary();
+        $table->foreignId('user_id')->nullable()->index();
+        $table->string('ip_address', 45)->nullable();
+        $table->text('user_agent')->nullable();
+        $table->longText('payload');
+        $table->integer('last_activity')->index();
+    });
+}
     // public function up(): void
     // {
     //     Schema::create('users', function (Blueprint $table) {
