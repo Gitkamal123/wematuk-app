@@ -210,6 +210,26 @@ Route::get('/test-app', function () {
     }
 });
 
+Route::get('/check-tables', function () {
+    try {
+        $tables = DB::select("
+            SELECT table_name 
+            FROM information_schema.tables 
+            WHERE table_schema = 'public'
+        ");
+        
+        $tableList = [];
+        foreach ($tables as $table) {
+            $tableList[] = $table->table_name;
+        }
+        
+        return "✅ TABLES YANG ADA: " . implode(', ', $tableList);
+        
+    } catch (\Exception $e) {
+        return "❌ GAGAL: " . $e->getMessage();
+    }
+});
+
 // --- ROUTE USER (WAJIB LOGIN) ---
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', [TugasController::class, 'index'])->name('home');
