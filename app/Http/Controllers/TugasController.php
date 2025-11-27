@@ -190,4 +190,25 @@ class TugasController extends Controller
             ->header('Content-Type', $mime_type)
             ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
     }
+    public function previewFile(Tugas $tugas)
+    {
+        // 1. Cek file
+        if (!$tugas->file_path) {
+            return back()->with('error', 'File tidak ditemukan.');
+        }
+
+        // 2. Decode Base64 (Sama seperti download)
+        @list($type, $file_data) = explode(';', $tugas->file_path);
+        @list(, $file_data)      = explode(',', $file_data);
+        $decoded_file = base64_decode($file_data);
+        $mime_type = str_replace('data:', '', $type);
+
+        // 3. Buat nama file
+        $filename = 'Preview-' . preg_replace('/[^A-Za-z0-9\-]/', '', $tugas->judul);
+
+        // 4. Kirim response dengan mode 'INLINE' (Tampilkan)
+        return response($decoded_file)
+            ->header('Content-Type', $mime_type)
+            ->header('Content-Disposition', 'inline; filename="' . $filename . '"');
+    }
 }
