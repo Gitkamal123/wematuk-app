@@ -45,76 +45,66 @@
 
                 /* ======================== */
                 /* MODERN DROPDOWN STYLES   */
-                /* ======================== */                 
+                /* ======================== */
 
-                /* Wrapper agar ikon bisa absolute */
+                /* Wrapper untuk menaruh ikon di atas select */
                 .select-icon-wrapper {
                     position: relative;
-                    height: 52px; /* Tinggi seragam dengan search bar */
                     width: 100%;
                 }
 
-                /* Styling Input Select */
+                /* Posisi Ikon di dalam dropdown */
+                .select-icon-wrapper .select-icon {
+                    position: absolute;
+                    left: 15px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    color: #64748b; /* Warna ikon abu-abu modern */
+                    pointer-events: none; /* Agar klik tembus ke select */
+                    z-index: 2;
+                    transition: color 0.3s ease;
+                }
+
+                /* Styling Input Select-nya */
                 .form-select-styled {
-                    height: 100% !important;
-                    border-radius: 16px !important;
-                    padding-left: 48px !important; /* Ruang untuk ikon kiri */
-                    padding-right: 40px !important; /* Ruang untuk panah kanan */
+                    padding-left: 45px !important; /* Memberi ruang untuk ikon */
+                    padding-right: 35px;
+                    height: 48px; /* Tinggi yang pas agar enak diklik */
                     border: 1px solid #e2e8f0;
+                    border-radius: 12px;
                     background-color: #ffffff;
                     font-size: 0.95rem;
                     color: #334155;
                     font-weight: 500;
                     cursor: pointer;
-                    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-                    /* HILANGKAN Panah Default Browser */
-                    -webkit-appearance: none;
-                    -moz-appearance: none;
-                    appearance: none;
-
-                    /* GANTI dengan Panah Custom (SVG) */
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+                    transition: all 0.3s ease;
+                    appearance: none; /* Hilangkan panah default browser jelek */
+                    /* Ganti panah default dengan SVG custom yang lebih rapi */
                     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
                     background-repeat: no-repeat;
-                    background-position: right 1.25rem center;
-                    background-size: 14px 10px;
+                    background-position: right 1rem center;
+                    background-size: 16px 12px;
                 }
 
                 /* Efek Hover */
                 .form-select-styled:hover {
                     border-color: #cbd5e1;
                     background-color: #f8fafc;
-                    transform: translateY(-1px); /* Naik sedikit saat di-hover */
                 }
 
                 /* Efek Focus (Saat diklik) */
                 .form-select-styled:focus {
-                    border-color: #3b82f6;
+                    border-color: #3b82f6; /* Warna Biru Fokus */
                     outline: 0;
-                    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15) !important;
-                    /* Ganti warna panah jadi biru saat aktif */
-                    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%233b82f6' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
-                }
-
-                /* Posisi Ikon di dalam dropdown (Corong & Panah Sort) */
-                .select-icon {
-                    position: absolute;
-                    left: 18px;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    color: #94a3b8; /* Abu-abu soft */
-                    pointer-events: none; /* Klik tembus ke select */
-                    z-index: 2;
-                    transition: color 0.3s;
+                    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); /* Efek Glow halus */
                 }
 
                 /* Ubah warna ikon saat select aktif */
-                .form-select-styled:focus + .select-icon, /* Fallback */
+                .form-select-styled:focus + .select-icon,
                 .select-icon-wrapper:focus-within .select-icon {
                     color: #3b82f6;
                 }
-
 
 
                 /* Button Styles */
@@ -690,10 +680,10 @@
                                         </button>
                                     </div>
                                 </div>
-                    
+
                                 <div class="col-md-3">
                                     <div class="select-icon-wrapper">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="select-icon"
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="select-icon"
                                             viewBox="0 0 16 16">
                                             <path
                                                 d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z" />
@@ -711,7 +701,7 @@
 
                                 <div class="col-md-3">
                                     <div class="select-icon-wrapper">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="select-icon"
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="select-icon"
                                             viewBox="0 0 16 16">
                                             <path fill-rule="evenodd"
                                                 d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5zm-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5z" />
