@@ -392,27 +392,19 @@
             margin-bottom: 2rem;
         }
 
-        /* PAGINATION CUSTOM STYLES */
-        .pagination-container {
+        /* Pagination Customization */
+        .pagination-wrapper {
             display: flex;
             justify-content: center;
             margin-top: 3rem;
-            padding: 1rem 0;
         }
 
-        .pagination-wrapper {
+        .pagination {
             display: flex;
             gap: 0.5rem;
-            align-items: center;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .pagination-info {
-            color: #6b7280;
-            font-size: 0.9rem;
-            margin-right: 1rem;
-            font-weight: 600;
+            list-style: none;
+            padding: 0;
+            margin: 0;
         }
 
         .page-item {
@@ -426,22 +418,20 @@
             min-width: 45px;
             height: 45px;
             padding: 0.5rem 0.75rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
             color: #4a5568;
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s ease;
             background: white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
         }
 
         .page-link:hover {
             background: #f7fafc;
             border-color: #cbd5e0;
             color: #2d3748;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+            transform: translateY(-1px);
         }
 
         .page-item.active .page-link {
@@ -449,16 +439,13 @@
             border-color: #0d6efd;
             color: white;
             box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
-            transform: translateY(-2px);
         }
 
         .page-item.disabled .page-link {
             background: #f7fafc;
             color: #a0aec0;
-            border-color: #e2e8f0;
             cursor: not-allowed;
             transform: none;
-            box-shadow: none;
         }
 
         /* Loading State */
@@ -487,19 +474,6 @@
             100% {
                 transform: rotate(360deg);
             }
-        }
-
-        /* Deadline Label */
-        .deadline-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-weight: 600;
-            color: #374151;
-            background: rgba(255, 255, 255, 0.6);
-            padding: 0.4rem 0.8rem;
-            border-radius: 8px;
-            font-size: 0.85rem;
         }
 
         /* Responsive Design */
@@ -539,20 +513,9 @@
                 margin-top: 0.5rem;
             }
 
-            .pagination-wrapper {
-                gap: 0.25rem;
-            }
-
-            .page-link {
-                min-width: 40px;
-                height: 40px;
-                padding: 0.4rem 0.6rem;
-                font-size: 0.9rem;
-            }
-
-            .pagination-info {
-                margin-right: 0.5rem;
-                font-size: 0.8rem;
+            .pagination {
+                flex-wrap: wrap;
+                justify-content: center;
             }
         }
 
@@ -570,14 +533,10 @@
             }
 
             .page-link {
-                min-width: 35px;
-                height: 35px;
-                padding: 0.3rem 0.5rem;
-                font-size: 0.85rem;
-            }
-
-            .pagination-container {
-                margin-top: 2rem;
+                min-width: 40px;
+                height: 40px;
+                padding: 0.4rem 0.6rem;
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -620,7 +579,7 @@
             <div class="control-card fade-in-up" style="animation-delay: 0.2s;">
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <form action="{{ route('tugas.index') }}" method="GET" id="searchForm">
+                        <form action="{{ route('tugas.cari') }}" method="GET" id="searchForm">
                             <div class="search-input-group">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
                                     class="search-icon" viewBox="0 0 16 16">
@@ -639,25 +598,20 @@
                     </div>
 
                     <div class="col-md-3">
-                        <select class="form-select form-select-custom" id="statusFilter" name="status">
+                        <select class="form-select form-select-custom" id="statusFilter">
                             <option value="">Semua Status</option>
-                            <option value="terlambat" {{ request('status') == 'terlambat' ? 'selected' : '' }}>Terlambat
-                            </option>
-                            <option value="segera" {{ request('status') == 'segera' ? 'selected' : '' }}>Segera</option>
-                            <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
+                            <option value="terlambat">Terlambat</option>
+                            <option value="segera">Segera</option>
+                            <option value="aktif">Aktif</option>
                         </select>
                     </div>
 
                     <div class="col-md-3">
-                        <select class="form-select form-select-custom" id="sortBy" name="sort">
-                            <option value="deadline_asc" {{ request('sort') == 'deadline_asc' ? 'selected' : '' }}>Deadline
-                                Terdekat</option>
-                            <option value="deadline_desc" {{ request('sort') == 'deadline_desc' ? 'selected' : '' }}>Deadline
-                                Terjauh</option>
-                            <option value="created_desc" {{ request('sort') == 'created_desc' ? 'selected' : '' }}>Terbaru
-                                Dibuat</option>
-                            <option value="created_asc" {{ request('sort') == 'created_asc' ? 'selected' : '' }}>Terlama
-                                Dibuat</option>
+                        <select class="form-select form-select-custom" id="sortBy">
+                            <option value="deadline_asc">Deadline Terdekat</option>
+                            <option value="deadline_desc">Deadline Terjauh</option>
+                            <option value="created_desc">Terbaru Dibuat</option>
+                            <option value="created_asc">Terlama Dibuat</option>
                         </select>
                     </div>
                 </div>
@@ -713,14 +667,11 @@
 
                         <div class="task-meta">
                             <div class="meta-row">
-                                <span class="deadline-label">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                        class="meta-icon" viewBox="0 0 16 16">
-                                        <path
-                                            d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
-                                    </svg>
-                                    Deadline:
-                                </span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="meta-icon" viewBox="0 0 16 16">
+                                    <path
+                                        d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
+                                </svg>
                                 <span>{{ $deadline->format('d M Y, H:i') }} WIB</span>
                             </div>
 
@@ -801,69 +752,10 @@
                 @endforelse
             </div>
 
-            <!-- CUSTOM PAGINATION -->
+            <!-- Pagination -->
             @if($tugas->hasPages())
-                <div class="pagination-container fade-in-up" style="animation-delay: 0.4s;">
-                    <div class="pagination-wrapper">
-                        <!-- Pagination Info -->
-                        <div class="pagination-info">
-                            Menampilkan {{ $tugas->firstItem() ?? 0 }} - {{ $tugas->lastItem() ?? 0 }} dari
-                            {{ $tugas->total() }} tugas
-                        </div>
-
-                        <!-- Previous Page Link -->
-                        @if ($tugas->onFirstPage())
-                            <span class="page-item disabled">
-                                <span class="page-link">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                        viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd"
-                                            d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z" />
-                                    </svg>
-                                </span>
-                            </span>
-                        @else
-                            <a class="page-link" href="{{ $tugas->previousPageUrl() }}{{ $getQueryString() }}" rel="prev">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd"
-                                        d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z" />
-                                </svg>
-                            </a>
-                        @endif
-
-                        <!-- Pagination Elements -->
-                        @foreach ($tugas->getUrlRange(1, $tugas->lastPage()) as $page => $url)
-                            @if ($page == $tugas->currentPage())
-                                <span class="page-item active">
-                                    <span class="page-link">{{ $page }}</span>
-                                </span>
-                            @else
-                                <a class="page-link" href="{{ $url }}{{ $getQueryString() }}">{{ $page }}</a>
-                            @endif
-                        @endforeach
-
-                        <!-- Next Page Link -->
-                        @if ($tugas->hasMorePages())
-                            <a class="page-link" href="{{ $tugas->nextPageUrl() }}{{ $getQueryString() }}" rel="next">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd"
-                                        d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
-                                </svg>
-                            </a>
-                        @else
-                            <span class="page-item disabled">
-                                <span class="page-link">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                        viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd"
-                                            d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
-                                    </svg>
-                                </span>
-                            </span>
-                        @endif
-                    </div>
+                <div class="pagination-wrapper fade-in-up" style="animation-delay: 0.4s;">
+                    {{ $tugas->links() }}
                 </div>
             @endif
 
@@ -910,19 +802,92 @@
         document.addEventListener('DOMContentLoaded', function () {
             const statusFilter = document.getElementById('statusFilter');
             const sortBy = document.getElementById('sortBy');
-            const searchForm = document.getElementById('searchForm');
+            const tasksGrid = document.getElementById('tasksGrid');
+            const loadingState = document.getElementById('loadingState');
+            const searchInput = document.getElementById('searchInput');
 
-            // Auto submit form when filters change
-            if (statusFilter) {
-                statusFilter.addEventListener('change', function () {
-                    searchForm.submit();
-                });
+            // Filter & Sort Logic
+            function updateGrid() {
+                const cards = Array.from(document.querySelectorAll('.task-card'));
+                const statusValue = statusFilter.value;
+                const sortValue = sortBy.value;
+
+                // Show loading
+                loadingState.style.display = 'block';
+                tasksGrid.style.opacity = '0.5';
+
+                setTimeout(() => {
+                    // Filter by status
+                    cards.forEach(card => {
+                        const cardStatus = card.dataset.status;
+                        if (statusValue === '' || cardStatus === statusValue) {
+                            card.style.display = 'flex';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+
+                    // Sort tasks
+                    const visibleCards = cards.filter(card => card.style.display !== 'none');
+
+                    visibleCards.sort((a, b) => {
+                        const deadlineA = parseInt(a.dataset.deadline);
+                        const deadlineB = parseInt(b.dataset.deadline);
+                        const createdA = parseInt(a.dataset.created);
+                        const createdB = parseInt(b.dataset.created);
+
+                        switch (sortValue) {
+                            case 'deadline_asc':
+                                return deadlineA - deadlineB;
+                            case 'deadline_desc':
+                                return deadlineB - deadlineA;
+                            case 'created_desc':
+                                return createdB - createdA;
+                            case 'created_asc':
+                                return createdA - createdB;
+                            default:
+                                return 0;
+                        }
+                    });
+
+                    // Re-append sorted cards
+                    visibleCards.forEach(card => tasksGrid.appendChild(card));
+
+                    // Hide loading
+                    loadingState.style.display = 'none';
+                    tasksGrid.style.opacity = '1';
+
+                    // Show empty state if no cards visible
+                    const visibleCount = visibleCards.filter(card => card.style.display !== 'none').length;
+                    const emptyState = document.querySelector('.empty-state');
+
+                    if (visibleCount === 0 && emptyState) {
+                        emptyState.style.display = 'block';
+                    } else if (emptyState) {
+                        emptyState.style.display = 'none';
+                    }
+                }, 300);
             }
 
-            if (sortBy) {
-                sortBy.addEventListener('change', function () {
-                    searchForm.submit();
-                });
+            // Event listeners
+            if (statusFilter) statusFilter.addEventListener('change', updateGrid);
+            if (sortBy) sortBy.addEventListener('change', updateGrid);
+
+            // Search functionality
+            if (searchInput) {
+                searchInput.addEventListener('input', debounce(function (e) {
+                    const searchTerm = e.target.value.toLowerCase();
+                    const cards = document.querySelectorAll('.task-card');
+
+                    cards.forEach(card => {
+                        const searchData = card.dataset.search;
+                        if (searchData.includes(searchTerm)) {
+                            card.style.display = 'flex';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                }, 300));
             }
 
             // Enhanced button interactions
@@ -935,6 +900,19 @@
                     this.style.transform = 'scale(1)';
                 });
             });
+
+            // Debounce function
+            function debounce(func, wait) {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            }
 
             // Initialize animations
             const elements = document.querySelectorAll('.fade-in-up');
