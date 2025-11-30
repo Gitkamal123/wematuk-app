@@ -69,28 +69,28 @@ class TugasController extends Controller
         return view('tugas.index', compact('tugas'));
     }
 
-
-private function autoDeleteExpiredTasks()
-{
-    try {
-        $expiredTasks = Tugas::where('deadline', '<', now())
-                            ->whereNull('deleted_at')
-                            ->get();
-        
-        $deletedCount = 0;
-        foreach ($expiredTasks as $task) {
-            $task->delete();
-            $deletedCount++;
+    /** Auto-delete tugas yang sudah lewat deadline */
+    private function autoDeleteExpiredTasks()
+    {
+        try {
+            $expiredTasks = Tugas::where('deadline', '<', now())
+                                ->whereNull('deleted_at')
+                                ->get();
+            
+            $deletedCount = 0;
+            foreach ($expiredTasks as $task) {
+                $task->delete(); // Soft delete
+                $deletedCount++;
+            }
+            
+            // Log jika ada tugas yang dihapus
+            if ($deletedCount > 0) {
+                Log::info("$deletedCount tugas dihapus otomatis - deadline lewat");
+            }
+        } catch (\Exception $e) {
+            Log::error("Auto-delete error: " . $e->getMessage());
         }
-        
-        if ($deletedCount > 0) {
-            Log::info("$deletedCount tugas dihapus otomatis - deadline lewat");
-
-        }
-    } catch (\Exception $e) {
-        Log::error("Auto-delete error: " . $e->getMessage());
     }
-}
 
     /** Tampilkan form tambah */
     public function create()
@@ -131,19 +131,19 @@ private function autoDeleteExpiredTasks()
     }
 
     /** Tampilkan detail */
-    public function show(Tugas $tuga) // Sesuai route parameter {tugas}
+    public function show(Tugas $tuga)
     {
         return view('tugas.show', ['tugas' => $tuga]);
     }
 
     /** Tampilkan form edit */
-    public function edit(Tugas $tuga) // Sesuai route parameter {tugas}
+    public function edit(Tugas $tuga)
     {
         return view('tugas.edit', ['tugas' => $tuga]);
     }
 
     /** Simpan perubahan */
-    public function update(Request $request, Tugas $tuga) // Sesuai route parameter {tugas}
+    public function update(Request $request, Tugas $tuga)
     {
         $request->validate([
             'judul' => 'required|string|max:255',
@@ -170,17 +170,78 @@ private function autoDeleteExpiredTasks()
     }
 
     /** Hapus tugas (Soft Delete) */
-    public function destroy(Tugas $tuga) // Sesuai route parameter {tugas}
+    public function destroy(Tugas $tuga)
     {
         $tuga->delete();
         return redirect()->route('home')->with('success', 'Tugas berhasil dipindahkan ke sampah!');
+    }
+
+    /** Cari tugas */
+    public function cari(Request $request)
+    {
+        // Auto-delete tugas yang sudah lewat deadline
+        $this->autoDeleteExpiredTasks();
+
+        $cari = $request->cari;
+        
+        $query = Tugas::query();
+        
+        // Search
+        if ($cari != '') {
+            $query->where(function($q) use ($cari) {
+                $q->where('judul', 'like', '%' . $cari . '%')
+                  ->orWhere('deskripsi', 'like', '%' . $cari . '%');
+            });
+        }
+        
+        // Status filter (jika ada)
+        if ($request->has('status') && $request->status != '') {
+            $now = now();
+            switch ($request->status) {
+                case 'terlambat':
+                    $query->where('deadline', '<', $now);
+                    break;
+                case 'segera':
+                    $query->whereBetween('deadline', [$now, $now->copy()->addDays(3)]);
+                    break;
+                case 'aktif':
+                    $query->where('deadline', '>', $now->copy()->addDays(3));
+                    break;
+            }
+        }
+        
+        // Sorting (jika ada)
+        if ($request->has('sort')) {
+            switch ($request->sort) {
+                case 'deadline_asc':
+                    $query->orderBy('deadline', 'asc');
+                    break;
+                case 'deadline_desc':
+                    $query->orderBy('deadline', 'desc');
+                    break;
+                case 'created_desc':
+                    $query->orderBy('created_at', 'desc');
+                    break;
+                case 'created_asc':
+                    $query->orderBy('created_at', 'asc');
+                    break;
+                default:
+                    $query->orderBy('deadline', 'asc');
+            }
+        } else {
+            $query->orderBy('deadline', 'asc');
+        }
+        
+        $tugas = $query->paginate(9);
+        
+        return view('tugas.index', compact('tugas'));
     }
 
     /** Cetak laporan */
     public function cetakLaporan()
     {
         $tugas = Tugas::orderBy('deadline', 'asc')->get();
-        return view('laporan', ['tugas' => $tugas]); // Sesuai route name 'laporan.cetak'
+        return view('laporan', ['tugas' => $tugas]);
     }
 
     /** Tampilkan sampah */
@@ -191,7 +252,7 @@ private function autoDeleteExpiredTasks()
     }
 
     /** Pulihkan dari sampah */
-    public function restore($id) // Parameter ID karena route {id}
+    public function restore($id)
     {
         $tugas = Tugas::withTrashed()->find($id);
         
@@ -204,7 +265,7 @@ private function autoDeleteExpiredTasks()
     }
 
     /** Hapus permanen */
-    public function forceDelete($id) // Parameter ID karena route {id}
+    public function forceDelete($id)
     {
         $tugas = Tugas::withTrashed()->find($id);
         
@@ -231,7 +292,7 @@ private function autoDeleteExpiredTasks()
     }
 
     /** Download file */
-    public function downloadFile(Tugas $tuga) // Sesuai route parameter {tugas}
+    public function downloadFile(Tugas $tuga)
     {
         if (!$tuga->file_path) {
             return back()->with('error', 'File tidak ditemukan.');
@@ -258,7 +319,7 @@ private function autoDeleteExpiredTasks()
     }
 
     /** Preview file */
-    public function previewFile(Tugas $tuga) // Sesuai route parameter {tugas}
+    public function previewFile(Tugas $tuga)
     {
         if (!$tuga->file_path) {
             return back()->with('error', 'File tidak ditemukan.');
