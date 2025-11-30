@@ -747,8 +747,8 @@
 
             <!-- Pagination -->
             @if($tugas->hasPages())
-                <div class="pagination-wrapper fade-in-up" style="animation-delay: 0.4s;">
-                    {{ $tugas->links() }}
+                <div class="pagination-wrapper fade-in-up" style="animation-delay: 0.4s;">                    
+                    {{ $tugas->appends(request()->query())->links() }}
                 </div>
             @endif
 

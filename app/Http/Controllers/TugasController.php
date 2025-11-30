@@ -7,11 +7,64 @@ use Illuminate\Http\Request;
 
 class TugasController extends Controller
 {
-    /** Tampilkan SEMUA tugas */
-    public function index()
+    /** Tampilkan SEMUA tugas dengan Filter, Sort, dan Cari */
+    public function index(Request $request)
     {
-        $tugas = Tugas::orderBy('deadline', 'asc')->paginate(10); 
-        return view('tugas.index', ['tugas' => $tugas]);
+        // 1. Mulai Query Builder
+        $query = Tugas::query();
+
+        // 2. Logika Pencarian (Search)
+        if ($request->has('cari') && $request->cari != '') {
+            $query->where(function($q) use ($request) {
+                $q->where('judul', 'like', '%' . $request->cari . '%')
+                  ->orWhere('deskripsi', 'like', '%' . $request->cari . '%');
+            });
+        }
+
+        // 3. Logika Filter Status
+        if ($request->has('status') && $request->status != '') {
+            $now = now(); // Butuh: use Carbon\Carbon; atau helper now()
+            
+            switch ($request->status) {
+                case 'terlambat':
+                    $query->where('deadline', '<', $now);
+                    break;
+                case 'segera':
+                    // Deadline antara sekarang sampai 3 hari ke depan
+                    $query->whereBetween('deadline', [$now, $now->copy()->addDays(3)]);
+                    break;
+                case 'aktif':
+                    // Deadline lebih dari 3 hari ke depan
+                    $query->where('deadline', '>', $now->copy()->addDays(3));
+                    break;
+            }
+        }
+
+        // 4. Logika Sorting
+        if ($request->has('sort')) {
+            switch ($request->sort) {
+                case 'deadline_asc':
+                    $query->orderBy('deadline', 'asc');
+                    break;
+                case 'deadline_desc':
+                    $query->orderBy('deadline', 'desc');
+                    break;
+                case 'created_desc':
+                    $query->orderBy('created_at', 'desc');
+                    break;
+                case 'created_asc':
+                    $query->orderBy('created_at', 'asc');
+                    break;
+                default:
+                    $query->orderBy('deadline', 'asc');
+            }
+        } else {
+            // Default sorting jika user tidak memilih apa-apa
+            $query->orderBy('deadline', 'asc');
+        }     
+        $tugas = $query->paginate(6); 
+
+        return view('tugas.index', compact('tugas'));
     }
 
     /** Tampilkan form tambah */
@@ -95,16 +148,6 @@ class TugasController extends Controller
     {
         $tugas->delete();
         return redirect()->route('home')->with('success', 'Tugas masuk keranjang sampah!');
-    }
-
-    /** Cari tugas */
-    public function cari(Request $request)
-    {
-        $cari = $request->cari;
-        $tugas = Tugas::where('judul', 'like', "%" . $cari . "%")
-                      ->orderBy('deadline', 'asc')
-                      ->paginate(10);
-        return view('tugas.index', ['tugas' => $tugas]);
     }
 
     /** Cetak laporan */
