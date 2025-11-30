@@ -762,110 +762,110 @@
     }
 </style>
 
-                            <div class="tugas-container">
-                                <div class="container">
-                                    <!-- Enhanced Header Section -->
-                                    <div class="d-flex justify-content-between align-items-center mb-5 fade-in-up" style="animation-delay: 0.1s;">
-                                        <div>
-                                            <h1 class="tugas-title">Daftar Tugas</h1>
-                                            <p class="text-muted mb-0 mt-2">Kelola dan pantau semua tugas Anda di satu tempat</p>
-                                        </div>
+<div class="tugas-container">
+<div class="container">
+    <!-- Enhanced Header Section -->
+    <div class="d-flex justify-content-between align-items-center mb-5 fade-in-up" style="animation-delay: 0.1s;">
+        <div>
+            <h1 class="tugas-title">Daftar Tugas</h1>
+            <p class="text-muted mb-0 mt-2">Kelola dan pantau semua tugas Anda di satu tempat</p>
+        </div>
 
-                                        <div class="d-flex gap-3 flex-wrap">
-                                            <a href="{{ route('laporan.cetak') }}" class="btn-modern btn-light-modern" target="_blank">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                                    viewBox="0 0 16 16">
-                                                    <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z" />
-                                                    <path
-                                                        d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z" />
-                                                </svg>
-                                                Cetak Laporan
-                                            </a>
+        <div class="d-flex gap-3 flex-wrap">
+            <a href="{{ route('laporan.cetak') }}" class="btn-modern btn-light-modern" target="_blank">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                    viewBox="0 0 16 16">
+                    <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z" />
+                    <path
+                        d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z" />
+                </svg>
+                Cetak Laporan
+            </a>
 
-                                            @if(Auth::user()->role == 'admin')
-                                                <a href="{{ route('tugas.create') }}" class="btn-modern btn-primary-modern">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
-                                                        viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 0 1 0 2H9v6a1 1 0 0 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z" />
-                                                    </svg>
-                                                    Tambah Tugas Baru
-                                                </a>
-                                            @endif
-                                        </div>
-                                    </div>
+            @if(Auth::user()->role == 'admin')
+                <a href="{{ route('tugas.create') }}" class="btn-modern btn-primary-modern">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 0 1 0 2H9v6a1 1 0 0 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z" />
+                    </svg>
+                    Tambah Tugas Baru
+                </a>
+            @endif
+        </div>
+    </div>
 
-                                    <!-- Enhanced Control Card -->
-                                    <div class="control-card fade-in-up" style="animation-delay: 0.2s;">
-                                        <form action="{{ route('home') }}" method="GET" id="filterForm">
-                                            <div class="row g-4">
-                                                <div class="col-md-6">
-                                                    <div class="search-input-group position-relative">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                                            class="search-icon" viewBox="0 0 16 16">
-                                                            <path
-                                                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                                                        </svg>
+    <!-- Enhanced Control Card -->
+    <div class="control-card fade-in-up" style="animation-delay: 0.2s;">
+        <form action="{{ route('home') }}" method="GET" id="filterForm">
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="search-input-group position-relative">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                            class="search-icon" viewBox="0 0 16 16">
+                            <path
+                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                        </svg>
 
-                                                        <input type="text" name="cari" id="searchInput" class="form-control search-input"
-                                                            placeholder="Cari tugas berdasarkan judul atau deskripsi..."
-                                                            value="{{ request('cari') }}" autocomplete="off">
+                        <input type="text" name="cari" id="searchInput" class="form-control search-input"
+                            placeholder="Cari tugas berdasarkan judul atau deskripsi..."
+                            value="{{ request('cari') }}" autocomplete="off">
 
-                                                        <span id="clearSearchBtn" class="clear-search-btn" title="Hapus pencarian">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
-                                                                viewBox="0 0 16 16">
-                                                                <path
-                                                                    d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-                                                            </svg>
-                                                        </span>
+                        <span id="clearSearchBtn" class="clear-search-btn" title="Hapus pencarian">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                            </svg>
+                        </span>
 
-                                                        <button type="submit" class="btn-modern btn-primary-modern search-submit-btn">
-                                                            Cari
-                                                        </button>
-                                                    </div>
-                                                </div>
+                        <button type="submit" class="btn-modern btn-primary-modern search-submit-btn">
+                            Cari
+                        </button>
+                    </div>
+                </div>
 
-                                                <div class="col-md-3">
-                                                    <div class="select-icon-wrapper">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                                            class="select-icon" viewBox="0 0 16 16">
-                                                            <path
-                                                                d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z" />
-                                                        </svg>
-                                                        <select class="form-select form-select-styled" name="status"
-                                                            onchange="document.getElementById('filterForm').submit()">
-                                                            <option value="">Semua Status</option>
-                                                            <option value="Lewat Deadline" {{ request('status') == 'Lewat Deadline' ? 'selected' : '' }}>Lewat Deadline</option>
-                                                            <option value="Mendekati Deadline" {{ request('status') == 'Mendekati Deadline' ? 'selected' : '' }}>Mendekati Deadline</option>
-                                                            <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
+                <div class="col-md-3">
+                    <div class="select-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                            class="select-icon" viewBox="0 0 16 16">
+                            <path
+                                d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z" />
+                        </svg>
+                        <select class="form-select form-select-styled" name="status"
+                            onchange="document.getElementById('filterForm').submit()">
+                            <option value="">Semua Status</option>
+                            <option value="Lewat Deadline" {{ request('status') == 'Lewat Deadline' ? 'selected' : '' }}>Lewat Deadline</option>
+                            <option value="Mendekati Deadline" {{ request('status') == 'Mendekati Deadline' ? 'selected' : '' }}>Mendekati Deadline</option>
+                            <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
+                        </select>
+                    </div>
+                </div>
 
-                                                <div class="col-md-3">
-                                                    <div class="select-icon-wrapper">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                                            class="select-icon" viewBox="0 0 16 16">
-                                                            <path fill-rule="evenodd"
-                                                                d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5zm-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5z" />
-                                                        </svg>
-                                                        <select class="form-select form-select-styled" name="sort"
-                                                            onchange="document.getElementById('filterForm').submit()">
-                                                            <option value="deadline_asc" {{ request('sort') == 'deadline_asc' ? 'selected' : '' }}>
-                                                                Deadline Terdekat</option>
-                                                            <option value="deadline_desc" {{ request('sort') == 'deadline_desc' ? 'selected' : '' }}>
-                                                                Deadline Terjauh</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
+                <div class="col-md-3">
+                    <div class="select-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                            class="select-icon" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5zm-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5z" />
+                        </svg>
+                        <select class="form-select form-select-styled" name="sort"
+                            onchange="document.getElementById('filterForm').submit()">
+                            <option value="deadline_asc" {{ request('sort') == 'deadline_asc' ? 'selected' : '' }}>
+                                Deadline Terdekat</option>
+                            <option value="deadline_desc" {{ request('sort') == 'deadline_desc' ? 'selected' : '' }}>
+                                Deadline Terjauh</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 
-                                    <!-- Tasks Grid -->
-                                    <div class="tasks-grid fade-in-up" id="tasksGrid" style="animation-delay: 0.3s;">
-                                        @forelse($tugas as $index => $t)
-                                            @php
+    <!-- Tasks Grid -->
+    <div class="tasks-grid fade-in-up" id="tasksGrid" style="animation-delay: 0.3s;">
+        @forelse($tugas as $index => $t)
+    @php
     $deadline = \Carbon\Carbon::parse($t->deadline);
     $now = \Carbon\Carbon::now();
     $diffInDays = $now->diffInDays($deadline, false);
@@ -883,226 +883,226 @@
         $statusText = 'aktif';
         $statusDisplay = 'Aktif';
     }
-                                            @endphp
+    @endphp
 
-                                            <div class="task-card task-card-theme" data-deadline="{{ $deadline->timestamp }}"
-                                                data-status="{{ $statusText }}">
-                                                <div class="task-header">
-                                                    <h3 class="task-title-text">{{ $t->judul }}</h3>
-                                                    <span class="badge-deadline {{ $badgeClass }}">{{ $statusDisplay }}</span>
-                                                </div>
+                <div class="task-card task-card-theme" data-deadline="{{ $deadline->timestamp }}"
+                    data-status="{{ $statusText }}">
+                    <div class="task-header">
+                        <h3 class="task-title-text">{{ $t->judul }}</h3>
+                        <span class="badge-deadline {{ $badgeClass }}">{{ $statusDisplay }}</span>
+                    </div>
 
-                                                <div class="task-desc">
-                                                    {!! Str::limit($t->deskripsi, 150, '...') ?: '<em class="text-muted">Tidak ada deskripsi</em>' !!}
-                                                </div>
+                    <div class="task-desc">
+                        {!! Str::limit($t->deskripsi, 150, '...') ?: '<em class="text-muted">Tidak ada deskripsi</em>' !!}
+                    </div>
 
-                                                <div class="task-meta">
-                                                    <div class="meta-row">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                                            class="meta-icon" viewBox="0 0 16 16">
-                                                            <path
-                                                                d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
-                                                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
-                                                        </svg>
-                                                        <div>
-                                                            <strong>Deadline:</strong><br>
-                                                            <span>{{ $deadline->format('d F Y, H:i') }} WIB</span>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="meta-row">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                                            class="meta-icon" viewBox="0 0 16 16">
-                                                            <path
-                                                                d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z" />
-                                                        </svg>
-                                                        <div>
-                                                            @if($t->file_path)
-                                                                <a href="{{ route('tugas.download', $t->id) }}" class="download-link">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                                                        viewBox="0 0 16 16">
-                                                                        <path
-                                                                            d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
-                                                                        <path
-                                                                            d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
-                                                                    </svg>
-                                                                    Download File Tugas
-                                                                </a>
-                                                            @else
-                                                                <span class="text-muted fst-italic">Tidak ada file terlampir</span>
-                                                            @endif
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                @if(Auth::user()->role == 'admin')
-                                                    <div class="task-footer">
-                                                        <small class="text-muted d-flex align-items-center gap-2">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                                                viewBox="0 0 16 16">
-                                                                <path
-                                                                    d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
-                                                                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
-                                                            </svg>
-                                                            {{ $deadline->diffForHumans() }}
-                                                        </small>
-                                                        <div class="d-flex gap-2">
-                                                            <a href="{{ route('tugas.edit', $t->id) }}" class="btn-icon btn-edit-task" title="Edit Tugas">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
-                                                                    viewBox="0 0 16 16">
-                                                                    <path
-                                                                        d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
-                                                                </svg>
-                                                            </a>
-                                                            <button type="button" class="btn-icon btn-delete-task" data-bs-toggle="modal"
-                                                                data-bs-target="#deleteModal{{ $t->id }}" title="Hapus Tugas">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
-                                                                    viewBox="0 0 16 16">
-                                                                    <path
-                                                                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
-                                                                    <path
-                                                                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
-                                                                </svg>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                @endif
-                                            </div>
-                                        @empty
-                                            <div class="empty-state">
-                                                <div class="empty-animation"></div>
-                                                <h3 class="empty-title">Belum Ada Tugas</h3>                                                                                                
-                                            </div>
-                                        @endforelse
-                                    </div>
-
-                                    <!-- Enhanced Pagination -->
-                                    @if($tugas->hasPages())
-                                        <div class="pagination-wrapper fade-in-up" style="animation-delay: 0.4s;">
-                                            {{ $tugas->appends(request()->query())->onEachSide(1)->links() }}
-                                        </div>
-                                    @endif
-                                </div>
+                    <div class="task-meta">
+                        <div class="meta-row">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                class="meta-icon" viewBox="0 0 16 16">
+                                <path
+                                    d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
+                                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
+                            </svg>
+                            <div>
+                                <strong>Deadline:</strong><br>
+                                <span>{{ $deadline->format('d F Y, H:i') }} WIB</span>
                             </div>
+                        </div>
 
-                            <!-- Delete Modals -->
-                            @foreach($tugas as $t)
-                                @if(Auth::user()->role == 'admin')
-                                    <div class="modal fade" id="deleteModal{{ $t->id }}" tabindex="-1" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content border-0 shadow-lg" style="border-radius: 24px;">
-                                                <div class="modal-header border-0 text-white"
-                                                    style="background: linear-gradient(135deg, #1e40af, #3b82f6); border-radius: 24px 24px 0 0;">
-                                                    <h5 class="modal-title fw-bold">Konfirmasi Hapus</h5>
-                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                                                </div>
-                                                <div class="modal-body text-center p-5">
-                                                    <div class="mb-4">
-                                                        <div
-                                                            style="width: 80px; height: 80px; background: linear-gradient(135deg, #fef2f2, #fee2e2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#ef4444"
-                                                                viewBox="0 0 16 16">
-                                                                <path
-                                                                    d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
-                                                            </svg>
-                                                        </div>
-                                                    </div>
-                                                    <p class="mb-3">Anda yakin ingin memindahkan tugas ini ke sampah?</p>
-                                                    <h6 class="fw-bold text-dark my-3">{{ $t->judul }}</h6>
-                                                    <small class="text-muted">Data masih bisa dipulihkan dari menu Sampah.</small>
-                                                </div>
-                                                <div class="modal-footer justify-content-center border-0 pb-5">
-                                                    <button type="button" class="btn btn-light border px-4 py-2" style="border-radius: 12px;"
-                                                        data-bs-dismiss="modal">Batal</button>
-                                                    <form action="{{ route('tugas.destroy', $t->id) }}" method="POST">
-                                                        @csrf @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger px-4 py-2"
-                                                            style="border-radius: 12px; background: linear-gradient(135deg, #ef4444, #dc2626); border: none;">Ya,
-                                                            Hapus</button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                        <div class="meta-row">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                class="meta-icon" viewBox="0 0 16 16">
+                                <path
+                                    d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z" />
+                            </svg>
+                            <div>
+                                @if($t->file_path)
+                                    <a href="{{ route('tugas.download', $t->id) }}" class="download-link">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                            viewBox="0 0 16 16">
+                                            <path
+                                                d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+                                            <path
+                                                d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
+                                        </svg>
+                                        Download File Tugas
+                                    </a>
+                                @else
+                                    <span class="text-muted fst-italic">Tidak ada file terlampir</span>
                                 @endif
-                            @endforeach
+                            </div>
+                        </div>
+                    </div>
 
-                            <script>
-                                document.addEventListener('DOMContentLoaded', function () {
-                                    // Enhanced animations and interactions
-                                    const actionButtons = document.querySelectorAll('.btn-icon');
-                                    actionButtons.forEach(btn => {
-                                        btn.addEventListener('mouseenter', function () {
-                                            this.style.transform = 'scale(1.1)';
-                                        });
-                                        btn.addEventListener('mouseleave', function () {
-                                            this.style.transform = 'scale(1)';
-                                        });
-                                    });
+                    @if(Auth::user()->role == 'admin')
+                        <div class="task-footer">
+                            <small class="text-muted d-flex align-items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    viewBox="0 0 16 16">
+                                    <path
+                                        d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
+                                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
+                                </svg>
+                                {{ $deadline->diffForHumans() }}
+                            </small>
+                            <div class="d-flex gap-2">
+                                <a href="{{ route('tugas.edit', $t->id) }}" class="btn-icon btn-edit-task" title="Edit Tugas">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                                    </svg>
+                                </a>
+                                <button type="button" class="btn-icon btn-delete-task" data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal{{ $t->id }}" title="Hapus Tugas">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+                                        <path
+                                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            @empty
+                <div class="empty-state">
+                    <div class="empty-animation"></div>
+                    <h3 class="empty-title">Belum Ada Tugas</h3>                                                                                                
+                </div>
+            @endforelse
+        </div>
 
-                                    // Search functionality
-                                    const searchInput = document.getElementById('searchInput');
-                                    const clearBtn = document.getElementById('clearSearchBtn');
-                                    const filterForm = document.getElementById('filterForm');
+        <!-- Enhanced Pagination -->
+        @if($tugas->hasPages())
+            <div class="pagination-wrapper fade-in-up" style="animation-delay: 0.4s;">
+                {{ $tugas->appends(request()->query())->onEachSide(1)->links() }}
+            </div>
+        @endif
+    </div>
+</div>
 
-                                    function toggleClearButton() {
-                                        if (searchInput.value.trim().length > 0) {
-                                            clearBtn.style.display = 'block';
-                                        } else {
-                                            clearBtn.style.display = 'none';
-                                        }
-                                    }
+<!-- Delete Modals -->
+@foreach($tugas as $t)
+    @if(Auth::user()->role == 'admin')
+        <div class="modal fade" id="deleteModal{{ $t->id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow-lg" style="border-radius: 24px;">
+                    <div class="modal-header border-0 text-white"
+                        style="background: linear-gradient(135deg, #1e40af, #3b82f6); border-radius: 24px 24px 0 0;">
+                        <h5 class="modal-title fw-bold">Konfirmasi Hapus</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body text-center p-5">
+                        <div class="mb-4">
+                            <div
+                                style="width: 80px; height: 80px; background: linear-gradient(135deg, #fef2f2, #fee2e2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#ef4444"
+                                    viewBox="0 0 16 16">
+                                    <path
+                                        d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                                </svg>
+                            </div>
+                        </div>
+                        <p class="mb-3">Anda yakin ingin memindahkan tugas ini ke sampah?</p>
+                        <h6 class="fw-bold text-dark my-3">{{ $t->judul }}</h6>
+                        <small class="text-muted">Data masih bisa dipulihkan dari menu Sampah.</small>
+                    </div>
+                    <div class="modal-footer justify-content-center border-0 pb-5">
+                        <button type="button" class="btn btn-light border px-4 py-2" style="border-radius: 12px;"
+                            data-bs-dismiss="modal">Batal</button>
+                        <form action="{{ route('tugas.destroy', $t->id) }}" method="POST">
+                            @csrf @method('DELETE')
+                            <button type="submit" class="btn btn-danger px-4 py-2"
+                                style="border-radius: 12px; background: linear-gradient(135deg, #ef4444, #dc2626); border: none;">Ya,
+                                Hapus</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+@endforeach
 
-                                    // Initialize animations
-                                    const elements = document.querySelectorAll('.fade-in-up');
-                                    elements.forEach((el, index) => {
-                                        setTimeout(() => {
-                                            el.style.animationPlayState = 'running';
-                                        }, index * 100);
-                                    });
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Enhanced animations and interactions
+        const actionButtons = document.querySelectorAll('.btn-icon');
+        actionButtons.forEach(btn => {
+            btn.addEventListener('mouseenter', function () {
+                this.style.transform = 'scale(1.1)';
+            });
+            btn.addEventListener('mouseleave', function () {
+                this.style.transform = 'scale(1)';
+            });
+        });
 
-                                    if (searchInput) {
-                                        toggleClearButton();
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        const clearBtn = document.getElementById('clearSearchBtn');
+        const filterForm = document.getElementById('filterForm');
 
-                                        searchInput.addEventListener('input', function () {
-                                            toggleClearButton();
-                                            if (this.value === '') {
-                                                filterForm.submit();
-                                            }
-                                        });
+        function toggleClearButton() {
+            if (searchInput.value.trim().length > 0) {
+                clearBtn.style.display = 'block';
+            } else {
+                clearBtn.style.display = 'none';
+            }
+        }
 
-                                        clearBtn.addEventListener('click', function () {
-                                            searchInput.value = '';
-                                            toggleClearButton();
-                                            filterForm.submit();
-                                        });
-                                    }
+        // Initialize animations
+        const elements = document.querySelectorAll('.fade-in-up');
+        elements.forEach((el, index) => {
+            setTimeout(() => {
+                el.style.animationPlayState = 'running';
+            }, index * 100);
+        });
 
-                                    // Add hover effects to task cards
-                                    const taskCards = document.querySelectorAll('.task-card');
-                                    taskCards.forEach(card => {
-                                        card.addEventListener('mouseenter', function () {
-                                            this.style.transform = 'translateY(-8px) scale(1.02)';
-                                        });
-                                        card.addEventListener('mouseleave', function () {
-                                            this.style.transform = 'translateY(0) scale(1)';
-                                        });
-                                    });
+        if (searchInput) {
+            toggleClearButton();
 
-                                    // Enhanced pagination interactions
-                                    const paginationLinks = document.querySelectorAll('.page-link');
-                                    paginationLinks.forEach(link => {
-                                        link.addEventListener('mouseenter', function () {
-                                            if (!this.parentElement.classList.contains('active') && !this.parentElement.classList.contains('disabled')) {
-                                                this.style.transform = 'translateY(-3px)';
-                                            }
-                                        });
-                                        link.addEventListener('mouseleave', function () {
-                                            if (!this.parentElement.classList.contains('active')) {
-                                                this.style.transform = 'translateY(0)';
-                                            }
-                                        });
-                                    });
-                                });                
-                            </script>
+            searchInput.addEventListener('input', function () {
+                toggleClearButton();
+                if (this.value === '') {
+                    filterForm.submit();
+                }
+            });
+
+            clearBtn.addEventListener('click', function () {
+                searchInput.value = '';
+                toggleClearButton();
+                filterForm.submit();
+            });
+        }
+
+        // Add hover effects to task cards
+        const taskCards = document.querySelectorAll('.task-card');
+        taskCards.forEach(card => {
+            card.addEventListener('mouseenter', function () {
+                this.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            card.addEventListener('mouseleave', function () {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Enhanced pagination interactions
+        const paginationLinks = document.querySelectorAll('.page-link');
+        paginationLinks.forEach(link => {
+            link.addEventListener('mouseenter', function () {
+                if (!this.parentElement.classList.contains('active') && !this.parentElement.classList.contains('disabled')) {
+                    this.style.transform = 'translateY(-3px)';
+                }
+            });
+            link.addEventListener('mouseleave', function () {
+                if (!this.parentElement.classList.contains('active')) {
+                    this.style.transform = 'translateY(0)';
+                }
+            });
+        });
+    });                
+</script>
 @endsection
