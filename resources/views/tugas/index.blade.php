@@ -692,8 +692,8 @@
                                         <select class="form-select form-select-styled" name="status"
                                             onchange="document.getElementById('filterForm').submit()">
                                             <option value="">Filter Status</option>
-                                            <option value="terlambat" {{ request('status') == 'terlambat' ? 'selected' : '' }}>Terlambat</option>
-                                            <option value="segera" {{ request('status') == 'segera' ? 'selected' : '' }}>Segera</option>
+                                            <option value="Lewat Deadline" {{ request('status') == 'Lewat Deadline' ? 'selected' : '' }}>Lewat Deadline</option>
+                                            <option value="Mendekati Deadline" {{ request('status') == 'Mendekati Deadline' ? 'selected' : '' }}>Mendekati Deadline</option>
                                             <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
                                         </select>
                                     </div>
@@ -712,9 +712,7 @@
                                             <option value="deadline_asc" {{ request('sort') == 'deadline_asc' ? 'selected' : '' }}>Deadline Terdekat
                                             </option>
                                             <option value="deadline_desc" {{ request('sort') == 'deadline_desc' ? 'selected' : '' }}>Deadline Terjauh
-                                            </option>
-                                            <option value="created_desc" {{ request('sort') == 'created_desc' ? 'selected' : '' }}>Terbaru Dibuat</option>
-                                            <option value="created_asc" {{ request('sort') == 'created_asc' ? 'selected' : '' }}>Terlama Dibuat</option>
+                                            </option>                                
                                         </select>
                                     </div>
                                 </div>
@@ -946,51 +944,6 @@
                             filterForm.submit();    // Submit form otomatis
                         });
                     }
-                });
-                // Enhanced interactions
-                    document.addEventListener('DOMContentLoaded', function () {
-                        const selects = document.querySelectorAll('.form-select-styled');
-
-                        selects.forEach(select => {
-                            // Add ripple effect on change
-                            select.addEventListener('change', function (e) {
-                                const wrapper = this.parentElement;
-                                const ripple = document.createElement('span');
-                                ripple.style.cssText = `
-                        position: absolute;
-                        border-radius: 50%;
-                        background: rgba(59, 130, 246, 0.3);
-                        transform: scale(0);
-                        animation: ripple 0.6s linear;
-                        pointer-events: none;
-                    `;
-
-                                const size = Math.max(wrapper.offsetWidth, wrapper.offsetHeight);
-                                const rect = wrapper.getBoundingClientRect();
-
-                                ripple.style.width = ripple.style.height = size + 'px';
-                                ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
-                                ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
-
-                                wrapper.appendChild(ripple);
-
-                                setTimeout(() => {
-                                    ripple.remove();
-                                }, 600);
-                            });
-                        });
-                    });
-
-                    // Add ripple animation
-                    const style = document.createElement('style');
-                    style.textContent = `
-            @keyframes ripple {
-                to {
-                    transform: scale(2);
-                    opacity: 0;
-                }
-            }
-        `;
-                    document.head.appendChild(style);
+                });                
             </script>
 @endsection
