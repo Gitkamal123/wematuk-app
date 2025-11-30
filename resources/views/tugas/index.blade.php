@@ -621,8 +621,8 @@
                             <select class="form-select form-select-custom" name="status"
                                 onchange="document.getElementById('filterForm').submit()">
                                 <option value="">Semua Status</option>
-                                <option value="terlambat" {{ request('status') == 'terlambat' ? 'selected' : '' }}>Terlambat</option>
-                                <option value="segera" {{ request('status') == 'segera' ? 'selected' : '' }}>Segera</option>
+                                <option value="terlambat" {{ request('status') == 'terlambat' ? 'selected' : '' }}>Lewat Deadline</option>
+                                <option value="segera" {{ request('status') == 'segera' ? 'selected' : '' }}>Mendekati Deadline</option>
                                 <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
                             </select>
                         </div>
