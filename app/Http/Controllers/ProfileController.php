@@ -22,6 +22,7 @@ class ProfileController extends Controller
      */
     public function update(Request $request)
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
 
         // Validasi HANYA 'name'
@@ -41,6 +42,7 @@ class ProfileController extends Controller
      */
     public function destroy(Request $request)
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
         Auth::logout();
 

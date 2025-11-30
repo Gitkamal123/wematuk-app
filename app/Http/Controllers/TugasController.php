@@ -4,16 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Tugas;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class TugasController extends Controller
 {
     /** Tampilkan SEMUA tugas dengan Filter, Sort, dan Cari */
     public function index(Request $request)
     {
-        // 1. Mulai Query Builder
         $query = Tugas::query();
 
-        // 2. Logika Pencarian (Search)
+        // 1. Search
         if ($request->has('cari') && $request->cari != '') {
             $query->where(function($q) use ($request) {
                 $q->where('judul', 'like', '%' . $request->cari . '%')
@@ -21,47 +22,35 @@ class TugasController extends Controller
             });
         }
 
-        // 3. Logika Filter Status
+        // 2. Filter Status
         if ($request->has('status') && $request->status != '') {
-            $now = now(); // Butuh: use Carbon\Carbon; atau helper now()
-            
+            $now = now();
             switch ($request->status) {
                 case 'terlambat':
                     $query->where('deadline', '<', $now);
                     break;
                 case 'segera':
-                    // Deadline antara sekarang sampai 3 hari ke depan
                     $query->whereBetween('deadline', [$now, $now->copy()->addDays(3)]);
                     break;
                 case 'aktif':
-                    // Deadline lebih dari 3 hari ke depan
                     $query->where('deadline', '>', $now->copy()->addDays(3));
                     break;
             }
         }
 
-        // 4. Logika Sorting
+        // 3. Sorting
         if ($request->has('sort')) {
             switch ($request->sort) {
-                case 'deadline_asc':
-                    $query->orderBy('deadline', 'asc');
-                    break;
-                case 'deadline_desc':
-                    $query->orderBy('deadline', 'desc');
-                    break;
-                case 'created_desc':
-                    $query->orderBy('created_at', 'desc');
-                    break;
-                case 'created_asc':
-                    $query->orderBy('created_at', 'asc');
-                    break;
-                default:
-                    $query->orderBy('deadline', 'asc');
+                case 'deadline_asc': $query->orderBy('deadline', 'asc'); break;
+                case 'deadline_desc': $query->orderBy('deadline', 'desc'); break;
+                case 'created_desc': $query->orderBy('created_at', 'desc'); break;
+                case 'created_asc': $query->orderBy('created_at', 'asc'); break;
+                default: $query->orderBy('deadline', 'asc');
             }
         } else {
-            // Default sorting jika user tidak memilih apa-apa
             $query->orderBy('deadline', 'asc');
-        }     
+        }
+        // Jika data < 9, tombol pagination TIDAK akan muncul (itu normal)
         $tugas = $query->paginate(6); 
 
         return view('tugas.index', compact('tugas'));

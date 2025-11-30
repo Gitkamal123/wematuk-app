@@ -392,60 +392,79 @@
             margin-bottom: 2rem;
         }
 
-        /* Pagination Customization */
+        /* Pagination Customization*/
         .pagination-wrapper {
             display: flex;
             justify-content: center;
             margin-top: 3rem;
+            padding-bottom: 2rem;
         }
 
         .pagination {
             display: flex;
-            gap: 0.5rem;
-            list-style: none;
+            gap: 8px; /* Jarak antar tombol */
+            align-items: center;
+            border: none;
             padding: 0;
             margin: 0;
         }
 
-        .page-item {
-            margin: 0;
-        }
-
-        .page-link {
+        .page-item .page-link {
+            border: none !important;
+            border-radius: 12px !important; /* Membuat sudut tumpul */
+            width: 45px;
+            height: 45px;
             display: flex;
             align-items: center;
             justify-content: center;
-            min-width: 45px;
-            height: 45px;
-            padding: 0.5rem 0.75rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            color: #4a5568;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            color: #64748b; /* Warna teks abu-abu modern */
+            font-weight: 700;
+            font-size: 0.95rem;
             background: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
         }
 
-        .page-link:hover {
-            background: #f7fafc;
-            border-color: #cbd5e0;
-            color: #2d3748;
-            transform: translateY(-1px);
+        .page-item:not(.active):not(.disabled) .page-link:hover {
+            transform: translateY(-3px);
+            background: #f8fafc;
+            color: #0d6efd;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
         .page-item.active .page-link {
-            background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
-            border-color: #0d6efd;
-            color: white;
-            box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+            background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%) !important;
+            color: white !important;
+            box-shadow: 0 10px 20px -5px rgba(13, 110, 253, 0.4);
+            transform: scale(1.1);
+            z-index: 1;
         }
 
         .page-item.disabled .page-link {
-            background: #f7fafc;
-            color: #a0aec0;
+            background: transparent;
+            color: #cbd5e1;
+            box-shadow: none;
             cursor: not-allowed;
             transform: none;
+        }
+
+        .page-link:focus {
+            box-shadow: none !important;
+        }
+
+        /* Responsif untuk HP */
+        @media (max-width: 768px) {
+            .pagination {
+                gap: 5px;
+            }
+            .page-item .page-link {
+                width: 35px;
+                height: 35px;
+                font-size: 0.85rem;
+                border-radius: 8px !important;
+            }
         }
 
         /* Loading State */
@@ -748,7 +767,7 @@
             <!-- Pagination -->
             @if($tugas->hasPages())
                 <div class="pagination-wrapper fade-in-up" style="animation-delay: 0.4s;">                    
-                    {{ $tugas->appends(request()->query())->links() }}
+                    {{ $tugas->appends(request()->query())->onEachSide(1)->links() }}
                 </div>
             @endif
 
