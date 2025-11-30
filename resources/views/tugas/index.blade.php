@@ -56,7 +56,7 @@
             }
 
             .header-subtitle {
-                font-size: 1.5rem; 
+                font-size: 1.2rem; 
                 font-weight: 500;  
                 color: #64748b;   
             }
@@ -145,7 +145,7 @@
                 gap: 0.75rem;
                 text-decoration: none;
                 border: none;
-                font-size: 1.3rem;
+                font-size: 1.2rem;
                 position: relative;
                 overflow: hidden;
             }
