@@ -577,9 +577,9 @@
 
             <!-- Control Card -->
             <div class="control-card fade-in-up" style="animation-delay: 0.2s;">
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <form action="{{ route('tugas.cari') }}" method="GET" id="searchForm">
+                <form action="{{ route('home') }}" method="GET" id="filterForm">
+                    <div class="row g-3">
+                        <div class="col-md-6">
                             <div class="search-input-group">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
                                     class="search-icon" viewBox="0 0 16 16">
@@ -587,32 +587,39 @@
                                         d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                                 </svg>
                                 <input type="search" name="cari" class="form-control form-control-custom search-input"
-                                    placeholder="Cari tugas berdasarkan judul atau deskripsi..."
-                                    value="{{ request('cari') }}" autocomplete="off">
+                                    placeholder="Cari tugas..." value="{{ request('cari') }}" autocomplete="off">
                                 <button type="submit" class="btn-modern btn-primary-modern position-absolute"
                                     style="right: 5px; top: 50%; transform: translateY(-50%); height: calc(100% - 10px);">
                                     Cari
                                 </button>
                             </div>
-                        </form>
-                    </div>
+                        </div>
 
-                    <div class="col-md-3">
-                        <select class="form-select form-select-custom" id="statusFilter">
-                            <option value="">Semua Status</option>
-                            <option value="terlambat">Terlambat</option>
-                            <option value="segera">Segera</option>
-                            <option value="aktif">Aktif</option>
-                        </select>
-                    </div>
+                        <div class="col-md-3">
+                            <select class="form-select form-select-custom" name="status"
+                                onchange="document.getElementById('filterForm').submit()">
+                                <option value="">Semua Status</option>
+                                <option value="terlambat" {{ request('status') == 'terlambat' ? 'selected' : '' }}>Terlambat</option>
+                                <option value="segera" {{ request('status') == 'segera' ? 'selected' : '' }}>Segera</option>
+                                <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
+                            </select>
+                        </div>
 
-                    <div class="col-md-3">
-                        <select class="form-select form-select-custom" id="sortBy">
-                            <option value="deadline_asc">Deadline Terdekat</option>
-                            <option value="deadline_desc">Deadline Terjauh</option>                           
-                        </select>
+                        <div class="col-md-3">
+                            <select class="form-select form-select-custom" name="sort"
+                                onchange="document.getElementById('filterForm').submit()">
+                                <option value="deadline_asc" {{ request('sort') == 'deadline_asc' ? 'selected' : '' }}>Deadline
+                                    Terdekat</option>
+                                <option value="deadline_desc" {{ request('sort') == 'deadline_desc' ? 'selected' : '' }}>Deadline
+                                    Terjauh</option>
+                                <option value="created_desc" {{ request('sort') == 'created_desc' ? 'selected' : '' }}>Terbaru Dibuat
+                                </option>
+                                <option value="created_asc" {{ request('sort') == 'created_asc' ? 'selected' : '' }}>Terlama Dibuat
+                                </option>
+                            </select>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
 
             <!-- Loading State -->
@@ -625,27 +632,27 @@
             <div class="tasks-grid fade-in-up" id="tasksGrid" style="animation-delay: 0.3s;">
                 @forelse($tugas as $index => $t)
                 @php
-                    // Color cycling logic (1-6)
-                    $colorIndex = ($index % 6) + 1;
+    // Color cycling logic (1-6)
+    $colorIndex = ($index % 6) + 1;
 
-                    // Deadline logic
-                    $deadline = \Carbon\Carbon::parse($t->deadline);
-                    $now = \Carbon\Carbon::now();
-                    $diffInDays = $now->diffInDays($deadline, false);
+    // Deadline logic
+    $deadline = \Carbon\Carbon::parse($t->deadline);
+    $now = \Carbon\Carbon::now();
+    $diffInDays = $now->diffInDays($deadline, false);
 
-                    if ($deadline->isPast()) {
-                        $badgeClass = 'bg-urgent';
-                        $statusText = 'terlambat';
-                        $statusDisplay = 'Terlambat';
-                    } elseif ($diffInDays <= 3) {
-                        $badgeClass = 'bg-soon';
-                        $statusText = 'segera';
-                        $statusDisplay = 'Segera';
-                    } else {
-                        $badgeClass = 'bg-normal';
-                        $statusText = 'aktif';
-                        $statusDisplay = 'Aktif';
-                    }
+    if ($deadline->isPast()) {
+        $badgeClass = 'bg-urgent';
+        $statusText = 'terlambat';
+        $statusDisplay = 'Terlambat';
+    } elseif ($diffInDays <= 3) {
+        $badgeClass = 'bg-soon';
+        $statusText = 'segera';
+        $statusDisplay = 'Segera';
+    } else {
+        $badgeClass = 'bg-normal';
+        $statusText = 'aktif';
+        $statusDisplay = 'Aktif';
+    }
                 @endphp
 
                 <div class="task-card color-{{ $colorIndex }}" data-deadline="{{ $deadline->timestamp }}"
@@ -732,17 +739,7 @@
                     <div class="empty-state">
                         <div class="empty-animation"></div>
                         <h3 class="empty-title">Tidak Ada Tugas</h3>                        
-                        <div class="empty-actions">
-                            {{-- @if(Auth::user()->role == 'admin')
-                                <a href="{{ route('tugas.create') }}" class="btn-modern btn-primary-modern mt-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="me-2"
-                                        viewBox="0 0 16 16">
-                                        <path
-                                            d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 0 1 0 2H9v6a1 1 0 0 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z" />
-                                    </svg>
-                                    Buat Tugas Pertama
-                                </a>
-                            @endif --}}
+                        <div class="empty-actions">                            
                         </div>
                     </div>
                 @endforelse
@@ -796,97 +793,9 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const statusFilter = document.getElementById('statusFilter');
-            const sortBy = document.getElementById('sortBy');
-            const tasksGrid = document.getElementById('tasksGrid');
-            const loadingState = document.getElementById('loadingState');
-            const searchInput = document.getElementById('searchInput');
+            // Hanya menyisakan animasi dan interaksi visual
 
-            // Filter & Sort Logic
-            function updateGrid() {
-                const cards = Array.from(document.querySelectorAll('.task-card'));
-                const statusValue = statusFilter.value;
-                const sortValue = sortBy.value;
-
-                // Show loading
-                loadingState.style.display = 'block';
-                tasksGrid.style.opacity = '0.5';
-
-                setTimeout(() => {
-                    // Filter by status
-                    cards.forEach(card => {
-                        const cardStatus = card.dataset.status;
-                        if (statusValue === '' || cardStatus === statusValue) {
-                            card.style.display = 'flex';
-                        } else {
-                            card.style.display = 'none';
-                        }
-                    });
-
-                    // Sort tasks
-                    const visibleCards = cards.filter(card => card.style.display !== 'none');
-
-                    visibleCards.sort((a, b) => {
-                        const deadlineA = parseInt(a.dataset.deadline);
-                        const deadlineB = parseInt(b.dataset.deadline);
-                        const createdA = parseInt(a.dataset.created);
-                        const createdB = parseInt(b.dataset.created);
-
-                        switch (sortValue) {
-                            case 'deadline_asc':
-                                return deadlineA - deadlineB;
-                            case 'deadline_desc':
-                                return deadlineB - deadlineA;
-                            case 'created_desc':
-                                return createdB - createdA;
-                            case 'created_asc':
-                                return createdA - createdB;
-                            default:
-                                return 0;
-                        }
-                    });
-
-                    // Re-append sorted cards
-                    visibleCards.forEach(card => tasksGrid.appendChild(card));
-
-                    // Hide loading
-                    loadingState.style.display = 'none';
-                    tasksGrid.style.opacity = '1';
-
-                    // Show empty state if no cards visible
-                    const visibleCount = visibleCards.filter(card => card.style.display !== 'none').length;
-                    const emptyState = document.querySelector('.empty-state');
-
-                    if (visibleCount === 0 && emptyState) {
-                        emptyState.style.display = 'block';
-                    } else if (emptyState) {
-                        emptyState.style.display = 'none';
-                    }
-                }, 300);
-            }
-
-            // Event listeners
-            if (statusFilter) statusFilter.addEventListener('change', updateGrid);
-            if (sortBy) sortBy.addEventListener('change', updateGrid);
-
-            // Search functionality
-            if (searchInput) {
-                searchInput.addEventListener('input', debounce(function (e) {
-                    const searchTerm = e.target.value.toLowerCase();
-                    const cards = document.querySelectorAll('.task-card');
-
-                    cards.forEach(card => {
-                        const searchData = card.dataset.search;
-                        if (searchData.includes(searchTerm)) {
-                            card.style.display = 'flex';
-                        } else {
-                            card.style.display = 'none';
-                        }
-                    });
-                }, 300));
-            }
-
-            // Enhanced button interactions
+            // 1. Enhanced button interactions (Efek Hover)
             const actionButtons = document.querySelectorAll('.btn-icon');
             actionButtons.forEach(btn => {
                 btn.addEventListener('mouseenter', function () {
@@ -897,20 +806,7 @@
                 });
             });
 
-            // Debounce function
-            function debounce(func, wait) {
-                let timeout;
-                return function executedFunction(...args) {
-                    const later = () => {
-                        clearTimeout(timeout);
-                        func(...args);
-                    };
-                    clearTimeout(timeout);
-                    timeout = setTimeout(later, wait);
-                };
-            }
-
-            // Initialize animations
+            // 2. Initialize animations (Fade In)
             const elements = document.querySelectorAll('.fade-in-up');
             elements.forEach((el, index) => {
                 setTimeout(() => {
