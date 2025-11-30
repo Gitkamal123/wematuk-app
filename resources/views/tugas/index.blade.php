@@ -43,6 +43,69 @@
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
+        /* ======================== */
+        /* MODERN DROPDOWN STYLES   */
+        /* ======================== */
+
+        /* Wrapper untuk menaruh ikon di atas select */
+        .select-icon-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        /* Posisi Ikon di dalam dropdown */
+        .select-icon-wrapper .select-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b; /* Warna ikon abu-abu modern */
+            pointer-events: none; /* Agar klik tembus ke select */
+            z-index: 2;
+            transition: color 0.3s ease;
+        }
+
+        /* Styling Input Select-nya */
+        .form-select-styled {
+            padding-left: 45px !important; /* Memberi ruang untuk ikon */
+            padding-right: 35px;
+            height: 48px; /* Tinggi yang pas agar enak diklik */
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background-color: #ffffff;
+            font-size: 0.95rem;
+            color: #334155;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            transition: all 0.3s ease;
+            appearance: none; /* Hilangkan panah default browser jelek */
+            /* Ganti panah default dengan SVG custom yang lebih rapi */
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 16px 12px;
+        }
+
+        /* Efek Hover */
+        .form-select-styled:hover {
+            border-color: #cbd5e1;
+            background-color: #f8fafc;
+        }
+
+        /* Efek Focus (Saat diklik) */
+        .form-select-styled:focus {
+            border-color: #3b82f6; /* Warna Biru Fokus */
+            outline: 0;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); /* Efek Glow halus */
+        }
+
+        /* Ubah warna ikon saat select aktif */
+        .form-select-styled:focus + .select-icon,
+        .select-icon-wrapper:focus-within .select-icon {
+            color: #3b82f6;
+        }
+
         /* Button Styles */
         .btn-modern {
             padding: 0.75rem 1.5rem;
@@ -536,7 +599,7 @@
         /* Style untuk tombol silang (Clear) */
         .clear-search-btn {
             position: absolute;
-            right: 80px; 
+            right: 75px; 
             top: 50%;
             transform: translateY(-50%);
             cursor: pointer;
@@ -618,23 +681,39 @@
                         </div>
 
                         <div class="col-md-3">
-                            <select class="form-select form-select-custom" name="status"
-                                onchange="document.getElementById('filterForm').submit()">
-                                <option value="">Semua Status</option>
-                                <option value="Lewat Deadline" {{ request('status') == 'Lewat Deadline' ? 'selected' : '' }}>Lewat Deadline</option>
-                                <option value="Mendekati Deadline" {{ request('status') == 'Mendekati Deadline' ? 'selected' : '' }}>Mendekati Deadline</option>
-                                <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
-                            </select>
+                            <div class="select-icon-wrapper">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="select-icon"
+                                    viewBox="0 0 16 16">
+                                    <path
+                                        d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z" />
+                                </svg>
+
+                                <select class="form-select form-select-styled" name="status"
+                                    onchange="document.getElementById('filterForm').submit()">
+                                    <option value="">Filter Status</option>
+                                    <option value="Lewat Deadline" {{ request('status') == 'Lewat Deadline' ? 'selected' : '' }}>Lewat Deadline</option>
+                                    <option value="Mendekati Deadline" {{ request('status') == 'Mendekati Deadline' ? 'selected' : '' }}>Mendekati Deadline</option>
+                                    <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
+                                </select>
+                            </div>
                         </div>
 
                         <div class="col-md-3">
-                            <select class="form-select form-select-custom" name="sort"
-                                onchange="document.getElementById('filterForm').submit()">
-                                <option value="deadline_asc" {{ request('sort') == 'deadline_asc' ? 'selected' : '' }}>Deadline
-                                    Terdekat</option>
-                                <option value="deadline_desc" {{ request('sort') == 'deadline_desc' ? 'selected' : '' }}>Deadline
-                                    Terjauh</option>                               
-                            </select>
+                            <div class="select-icon-wrapper">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="select-icon"
+                                    viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                        d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5zm-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5z" />
+                                </svg>
+
+                                <select class="form-select form-select-styled" name="sort"
+                                    onchange="document.getElementById('filterForm').submit()">
+                                    <option value="deadline_asc" {{ request('sort') == 'deadline_asc' ? 'selected' : '' }}>Deadline Terdekat
+                                    </option>
+                                    <option value="deadline_desc" {{ request('sort') == 'deadline_desc' ? 'selected' : '' }}>Deadline Terjauh
+                                    </option>                                   
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </form>
