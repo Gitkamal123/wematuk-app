@@ -26,10 +26,10 @@ class TugasController extends Controller
         if ($request->has('status') && $request->status != '') {
             $now = now();
             switch ($request->status) {
-                case 'terlambat':
+                case 'Lewat Deadline':
                     $query->where('deadline', '<', $now);
                     break;
-                case 'segera':
+                case 'Mendekati Deadline':
                     $query->whereBetween('deadline', [$now, $now->copy()->addDays(3)]);
                     break;
                 case 'aktif':
