@@ -168,9 +168,9 @@
         }
 
         /* Warna Kartu dengan Gradien */
-        .color {
-            border-color: #06b6d4;
-            background: linear-gradient(135deg, #ffffff 0%, #f0fff9 100%);
+       .task-card-theme {
+            border-color: #06b6d4; /* Warna Border (Cyan) */
+            background: linear-gradient(135deg, #ffffff 0%, #f0fff9 100%); /* Gradasi Background */
         }
 
         .task-header {
@@ -649,110 +649,109 @@
             <!-- Tasks Grid -->
             <div class="tasks-grid fade-in-up" id="tasksGrid" style="animation-delay: 0.3s;">
                 @forelse($tugas as $index => $t)
-                @php
-                // Color cycling logic (1-6)
-                $colorIndex = ($index % 6) + 1;
+                                @php
+                    // Deadline logic
+                    $deadline = \Carbon\Carbon::parse($t->deadline);
+                    $now = \Carbon\Carbon::now();
+                    $diffInDays = $now->diffInDays($deadline, false);
 
-                // Deadline logic
-                $deadline = \Carbon\Carbon::parse($t->deadline);
-                $now = \Carbon\Carbon::now();
-                $diffInDays = $now->diffInDays($deadline, false);
+                    if ($deadline->isPast()) {
+                        $badgeClass = 'bg-urgent';
+                        $statusText = 'terlambat';
+                        $statusDisplay = 'Terlambat';
+                    } elseif ($diffInDays <= 3) {
+                        $badgeClass = 'bg-soon';
+                        $statusText = 'segera';
+                        $statusDisplay = 'Segera';
+                    } else {
+                        $badgeClass = 'bg-normal';
+                        $statusText = 'aktif';
+                        $statusDisplay = 'Aktif';
+                    }
+                                @endphp
 
-                if ($deadline->isPast()) {
-                    $badgeClass = 'bg-urgent';
-                    $statusText = 'terlambat';
-                    $statusDisplay = 'Terlambat';
-                } elseif ($diffInDays <= 3) {
-                    $badgeClass = 'bg-soon';
-                    $statusText = 'segera';
-                    $statusDisplay = 'Segera';
-                } else {
-                    $badgeClass = 'bg-normal';
-                    $statusText = 'aktif';
-                    $statusDisplay = 'Aktif';
-                }
-                @endphp
+                            <div class="task-card task-card-theme"
+                                    data-deadline="{{ $deadline->timestamp }}"
+                                    data-created="{{ $t->created_at->timestamp }}" 
+                                    data-status="{{ $statusText }}"
+                                    data-search="{{ strtolower($t->judul . ' ' . $t->deskripsi) }}">
 
-                <div class="task-card color{{ $colorIndex }}" data-deadline="{{ $deadline->timestamp }}"
-                    data-created="{{ $t->created_at->timestamp }}" data-status="{{ $statusText }}"
-                    data-search="{{ strtolower($t->judul . ' ' . $t->deskripsi) }}">
+                                    <div class="task-header">
+                                        <h3 class="task-title-text">{{ $t->judul }}</h3>
+                                        <span class="badge-deadline {{ $badgeClass }}">
+                                            {{ $statusDisplay }}
+                                        </span>
+                                    </div>
 
-                    <div class="task-header">
-                        <h3 class="task-title-text">{{ $t->judul }}</h3>
-                        <span class="badge-deadline {{ $badgeClass }}">
-                            {{ $statusDisplay }}
-                        </span>
-                    </div>
-
-                    <div class="task-desc">
-                        {!! Str::limit($t->deskripsi, 120, '...') ?: '<em>Tidak ada deskripsi.</em>' !!}
-                    </div>
+                                    <div class="task-desc">
+                                        {!! Str::limit($t->deskripsi, 120, '...') ?: '<em>Tidak ada deskripsi.</em>' !!}
+                                    </div>
 
 
-                    <div class="task-meta">
-                        <div class="meta-row">
-                            <span class="deadline-label">
-                                <b>DEADLINE:</b> 
-                            </span>
-                            <span>{{ $deadline->format('d M Y, H:i') }} WIB</span>
-                        </div>
+                                    <div class="task-meta">
+                                        <div class="meta-row">
+                                            <span class="deadline-label">
+                                                <b>DEADLINE:</b> 
+                                            </span>
+                                            <span>{{ $deadline->format('d M Y, H:i') }} WIB</span>
+                                        </div>
 
-                        <div class="meta-row">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="meta-icon"
-                                viewBox="0 0 16 16">
-                                <path
-                                    d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0z" />
-                            </svg>
-                            @if($t->file_path)
-                                <a href="{{ route('tugas.download', $t->id) }}" class="download-link">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="me-1"
-                                        viewBox="0 0 16 16">
-                                        <path
-                                            d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
-                                        <path
-                                            d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
-                                    </svg>
-                                    Download File
-                                </a>
-                            @else
-                                <span class="text-muted fst-italic">Tidak ada file</span>
-                            @endif
-                        </div>
-                    </div>
+                                        <div class="meta-row">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="meta-icon"
+                                                viewBox="0 0 16 16">
+                                                <path
+                                                    d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0z" />
+                                            </svg>
+                                            @if($t->file_path)
+                                                <a href="{{ route('tugas.download', $t->id) }}" class="download-link">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="me-1"
+                                                        viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+                                                        <path
+                                                            d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
+                                                    </svg>
+                                                    Download File
+                                                </a>
+                                            @else
+                                                <span class="text-muted fst-italic">Tidak ada file</span>
+                                            @endif
+                                        </div>
+                                    </div>
 
-                    @if(Auth::user()->role == 'admin')
-                        <div class="task-footer">
-                            <small class="text-muted d-flex align-items-center gap-1">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
-                                    viewBox="0 0 16 16">
-                                    <path
-                                        d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
-                                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
-                                </svg>
-                                {{ $deadline->diffForHumans() }}
-                            </small>
-                            <div class="d-flex gap-2">
-                                <a href="{{ route('tugas.edit', $t->id) }}" class="btn-icon btn-edit-task" title="Edit Tugas">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                        viewBox="0 0 16 16">
-                                        <path
-                                            d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
-                                    </svg>
-                                </a>
-                                <button type="button" class="btn-icon btn-delete-task" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal{{ $t->id }}" title="Hapus Tugas">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                        viewBox="0 0 16 16">
-                                        <path
-                                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
-                                        <path
-                                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    @endif
-                </div>
+                                    @if(Auth::user()->role == 'admin')
+                                        <div class="task-footer">
+                                            <small class="text-muted d-flex align-items-center gap-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
+                                                    viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
+                                                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
+                                                </svg>
+                                                {{ $deadline->diffForHumans() }}
+                                            </small>
+                                            <div class="d-flex gap-2">
+                                                <a href="{{ route('tugas.edit', $t->id) }}" class="btn-icon btn-edit-task" title="Edit Tugas">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                                        viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                                                    </svg>
+                                                </a>
+                                                <button type="button" class="btn-icon btn-delete-task" data-bs-toggle="modal"
+                                                    data-bs-target="#deleteModal{{ $t->id }}" title="Hapus Tugas">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                                        viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+                                                        <path
+                                                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
                 @empty
                     <div class="empty-state">
                         <div class="empty-animation"></div>
@@ -845,7 +844,7 @@
                     el.style.animationPlayState = 'running';
                 }, index * 100);
             });
-            
+
             if (searchInput) {
                 toggleClearButton();
 
