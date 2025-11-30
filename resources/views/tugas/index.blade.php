@@ -46,98 +46,74 @@
                 /* ======================== */
                 /* MODERN DROPDOWN STYLES   */
                 /* ======================== */                 
+
+                /* Wrapper agar ikon bisa absolute */
                 .select-icon-wrapper {
                     position: relative;
+                    height: 52px; /* Tinggi seragam dengan search bar */
                     width: 100%;
                 }
 
-                .select-icon-wrapper .select-icon {
-                    position: absolute;
-                    left: 16px;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    color: #64748b;
-                    pointer-events: none;
-                    z-index: 2;
-                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                }
-
+                /* Styling Input Select */
                 .form-select-styled {
-                    padding-left: 48px !important;
-                    padding-right: 40px;
-                    height: 52px;
-                    border: 2px solid #e2e8f0;
-                    border-radius: 12px;
-                    background: #ffffff;
+                    height: 100% !important;
+                    border-radius: 16px !important;
+                    padding-left: 48px !important; /* Ruang untuk ikon kiri */
+                    padding-right: 40px !important; /* Ruang untuk panah kanan */
+                    border: 1px solid #e2e8f0;
+                    background-color: #ffffff;
                     font-size: 0.95rem;
-                    color: #1e293b !important; /* Pastikan warna teks jelas */
+                    color: #334155;
                     font-weight: 500;
                     cursor: pointer;
-                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-                    transition: all 0.3s ease;
+                    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+                    /* HILANGKAN Panah Default Browser */
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
                     appearance: none;
-                    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2364748b'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+
+                    /* GANTI dengan Panah Custom (SVG) */
+                    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
                     background-repeat: no-repeat;
-                    background-position: right 16px center;
-                    background-size: 14px 14px;
-                    background-color: #ffffff !important; /* Pastikan background solid */
+                    background-position: right 1.25rem center;
+                    background-size: 14px 10px;
                 }
 
-                /* Pastikan option text visible */
-                .form-select-styled option {
-                    color: #1e293b;
-                    background: #ffffff;
-                    font-weight: 500;
-                    padding: 12px;
-                }
-
-                /* Hover Effects */
+                /* Efek Hover */
                 .form-select-styled:hover {
-                    border-color: #3b82f6;
-                    background: #ffffff;
-                    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+                    border-color: #cbd5e1;
+                    background-color: #f8fafc;
+                    transform: translateY(-1px); /* Naik sedikit saat di-hover */
                 }
 
-                /* Focus Effects */
+                /* Efek Focus (Saat diklik) */
                 .form-select-styled:focus {
                     border-color: #3b82f6;
-                    background: #ffffff;
-                    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-                    outline: none;
+                    outline: 0;
+                    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15) !important;
+                    /* Ganti warna panah jadi biru saat aktif */
+                    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%233b82f6' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
                 }
 
-                /* Label untuk Filter dan Sort */
-                .filter-label {
-                    display: block;
-                    font-size: 0.8rem;
-                    font-weight: 700; /* Lebih tebal */
-                    color: #475569; /* Warna lebih gelap */
-                    margin-bottom: 8px;
-                    text-transform: uppercase;
-                    letter-spacing: 0.5px;
-                }
-
-                /* Badge untuk menunjukkan filter aktif */
-                .filter-badge {
+                /* Posisi Ikon di dalam dropdown (Corong & Panah Sort) */
+                .select-icon {
                     position: absolute;
-                    top: -6px;
-                    right: -6px;
-                    background: #ef4444;
-                    color: white;
-                    font-size: 0.7rem;
-                    font-weight: 700;
-                    padding: 3px 8px;
-                    border-radius: 10px;
-                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-                    z-index: 3;
+                    left: 18px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    color: #94a3b8; /* Abu-abu soft */
+                    pointer-events: none; /* Klik tembus ke select */
+                    z-index: 2;
+                    transition: color 0.3s;
                 }
 
-                /* Container untuk grup filter */
-                .filter-group {
-                    position: relative;
-                    margin-bottom: 1rem;
+                /* Ubah warna ikon saat select aktif */
+                .form-select-styled:focus + .select-icon, /* Fallback */
+                .select-icon-wrapper:focus-within .select-icon {
+                    color: #3b82f6;
                 }
-
 
 
 
@@ -736,22 +712,42 @@
                                 </div>
 
                                 <div class="col-md-3">
-                                    <div class="filter-group">
-                                        <label class="filter-label">Urutkan Deadline</label>
-                                        <div class="select-icon-wrapper">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="select-icon"
-                                                viewBox="0 0 16 16">
-                                                <path fill-rule="evenodd"
-                                                    d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5zm-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5z" />
-                                            </svg>
-                                            <select class="form-select form-select-styled" name="sort"
-                                                onchange="document.getElementById('searchForm').submit()">
-                                                <option value="deadline_asc" {{ request('sort') == 'deadline_asc' ? 'selected' : '' }}>Deadline Terdekat</option>
-                                                <option value="deadline_desc" {{ request('sort') == 'deadline_desc' ? 'selected' : '' }}>Deadline Terjauh</option>                                                
-                                            </select>
-                                        </div>
+                                    <div class="select-icon-wrapper">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="select-icon"
+                                            viewBox="0 0 16 16">
+                                            <path
+                                                d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z" />
+                                        </svg>
+
+                                        <select class="form-select form-select-styled" name="status"
+                                            onchange="document.getElementById('filterForm').submit()">
+                                            <option value="">Filter Status</option>
+                                            <option value="terlambat" {{ request('status') == 'terlambat' ? 'selected' : '' }}>Terlambat</option>
+                                            <option value="segera" {{ request('status') == 'segera' ? 'selected' : '' }}>Segera</option>
+                                            <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
+                                        </select>
                                     </div>
-                                </div>                                
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="select-icon-wrapper">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="select-icon"
+                                            viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd"
+                                                d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5zm-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5z" />
+                                        </svg>
+
+                                        <select class="form-select form-select-styled" name="sort"
+                                            onchange="document.getElementById('filterForm').submit()">
+                                            <option value="deadline_asc" {{ request('sort') == 'deadline_asc' ? 'selected' : '' }}>Deadline Terdekat
+                                            </option>
+                                            <option value="deadline_desc" {{ request('sort') == 'deadline_desc' ? 'selected' : '' }}>Deadline Terjauh
+                                            </option>
+                                            <option value="created_desc" {{ request('sort') == 'created_desc' ? 'selected' : '' }}>Terbaru Dibuat</option>
+                                            <option value="created_asc" {{ request('sort') == 'created_asc' ? 'selected' : '' }}>Terlama Dibuat</option>
+                                        </select>
+                                    </div>
+                                </div>
                         </form>
                     </div>
 
