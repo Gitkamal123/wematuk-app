@@ -4,92 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Tugas;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Log;
 
 class TugasController extends Controller
 {
-    /** Tampilkan SEMUA tugas dengan filter dan auto-delete */
-    public function index(Request $request)
+    /** Tampilkan SEMUA tugas */
+    public function index()
     {
-        // Auto-delete tugas yang sudah lewat deadline
-        $this->autoDeleteExpiredTasks();
-
-        $query = Tugas::query();
-        
-        // Search
-        if ($request->has('cari') && $request->cari != '') {
-            $query->where(function($q) use ($request) {
-                $q->where('judul', 'like', '%' . $request->cari . '%')
-                  ->orWhere('deskripsi', 'like', '%' . $request->cari . '%');
-            });
-        }
-        
-        // Status filter
-        if ($request->has('status') && $request->status != '') {
-            $now = now();
-            switch ($request->status) {
-                case 'terlambat':
-                    $query->where('deadline', '<', $now);
-                    break;
-                case 'segera':
-                    $query->whereBetween('deadline', [$now, $now->copy()->addDays(3)]);
-                    break;
-                case 'aktif':
-                    $query->where('deadline', '>', $now->copy()->addDays(3));
-                    break;
-            }
-        }
-        
-        // Sorting
-        if ($request->has('sort')) {
-            switch ($request->sort) {
-                case 'deadline_asc':
-                    $query->orderBy('deadline', 'asc');
-                    break;
-                case 'deadline_desc':
-                    $query->orderBy('deadline', 'desc');
-                    break;
-                case 'created_desc':
-                    $query->orderBy('created_at', 'desc');
-                    break;
-                case 'created_asc':
-                    $query->orderBy('created_at', 'asc');
-                    break;
-                default:
-                    $query->orderBy('deadline', 'asc');
-            }
-        } else {
-            $query->orderBy('deadline', 'asc');
-        }
-        
-        $tugas = $query->paginate(9);
-        
-        return view('tugas.index', compact('tugas'));
-    }
-
-    /** Auto-delete tugas yang sudah lewat deadline */
-    private function autoDeleteExpiredTasks()
-    {
-        try {
-            $expiredTasks = Tugas::where('deadline', '<', now())
-                                ->whereNull('deleted_at')
-                                ->get();
-            
-            $deletedCount = 0;
-            foreach ($expiredTasks as $task) {
-                $task->delete(); // Soft delete
-                $deletedCount++;
-            }
-            
-            // Log jika ada tugas yang dihapus
-            if ($deletedCount > 0) {
-                Log::info("$deletedCount tugas dihapus otomatis - deadline lewat");
-            }
-        } catch (\Exception $e) {
-            Log::error("Auto-delete error: " . $e->getMessage());
-        }
+        $tugas = Tugas::orderBy('deadline', 'asc')->paginate(10); 
+        return view('tugas.index', ['tugas' => $tugas]);
     }
 
     /** Tampilkan form tambah */
@@ -104,7 +26,7 @@ class TugasController extends Controller
         $request->validate([
             'judul' => 'required|string|max:255',
             'deadline' => 'required|date',
-            'file_tugas' => 'nullable|file|mimes:pdf,doc,docx,zip,png,jpg,jpeg|max:2048',
+            'file_tugas' => 'nullable|file|mimes:pdf,doc,docx,zip,png,jpg|max:2048',
         ]);
 
         $path = null;
@@ -112,129 +34,77 @@ class TugasController extends Controller
         if ($request->hasFile('file_tugas')) {
             $file = $request->file('file_tugas');
             
-            try {
-                $base64 = base64_encode(file_get_contents($file));
-                $path = 'data:' . $file->getMimeType() . ';base64,' . $base64;
-            } catch (\Exception $e) {
-                return back()->with('error', 'Gagal mengupload file: ' . $e->getMessage());
-            }
+            // 1. Ambil isi file & ubah jadi base64
+            $base64 = base64_encode(file_get_contents($file));
+            
+            // 2. Format jadi Data URI (supaya bisa dibaca browser)
+            $path = 'data:' . $file->getMimeType() . ';base64,' . $base64;
         }
+        // -----------------------------------------
 
         Tugas::create([
             'judul' => $request->judul,
             'deskripsi' => $request->deskripsi,
             'deadline' => $request->deadline,
-            'file_path' => $path,
+            'file_path' => $path, // Simpan string panjang ini ke database
         ]);
 
         return redirect()->route('home')->with('success', 'Tugas berhasil ditambahkan!');
     }
 
     /** Tampilkan detail */
-    public function show(Tugas $tuga)
+    public function show(Tugas $tugas)
     {
-        return view('tugas.show', ['tugas' => $tuga]);
+        return view('tugas.show', ['tugas' => $tugas]);
     }
 
     /** Tampilkan form edit */
-    public function edit(Tugas $tuga)
+    public function edit(Tugas $tugas)
     {
-        return view('tugas.edit', ['tugas' => $tuga]);
+        return view('tugas.edit', ['tugas' => $tugas]);
     }
 
-    /** Simpan perubahan */
-    public function update(Request $request, Tugas $tuga)
+    /** Simpan perubahan (LOGIKA BARU: BASE64) */
+    public function update(Request $request, Tugas $tugas)
     {
         $request->validate([
             'judul' => 'required|string|max:255',
             'deadline' => 'required|date',
-            'file_tugas' => 'nullable|file|mimes:pdf,doc,docx,zip,png,jpg,jpeg|max:2048',
+            'file_tugas' => 'nullable|file|mimes:pdf,doc,docx,zip,png,jpg|max:2048',
         ]);
         
-        $tuga->judul = $request->judul;
-        $tuga->deskripsi = $request->deskripsi;
-        $tuga->deadline = $request->deadline;
+        $tugas->judul = $request->judul;
+        $tugas->deskripsi = $request->deskripsi;
+        $tugas->deadline = $request->deadline;
         
         if ($request->hasFile('file_tugas')) {        
+            
             $file = $request->file('file_tugas');
-            try {
-                $base64 = base64_encode(file_get_contents($file));
-                $tuga->file_path = 'data:' . $file->getMimeType() . ';base64,' . $base64;
-            } catch (\Exception $e) {
-                return back()->with('error', 'Gagal mengupload file: ' . $e->getMessage());
-            }
+            $base64 = base64_encode(file_get_contents($file));
+                        
+            $tugas->file_path = 'data:' . $file->getMimeType() . ';base64,' . $base64;
         }
+        // -----------------------
         
-        $tuga->save();
+        $tugas->save();
         return redirect()->route('home')->with('success', 'Tugas berhasil diperbarui!');
     }
 
     /** Hapus tugas (Soft Delete) */
-    public function destroy(Tugas $tuga)
+    public function destroy(Tugas $tugas)
     {
-        $tuga->delete();
-        return redirect()->route('home')->with('success', 'Tugas berhasil dipindahkan ke sampah!');
+        $tugas->delete();
+        return redirect()->route('home')->with('success', 'Tugas masuk keranjang sampah!');
     }
 
     /** Cari tugas */
     public function cari(Request $request)
     {
-        // Auto-delete tugas yang sudah lewat deadline
-        $this->autoDeleteExpiredTasks();
-
         $cari = $request->cari;
-        
-        $query = Tugas::query();
-        
-        // Search
-        if ($cari != '') {
-            $query->where(function($q) use ($cari) {
-                $q->where('judul', 'like', '%' . $cari . '%')
-                  ->orWhere('deskripsi', 'like', '%' . $cari . '%');
-            });
-        }
-        
-        // Status filter (jika ada)
-        if ($request->has('status') && $request->status != '') {
-            $now = now();
-            switch ($request->status) {
-                case 'terlambat':
-                    $query->where('deadline', '<', $now);
-                    break;
-                case 'segera':
-                    $query->whereBetween('deadline', [$now, $now->copy()->addDays(3)]);
-                    break;
-                case 'aktif':
-                    $query->where('deadline', '>', $now->copy()->addDays(3));
-                    break;
-            }
-        }
-        
-        // Sorting (jika ada)
-        if ($request->has('sort')) {
-            switch ($request->sort) {
-                case 'deadline_asc':
-                    $query->orderBy('deadline', 'asc');
-                    break;
-                case 'deadline_desc':
-                    $query->orderBy('deadline', 'desc');
-                    break;
-                case 'created_desc':
-                    $query->orderBy('created_at', 'desc');
-                    break;
-                case 'created_asc':
-                    $query->orderBy('created_at', 'asc');
-                    break;
-                default:
-                    $query->orderBy('deadline', 'asc');
-            }
-        } else {
-            $query->orderBy('deadline', 'asc');
-        }
-        
-        $tugas = $query->paginate(9);
-        
-        return view('tugas.index', compact('tugas'));
+        $tugas = Tugas::where('judul', 'like', "%" . $cari . "%")
+                      ->orderBy('deadline', 'asc')
+                      ->paginate(10);
+        return view('tugas.index', ['tugas' => $tugas]);
     }
 
     /** Cetak laporan */
@@ -242,124 +112,103 @@ class TugasController extends Controller
     {
         $tugas = Tugas::orderBy('deadline', 'asc')->get();
         return view('laporan', ['tugas' => $tugas]);
-    }
+    }    
 
-    /** Tampilkan sampah */
     public function trash()
     {
-        $tugas = Tugas::onlyTrashed()->orderBy('deleted_at', 'desc')->paginate(10);
-        return view('tugas.trash', compact('tugas'));
+        $tugasDihapus = Tugas::onlyTrashed()->paginate(10);
+        return view('tugas.trash', ['tugas' => $tugasDihapus]);
     }
 
-    /** Pulihkan dari sampah */
     public function restore($id)
     {
         $tugas = Tugas::withTrashed()->find($id);
-        
-        if (!$tugas) {
-            return redirect()->route('tugas.trash')->with('error', 'Tugas tidak ditemukan.');
+        if ($tugas) {
+            $tugas->restore();
+            return redirect()->route('tugas.trash')->with('success', 'Tugas dikembalikan!');
         }
-        
-        $tugas->restore();
-        return redirect()->route('tugas.trash')->with('success', 'Tugas berhasil dipulihkan!');
+        return redirect()->route('tugas.trash')->with('error', 'Tugas tidak ditemukan.');
     }
 
-    /** Hapus permanen */
     public function forceDelete($id)
     {
         $tugas = Tugas::withTrashed()->find($id);
-        
-        if (!$tugas) {
-            return redirect()->route('tugas.trash')->with('error', 'Tugas tidak ditemukan.');
+        if ($tugas) {
+            
+            $tugas->forceDelete(); // Hapus data dari DB saja
+            return redirect()->route('tugas.trash')->with('success', 'Tugas dihapus permanen!');
         }
-        
-        $tugas->forceDelete();
-        return redirect()->route('tugas.trash')->with('success', 'Tugas berhasil dihapus permanen!');
+        return redirect()->route('tugas.trash')->with('error', 'Tugas tidak ditemukan.');
     }
 
-    /** Bersihkan sampah */
     public function clearTrash()
     {
-        $trashedCount = Tugas::onlyTrashed()->count();
-        
-        if ($trashedCount === 0) {
-            return redirect()->route('tugas.trash')->with('info', 'Tidak ada tugas di sampah.');
+        $trashedTasks = Tugas::onlyTrashed()->get();
+
+        if ($trashedTasks->isEmpty()) {
+            return redirect()->route('tugas.trash')->with('info', 'Sampah sudah kosong.');
         }
         
         Tugas::onlyTrashed()->forceDelete();
+
+        return redirect()->route('tugas.trash')->with('success', 'Semua sampah dibersihkan!');
+    }
+    public function downloadFile(Tugas $tugas)
+    {
+        // 1. Cek apakah ada file
+        if (!$tugas->file_path) {
+            return back()->with('error', 'File tidak ditemukan.');
+        }
+
+        // 2. Pecah string Base64 (Format: "data:application/pdf;base64,JVBERi...")
+        // Kita perlu memisahkan "Header" dan "Isi Data"
+        @list($type, $file_data) = explode(';', $tugas->file_path);
+        @list(, $file_data)      = explode(',', $file_data);
+
+        // 3. Decode Base64 kembali menjadi file fisik (binary)
+        $decoded_file = base64_decode($file_data);
+
+        // 4. Deteksi Mime Type untuk menentukan ekstensi file
+        // $type isinya seperti "data:application/pdf"
+        $mime_type = str_replace('data:', '', $type); 
         
-        return redirect()->route('tugas.trash')->with('success', $trashedCount . ' tugas berhasil dihapus permanen!');
-    }
+        // Tentukan ekstensi berdasarkan mime type
+        $extension = 'bin'; // Default
+        if (str_contains($mime_type, 'pdf')) $extension = 'pdf';
+        elseif (str_contains($mime_type, 'word') || str_contains($mime_type, 'doc')) $extension = 'docx';
+        elseif (str_contains($mime_type, 'sheet') || str_contains($mime_type, 'excel')) $extension = 'xlsx';
+        elseif (str_contains($mime_type, 'presentation') || str_contains($mime_type, 'powerpoint')) $extension = 'pptx';
+        elseif (str_contains($mime_type, 'image/jpeg')) $extension = 'jpg';
+        elseif (str_contains($mime_type, 'image/png')) $extension = 'png';
+        elseif (str_contains($mime_type, 'zip')) $extension = 'zip';
 
-    /** Download file */
-    public function downloadFile(Tugas $tuga)
+        // 5. Buat nama file yang cantik
+        $filename = 'Tugas-' . preg_replace('/[^A-Za-z0-9\-]/', '', $tugas->judul) . '.' . $extension;
+
+        // 6. Kirim ke browser sebagai download stream
+        return response($decoded_file)
+            ->header('Content-Type', $mime_type)
+            ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
+    }
+    public function previewFile(Tugas $tugas)
     {
-        if (!$tuga->file_path) {
+        // 1. Cek file
+        if (!$tugas->file_path) {
             return back()->with('error', 'File tidak ditemukan.');
         }
 
-        try {
-            @list($type, $file_data) = explode(';', $tuga->file_path);
-            @list(, $file_data) = explode(',', $file_data);
-            $decoded_file = base64_decode($file_data);
-            $mime_type = str_replace('data:', '', $type);
-            
-            // Tentukan ekstensi file
-            $extension = $this->getFileExtension($mime_type);
+        // 2. Decode Base64 (Sama seperti download)
+        @list($type, $file_data) = explode(';', $tugas->file_path);
+        @list(, $file_data)      = explode(',', $file_data);
+        $decoded_file = base64_decode($file_data);
+        $mime_type = str_replace('data:', '', $type);
 
-            $filename = 'Tugas-' . Str::slug($tuga->judul) . '.' . $extension;
+        // 3. Buat nama file
+        $filename = 'Preview-' . preg_replace('/[^A-Za-z0-9\-]/', '', $tugas->judul);
 
-            return response($decoded_file)
-                ->header('Content-Type', $mime_type)
-                ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
-                
-        } catch (\Exception $e) {
-            return back()->with('error', 'Gagal mendownload file: ' . $e->getMessage());
-        }
-    }
-
-    /** Preview file */
-    public function previewFile(Tugas $tuga)
-    {
-        if (!$tuga->file_path) {
-            return back()->with('error', 'File tidak ditemukan.');
-        }
-
-        try {
-            @list($type, $file_data) = explode(';', $tuga->file_path);
-            @list(, $file_data) = explode(',', $file_data);
-            $decoded_file = base64_decode($file_data);
-            $mime_type = str_replace('data:', '', $type);
-
-            $filename = 'Preview-' . Str::slug($tuga->judul);
-
-            return response($decoded_file)
-                ->header('Content-Type', $mime_type)
-                ->header('Content-Disposition', 'inline; filename="' . $filename . '"');
-                
-        } catch (\Exception $e) {
-            return back()->with('error', 'Gagal memuat preview file: ' . $e->getMessage());
-        }
-    }
-
-    /** Helper untuk menentukan ekstensi file */
-    private function getFileExtension($mime_type)
-    {
-        $mime_to_extension = [
-            'application/pdf' => 'pdf',
-            'application/msword' => 'doc',
-            'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx',
-            'application/vnd.ms-excel' => 'xls',
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'xlsx',
-            'application/vnd.ms-powerpoint' => 'ppt',
-            'application/vnd.openxmlformats-officedocument.presentationml.presentation' => 'pptx',
-            'image/jpeg' => 'jpg',
-            'image/jpg' => 'jpg',
-            'image/png' => 'png',
-            'application/zip' => 'zip',
-            'application/x-zip-compressed' => 'zip',
-        ];
-
-        return $mime_to_extension[$mime_type] ?? 'bin';
+        // 4. Kirim response dengan mode 'INLINE' (Tampilkan)
+        return response($decoded_file)
+            ->header('Content-Type', $mime_type)
+            ->header('Content-Disposition', 'inline; filename="' . $filename . '"');
     }
 }
