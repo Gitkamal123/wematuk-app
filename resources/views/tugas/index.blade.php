@@ -3,742 +3,764 @@
 @section('title', 'Daftar Tugas - WeMaTuK')
 
 @section('content')
-                            <style>
-                                /* ===================== */
-                                /* MODERN TASK STYLES - BLUE WHITE THEME */
-                                /* ===================== */
-                                body {
-                                    background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
-                                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                                    min-height: 100vh;
-                                }
-
-                                .tugas-container {
-                                    padding: 3rem 0;
-                                }
-
-                                /* Enhanced Animations */
-                                .fade-in-up {
-                                    animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-                                    opacity: 0;
-                                    transform: translateY(30px);
-                                }
-
-                                @keyframes fadeInUp {
-                                    to {
-                                        opacity: 1;
-                                        transform: translateY(0);
-                                    }
-                                }
-
-                                /* Blue Theme Header */
-                                .tugas-title {
-                                    font-size: 3rem;
-                                    font-weight: 900;
-                                    color: #1a202c;
-                                    margin: 0;
-                                    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
-                                    -webkit-background-clip: text;
-                                    -webkit-text-fill-color: transparent;
-                                    background-clip: text;
-                                    position: relative;
-                                }
-
-                                .tugas-title::after {
-                                    content: '';
-                                    position: absolute;
-                                    bottom: -10px;
-                                    left: 0;
-                                    width: 60px;
-                                    height: 4px;
-                                    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-                                    border-radius: 2px;
-                                }
-
-                                .task-header,
-                                .task-desc,
-                                .task-meta,
-                                .task-footer {
-                                    position: relative;
-                                    z-index: 1;
-                                }
-
-                                /* Enhanced Control Card - Blue Theme */
-                                .control-card {
-                                    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%);
-                                    backdrop-filter: blur(20px);
-                                    border-radius: 24px;
-                                    padding: 2rem;
-                                    box-shadow:
-                                        0 20px 40px rgba(30, 64, 175, 0.1),
-                                        0 0 0 1px rgba(255, 255, 255, 0.8);
-                                    border: 1px solid rgba(255, 255, 255, 0.3);
-                                    margin-bottom: 3rem;
-                                    position: relative;
-                                    overflow: hidden;
-                                }
-
-                                .control-card::before {
-                                    content: '';
-                                    position: absolute;
-                                    top: 0;
-                                    left: 0;
-                                    right: 0;
-                                    height: 3px;
-                                    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-                                }
-
-                                /* Enhanced Search Input - Blue Theme */
-                                .search-input-group {
-                                    position: relative;
-                                }
-
-                                .search-icon {
-                                    position: absolute;
-                                    left: 1.25rem;
-                                    top: 50%;
-                                    transform: translateY(-50%);
-                                    color: #64748b;
-                                    z-index: 3;
-                                    transition: all 0.3s ease;
-                                }
-
-                                .search-input {
-                                    padding-left: 3.5rem !important;
-                                    padding-right: 140px;
-                                    height: 56px;
-                                    border: 2px solid #e0f2fe;
-                                    border-radius: 16px;
-                                    font-size: 1rem;
-                                    font-weight: 500;
-                                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                                    background: rgba(255, 255, 255, 0.9);
-                                }
-
-                                .search-input:focus {
-                                    border-color: #3b82f6;
-                                    background: white;
-                                    box-shadow:
-                                        0 0 0 4px rgba(59, 130, 246, 0.1),
-                                        0 10px 20px rgba(30, 64, 175, 0.05);
-                                    transform: translateY(-2px);
-                                }
-
-                                .search-input:focus+.search-icon {
-                                    color: #3b82f6;
-                                    transform: translateY(-50%) scale(1.1);
-                                }
-
-                                /* Enhanced Buttons - Blue Theme */
-                                .btn-modern {
-                                    padding: 0.875rem 1.75rem;
-                                    border-radius: 16px;
-                                    font-weight: 600;
-                                    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                                    display: inline-flex;
-                                    align-items: center;
-                                    gap: 0.75rem;
-                                    text-decoration: none;
-                                    border: none;
-                                    font-size: 0.95rem;
-                                    position: relative;
-                                    overflow: hidden;
-                                }
-
-                                .btn-modern::before {
-                                    content: '';
-                                    position: absolute;
-                                    top: 0;
-                                    left: -100%;
-                                    width: 100%;
-                                    height: 100%;
-                                    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-                                    transition: left 0.5s;
-                                }
-
-                                .btn-modern:hover::before {
-                                    left: 100%;
-                                }
-
-                                .btn-primary-modern {
-                                    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-                                    color: white;
-                                    box-shadow:
-                                        0 8px 25px rgba(30, 64, 175, 0.3),
-                                        0 2px 4px rgba(30, 64, 175, 0.1);
-                                }
-
-                                .btn-primary-modern:hover {
-                                    transform: translateY(-3px) scale(1.02);
-                                    box-shadow:
-                                        0 15px 35px rgba(30, 64, 175, 0.4),
-                                        0 5px 10px rgba(30, 64, 175, 0.2);
-                                }
-
-                                .btn-light-modern {
-                                    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.9) 100%);
-                                    color: #475569;
-                                    border: 2px solid #e0f2fe;
-                                    box-shadow:
-                                        0 4px 15px rgba(30, 64, 175, 0.05),
-                                        0 1px 2px rgba(30, 64, 175, 0.1);
-                                    backdrop-filter: blur(10px);
-                                }
-
-                                .btn-light-modern:hover {
-                                    border-color: #bfdbfe;
-                                    background: white;
-                                    color: #334155;
-                                    transform: translateY(-2px);
-                                    box-shadow:
-                                        0 8px 25px rgba(30, 64, 175, 0.1),
-                                        0 3px 6px rgba(30, 64, 175, 0.05);
-                                }
-
-                                /* Enhanced Tasks Grid */
-                                .tasks-grid {
-                                    display: grid;
-                                    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-                                    gap: 2rem;
-                                    margin-bottom: 3rem;
-                                }
-
-                                /* Enhanced Task Card - Blue Theme */
-                                .task-card {
-                                    background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 50%, #ffffff 100%);
-                                    border-radius: 24px;
-                                    padding: 2rem;
-                                    box-shadow: 
-                                        0 10px 30px rgba(30, 64, 175, 0.1),
-                                        0 1px 3px rgba(30, 64, 175, 0.05);
-                                    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-                                    border-left: 6px solid #3b82f6;
-                                    display: flex;
-                                    flex-direction: column;
-                                    height: 100%;
-                                    position: relative;
-                                    overflow: hidden;
-                                }
-
-                                .task-card::before {
-                                    content: '';
-                                    position: absolute;
-                                    top: 0;
-                                    left: 0;
-                                    right: 0;
-                                    height: 5px;
-                                    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-                                    opacity: 0.8;
-                                }
-
-                                .task-card::after {
-                                    content: '';
-                                    position: absolute;
-                                    top: 0;
-                                    left: 0;
-                                    right: 0;
-                                    bottom: 0;
-                                    background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
-                                    pointer-events: none;
-                                }
-
-                                .task-card:hover {
-                                    transform: translateY(-8px) scale(1.02);
-                                    box-shadow:
-                                        0 30px 60px rgba(30, 64, 175, 0.15),
-                                        0 5px 15px rgba(30, 64, 175, 0.1);
-                                }
-
-                                /* Enhanced Task Header */
-                                .task-header {
-                                    display: flex;
-                                    justify-content: space-between;
-                                    align-items: flex-start;
-                                    margin-bottom: 1.5rem;
-                                    gap: 1rem;
-                                }
-
-                                .task-title-text {
-                                    font-size: 1.4rem;
-                                    font-weight: 800;
-                                    color: #1f2937;
-                                    line-height: 1.4;
-                                    margin: 0;
-                                    flex: 1;
-                                    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-                                    -webkit-background-clip: text;
-                                    -webkit-text-fill-color: transparent;
-                                    background-clip: text;
-                                }
-
-                                /* Enhanced Badges - Blue Theme */
-                                .badge-deadline {
-                                    padding: 0.6rem 1.2rem;
-                                    border-radius: 50px;
-                                    font-size: 0.8rem;
-                                    font-weight: 700;
-                                    text-transform: uppercase;
-                                    letter-spacing: 0.5px;
-                                    white-space: nowrap;
-                                    backdrop-filter: blur(10px);
-                                    border: 1px solid rgba(255, 255, 255, 0.3);
-                                    box-shadow: 0 2px 8px rgba(30, 64, 175, 0.1);
-                                }
-
-                                .bg-urgent {
-                                    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-                                    color: #dc2626;
-                                    border-color: #fecaca;
-                                }
-
-                                .bg-soon {
-                                    background: linear-gradient(135deg, #fffbeb 0%, #fed7aa 100%);
-                                    color: #c2410c;
-                                    border-color: #fdba74;
-                                }
-
-                                .bg-normal {
-                                    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-                                    color: #0369a1;
-                                    border-color: #7dd3fc;
-                                }
-
-                                /* Enhanced Task Description */
-                                .task-desc {
-                                    color: #6b7280;
-                                    font-size: 1rem;
-                                    line-height: 1.7;
-                                    margin-bottom: 2rem;
-                                    flex-grow: 1;
-                                    background: rgba(255, 255, 255, 0.5);
-                                    padding: 1.25rem;
-                                    border-radius: 12px;
-                                    border-left: 3px solid #e0f2fe;
-                                }
-
-                                /* Enhanced Metadata Box - Blue Theme */
-                                .task-meta {
-                                    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 249, 255, 0.9) 100%);
-                                    backdrop-filter: blur(15px);
-                                    padding: 1.5rem;
-                                    border-radius: 16px;
-                                    margin-bottom: 2rem;
-                                    border: 1px solid rgba(255, 255, 255, 0.6); /* ← perkuat border */
-                                    box-shadow: 0 4px 12px rgba(30, 64, 175, 0.08);
-                                    position: relative; /* ← tambahkan ini */
-                                    z-index: 1; /* ← tambahkan ini */
-                                }
-
-                                .meta-row {
-                                    display: flex;
-                                    align-items: center;
-                                    gap: 1rem;
-                                    color: #4b5563;
-                                    margin-bottom: 1rem;
-                                    font-size: 0.95rem;
-                                }
-
-                                .meta-row:last-child {
-                                    margin-bottom: 0;
-                                }
-
-                                .meta-icon {
-                                    color: #3b82f6;
-                                    flex-shrink: 0;
-                                    width: 20px;
-                                    height: 20px;
-                                }
-
-                                /* Enhanced Download Link - Blue Theme */
-                                .download-link {
-                                    color: #3b82f6;
-                                    text-decoration: none;
-                                    font-weight: 600;
-                                    transition: all 0.3s ease;
-                                    display: inline-flex;
-                                    align-items: center;
-                                    gap: 0.75rem;
-                                    padding: 0.75rem 1.25rem;
-                                    border-radius: 12px;
-                                    background: rgba(59, 130, 246, 0.1);
-                                    border: 1px solid rgba(59, 130, 246, 0.2);
-                                }
-
-                                .download-link:hover {
-                                    background: #3b82f6;
-                                    color: white;
-                                    text-decoration: none;
-                                    transform: translateY(-2px);
-                                    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
-                                }
-
-                                /* Enhanced Footer Actions */
-                                .task-footer {
-                                    padding-top: 1.5rem;
-                                    border-top: 1px solid rgba(59, 130, 246, 0.1);
-                                    display: flex;
-                                    justify-content: space-between;
-                                    align-items: center;
-                                    margin-top: auto;
-                                }
-
-                                .btn-icon {
-                                    width: 44px;
-                                    height: 44px;
-                                    border-radius: 12px;
-                                    display: flex;
-                                    align-items: center;
-                                    justify-content: center;
-                                    border: none;
-                                    cursor: pointer;
-                                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                                    backdrop-filter: blur(10px);
-                                    position: relative;
-                                    overflow: hidden;
-                                }
-
-                                .btn-icon::before {
-                                    content: '';
-                                    position: absolute;
-                                    top: 0;
-                                    left: -100%;
-                                    width: 100%;
-                                    height: 100%;
-                                    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-                                    transition: left 0.5s;
-                                }
-
-                                .btn-icon:hover::before {
-                                    left: 100%;
-                                }
-
-                                .btn-edit-task {
-                                    background: rgba(59, 130, 246, 0.1);
-                                    color: #3b82f6;
-                                    border: 1px solid rgba(59, 130, 246, 0.3);
-                                }
-
-                                .btn-edit-task:hover {
-                                    background: #3b82f6;
-                                    color: white;
-                                    transform: scale(1.1) rotate(5deg);
-                                    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
-                                }
-
-                                .btn-delete-task {
-                                    background: rgba(239, 68, 68, 0.1);
-                                    color: #ef4444;
-                                    border: 1px solid rgba(239, 68, 68, 0.3);
-                                }
-
-                                .btn-delete-task:hover {
-                                    background: #ef4444;
-                                    color: white;
-                                    transform: scale(1.1) rotate(-5deg);
-                                    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
-                                }
-
-                                /* Enhanced Empty State - Blue Theme */
-                                .empty-state {
-                                    text-align: center;
-                                    padding: 6rem 3rem;
-                                    grid-column: 1 / -1;
-                                    background: linear-gradient(135deg, #ffffff 0%, #f8faff 100%);
-                                    backdrop-filter: blur(20px);
-                                    border-radius: 28px;
-                                    box-shadow:
-                                        0 20px 40px rgba(30, 64, 175, 0.1),
-                                        0 0 0 1px rgba(255, 255, 255, 0.8);
-                                    border: 2px dashed #bfdbfe;
-                                    position: relative;
-                                    overflow: hidden;
-                                }
-
-                                .empty-state::before {
-                                    content: '';
-                                    position: absolute;
-                                    top: 0;
-                                    left: 0;
-                                    right: 0;
-                                    height: 4px;
-                                    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-                                }
-
-                                .empty-animation {
-                                    width: 120px;
-                                    height: 120px;
-                                    margin: 0 auto 2.5rem;
-                                    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-                                    border-radius: 50%;
-                                    display: flex;
-                                    align-items: center;
-                                    justify-content: center;
-                                    animation: float 3s ease-in-out infinite;
-                                }
-
-                                .empty-animation::before {
-                                    content: '📝';
-                                    font-size: 3rem;
-                                }
-
-                                @keyframes float {
-
-                                    0%,
-                                    100% {
-                                        transform: translateY(0px);
-                                    }
-
-                                    50% {
-                                        transform: translateY(-20px);
-                                    }
-                                }
-
-                                .empty-title {
-                                    font-size: 2rem;
-                                    font-weight: 800;
-                                    color: #1f2937;
-                                    margin-bottom: 1rem;
-                                    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-                                    -webkit-background-clip: text;
-                                    -webkit-text-fill-color: transparent;
-                                    background-clip: text;
-                                }
-
-                                .empty-text {
-                                    color: #6b7280;
-                                    font-size: 1.2rem;
-                                    margin-bottom: 2.5rem;
-                                    line-height: 1.6;
-                                }
-
-                                /* MODERN PAGINATION STYLES */
-                                .pagination-wrapper {
-                                    display: flex;
-                                    flex-direction: column;
-                                    align-items: center;
-                                    margin-top: 4rem;
-                                    padding-bottom: 2rem;
-                                    gap: 1.5rem;
-                                }
-
-                                .pagination {
-                                    display: flex;
-                                    gap: 0.5rem;
-                                    align-items: center;
-                                    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%);
-                                    backdrop-filter: blur(20px);
-                                    padding: 1.5rem 2rem;
-                                    border-radius: 20px;
-                                    box-shadow: 
-                                        0 10px 30px rgba(30, 64, 175, 0.1),
-                                        0 0 0 1px rgba(255, 255, 255, 0.8);
-                                    border: 1px solid rgba(255, 255, 255, 0.3);
-                                    justify-content: center; /* ← TAMBAHKAN INI */
-                                    flex-wrap: wrap; /* ← TAMBAHKAN INI */
-                                }
-
-                                .pagination .text-sm {
-                                    text-align: center;
-                                    width: 100%;
-                                    margin-bottom: 1rem;
-                                    color: #64748b;
-                                    font-size: 0.9rem;
-                                    font-weight: 500;
-                                    order: -1; /* ← Letakkan di atas button pagination */
-                                }
-
-                                .page-item {
-                                    margin: 0;
-                                }
-
-                                .page-link {
-                                    border: none !important;
-                                    border-radius: 14px !important;
-                                    width: 48px;
-                                    height: 48px;
-                                    display: flex;
-                                    align-items: center;
-                                    justify-content: center;
-                                    color: #64748b;
-                                    font-weight: 700;
-                                    font-size: 1rem;
-                                    background: transparent;
-                                    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                                    position: relative;
-                                    overflow: hidden;
-                                }
-
-                                .page-link::before {
-                                    content: '';
-                                    position: absolute;
-                                    top: 0;
-                                    left: -100%;
-                                    width: 100%;
-                                    height: 100%;
-                                    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
-                                    transition: left 0.5s;
-                                }
-
-                                .page-item:not(.active):not(.disabled) .page-link:hover {
-                                    transform: translateY(-3px);
-                                    background: rgba(59, 130, 246, 0.1);
-                                    color: #3b82f6;
-                                    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.2);
-                                }
-
-                                .page-item:not(.active):not(.disabled) .page-link:hover::before {
-                                    left: 100%;
-                                }
-
-                                .page-item.active .page-link {
-                                    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%) !important;
-                                    color: white !important;
-                                    box-shadow:
-                                        0 10px 25px rgba(59, 130, 246, 0.4),
-                                        0 5px 10px rgba(59, 130, 246, 0.2);
-                                    transform: scale(1.1);
-                                    z-index: 1;
-                                }
-
-                                .page-item.disabled .page-link {
-                                    background: transparent;
-                                    color: #cbd5e1;
-                                    box-shadow: none;
-                                    cursor: not-allowed;
-                                    transform: none;
-                                    opacity: 0.5;
-                                }
-
-                                .page-link:focus {
-                                    box-shadow: none !important;
-                                }
-
-                                /* Pagination Info */
-                                /* .pagination-info {
-                                    text-align: center;
-                                    margin-top: 1rem;
-                                    color: #64748b;
-                                    font-size: 0.9rem;
-                                    font-weight: 500;
-                                } */
-
-                                /* Enhanced Clear Search Button */
-                                .clear-search-btn {
-                                    position: absolute;
-                                    right: 90px;
-                                    top: 50%;
-                                    transform: translateY(-50%);
-                                    cursor: pointer;
-                                    color: #9ca3af;
-                                    display: none;
-                                    padding: 8px;
-                                    border-radius: 50%;
-                                    transition: all 0.3s ease;
-                                    z-index: 4;
-                                    background: rgba(255, 255, 255, 0.9);
-                                    backdrop-filter: blur(10px);
-                                    border: 1px solid #e0f2fe;
-                                }
-
-                                .clear-search-btn:hover {
-                                    background-color: #f3f4f6;
-                                    color: #ef4444;
-                                    transform: translateY(-50%) scale(1.1);
-                                }
-
-                                /* Search Button Enhancement */
-                                .search-submit-btn {
-                                    position: absolute;
-                                    right: 5px;
-                                    top: 50%;
-                                    transform: translateY(-50%);
-                                    height: calc(100% - 10px);
-                                    border-radius: 12px;
-                                    padding: 0 1.5rem;
-                                }
-
-                                /* Responsive Design */
-                                @media (max-width: 1200px) {
-                                    .tasks-grid {
-                                        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-                                        gap: 1.5rem;
-                                    }
-                                }
-
-                                @media (max-width: 768px) {
-                                    .tugas-container {
-                                        padding: 2rem 0;
-                                    }
-
-                                    .tugas-title {
-                                        font-size: 2.5rem;
-                                    }
-
-                                    .control-card {
-                                        padding: 1.5rem;
-                                        margin-bottom: 2rem;
-                                    }
-
-                                    .tasks-grid {
-                                        grid-template-columns: 1fr;
-                                        gap: 1.5rem;
-                                    }
-
-                                    .task-card {
-                                        padding: 1.5rem;
-                                    }
-
-                                    .search-input {
-                                        padding-right: 120px;
-                                    }
-
-                                    .clear-search-btn {
-                                        right: 80px;
-                                    }
-
-                                    /* Mobile Pagination */
-                                    .pagination {
-                                        padding: 0.75rem 1rem;
-                                        border-radius: 16px;
-                                    }
-
-                                    .page-link {
-                                        width: 42px;
-                                        height: 42px;
-                                        font-size: 0.9rem;
-                                        border-radius: 12px !important;
-                                    }
-                                }
-
-                                @media (max-width: 480px) {
-                                    .tugas-title {
-                                        font-size: 2rem;
-                                    }
-
-                                    .control-card {
-                                        padding: 1.25rem;
-                                    }
-
-                                    .task-card {
-                                        padding: 1.25rem;
-                                    }
-
-                                    .btn-modern {
-                                        padding: 0.75rem 1.5rem;
-                                    }
-
-                                    .pagination {
-                                        gap: 0.25rem;
-                                        padding: 0.5rem;
-                                    }
-
-                                    .page-link {
-                                        width: 38px;
-                                        height: 38px;
-                                        min-width: 38px;
-                                    }
-                                }
-                            </style>
+<style>
+    /* ===================== */
+    /* MODERN TASK STYLES - BLUE WHITE THEME */
+    /* ===================== */
+    body {
+        background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        min-height: 100vh;
+    }
+
+    .tugas-container {
+        padding: 3rem 0;
+    }
+
+    /* Enhanced Animations */
+    .fade-in-up {
+        animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Blue Theme Header */
+    .tugas-title {
+        font-size: 3rem;
+        font-weight: 900;
+        color: #1a202c;
+        margin: 0;
+        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        position: relative;
+    }
+
+    .tugas-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 60px;
+        height: 4px;
+        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+        border-radius: 2px;
+    }
+
+    .task-header,
+    .task-desc,
+    .task-meta,
+    .task-footer {
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Enhanced Control Card - Blue Theme */
+    .control-card {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        padding: 2rem;
+        box-shadow:
+            0 20px 40px rgba(30, 64, 175, 0.1),
+            0 0 0 1px rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        margin-bottom: 3rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .control-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+    }
+
+    /* Enhanced Search Input - Blue Theme */
+    .search-input-group {
+        position: relative;
+    }
+
+    .search-icon {
+        position: absolute;
+        left: 1.25rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #64748b;
+        z-index: 3;
+        transition: all 0.3s ease;
+    }
+
+    .search-input {
+        padding-left: 3.5rem !important;
+        padding-right: 140px;
+        height: 56px;
+        border: 2px solid #e0f2fe;
+        border-radius: 16px;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: rgba(255, 255, 255, 0.9);
+    }
+
+    .search-input:focus {
+        border-color: #3b82f6;
+        background: white;
+        box-shadow:
+            0 0 0 4px rgba(59, 130, 246, 0.1),
+            0 10px 20px rgba(30, 64, 175, 0.05);
+        transform: translateY(-2px);
+    }
+
+    .search-input:focus+.search-icon {
+        color: #3b82f6;
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    /* Enhanced Buttons - Blue Theme */
+    .btn-modern {
+        padding: 0.875rem 1.75rem;
+        border-radius: 16px;
+        font-weight: 600;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-decoration: none;
+        border: none;
+        font-size: 0.95rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-modern::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .btn-modern:hover::before {
+        left: 100%;
+    }
+
+    .btn-primary-modern {
+        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+        color: white;
+        box-shadow:
+            0 8px 25px rgba(30, 64, 175, 0.3),
+            0 2px 4px rgba(30, 64, 175, 0.1);
+    }
+
+    .btn-primary-modern:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow:
+            0 15px 35px rgba(30, 64, 175, 0.4),
+            0 5px 10px rgba(30, 64, 175, 0.2);
+    }
+
+    .btn-light-modern {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.9) 100%);
+        color: #475569;
+        border: 2px solid #e0f2fe;
+        box-shadow:
+            0 4px 15px rgba(30, 64, 175, 0.05),
+            0 1px 2px rgba(30, 64, 175, 0.1);
+        backdrop-filter: blur(10px);
+    }
+
+    .btn-light-modern:hover {
+        border-color: #bfdbfe;
+        background: white;
+        color: #334155;
+        transform: translateY(-2px);
+        box-shadow:
+            0 8px 25px rgba(30, 64, 175, 0.1),
+            0 3px 6px rgba(30, 64, 175, 0.05);
+    }
+
+    /* Enhanced Tasks Grid */
+    .tasks-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    /* Enhanced Task Card - Blue Theme */
+    .task-card {
+        background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 50%, #ffffff 100%);
+        border-radius: 24px;
+        padding: 2rem;
+        box-shadow: 
+            0 10px 30px rgba(30, 64, 175, 0.1),
+            0 1px 3px rgba(30, 64, 175, 0.05);
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        border-left: 6px solid #3b82f6;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .task-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+        opacity: 0.8;
+    }
+
+    .task-card::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
+        pointer-events: none;
+    }
+
+    .task-card:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow:
+            0 30px 60px rgba(30, 64, 175, 0.15),
+            0 5px 15px rgba(30, 64, 175, 0.1);
+    }
+
+    /* Enhanced Task Header */
+    .task-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1.5rem;
+        gap: 1rem;
+    }
+
+    .task-title-text {
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: #1f2937;
+        line-height: 1.4;
+        margin: 0;
+        flex: 1;
+        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    /* Enhanced Badges - Blue Theme */
+    .badge-deadline {
+        padding: 0.6rem 1.2rem;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 2px 8px rgba(30, 64, 175, 0.1);
+    }
+
+    .bg-urgent {
+        background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+        color: #dc2626;
+        border-color: #fecaca;
+    }
+
+    .bg-soon {
+        background: linear-gradient(135deg, #fffbeb 0%, #fed7aa 100%);
+        color: #c2410c;
+        border-color: #fdba74;
+    }
+
+    .bg-normal {
+        background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        color: #0369a1;
+        border-color: #7dd3fc;
+    }
+
+    /* Enhanced Task Description */
+    .task-desc {
+        color: #6b7280;
+        font-size: 1rem;
+        line-height: 1.7;
+        margin-bottom: 2rem;
+        flex-grow: 1;
+        background: rgba(255, 255, 255, 0.5);
+        padding: 1.25rem;
+        border-radius: 12px;
+        border-left: 3px solid #e0f2fe;
+    }
+
+    /* Enhanced Metadata Box - Blue Theme */
+    .task-meta {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 249, 255, 0.9) 100%);
+        backdrop-filter: blur(15px);
+        padding: 1.5rem;
+        border-radius: 16px;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(255, 255, 255, 0.6); /* ← perkuat border */
+        box-shadow: 0 4px 12px rgba(30, 64, 175, 0.08);
+        position: relative; /* ← tambahkan ini */
+        z-index: 1; /* ← tambahkan ini */
+    }
+
+    .meta-row {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        color: #4b5563;
+        margin-bottom: 1rem;
+        font-size: 0.95rem;
+    }
+
+    .meta-row:last-child {
+        margin-bottom: 0;
+    }
+
+    .meta-icon {
+        color: #3b82f6;
+        flex-shrink: 0;
+        width: 20px;
+        height: 20px;
+    }
+
+    /* Enhanced Download Link - Blue Theme */
+    .download-link {
+        color: #3b82f6;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1.25rem;
+        border-radius: 12px;
+        background: rgba(59, 130, 246, 0.1);
+        border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+
+    .download-link:hover {
+        background: #3b82f6;
+        color: white;
+        text-decoration: none;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+    }
+
+    /* Enhanced Footer Actions */
+    .task-footer {
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba(59, 130, 246, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: auto;
+    }
+
+    .btn-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        backdrop-filter: blur(10px);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-icon::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        transition: left 0.5s;
+    }
+
+    .btn-icon:hover::before {
+        left: 100%;
+    }
+
+    .btn-edit-task {
+        background: rgba(59, 130, 246, 0.1);
+        color: #3b82f6;
+        border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .btn-edit-task:hover {
+        background: #3b82f6;
+        color: white;
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+    }
+
+    .btn-delete-task {
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-delete-task:hover {
+        background: #ef4444;
+        color: white;
+        transform: scale(1.1) rotate(-5deg);
+        box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+    }
+
+    /* Enhanced Empty State - Blue Theme */
+    .empty-state {
+        text-align: center;
+        padding: 6rem 3rem;
+        grid-column: 1 / -1;
+        background: linear-gradient(135deg, #ffffff 0%, #f8faff 100%);
+        backdrop-filter: blur(20px);
+        border-radius: 28px;
+        box-shadow:
+            0 20px 40px rgba(30, 64, 175, 0.1),
+            0 0 0 1px rgba(255, 255, 255, 0.8);
+        border: 2px dashed #bfdbfe;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .empty-state::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+    }
+
+    .empty-animation {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 2.5rem;
+        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: float 3s ease-in-out infinite;
+    }
+
+    .empty-animation::before {
+        content: '📝';
+        font-size: 3rem;
+    }
+
+    @keyframes float {
+
+        0%,
+        100% {
+            transform: translateY(0px);
+        }
+
+        50% {
+            transform: translateY(-20px);
+        }
+    }
+
+    .empty-title {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #1f2937;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .empty-text {
+        color: #6b7280;
+        font-size: 1.2rem;
+        margin-bottom: 2.5rem;
+        line-height: 1.6;
+    }
+
+    /* MODERN PAGINATION STYLES */
+    .pagination-wrapper {
+        margin-top: 3rem;
+        padding-bottom: 2rem;
+        width: 100%;
+    }
+
+    .pagination-wrapper nav > div.d-sm-flex {
+        display: flex !important;
+        flex-direction: column !important; /* Tumpuk Atas-Bawah */
+        align-items: center !important;    /* Rata Tengah */
+        justify-content: center !important;
+        gap: 15px; /* Jarak antara Teks "Showing" dan Tombol */
+    }
+
+    .pagination-wrapper .small.text-muted {
+        font-size: 0.9rem;
+        color: #64748b !important;
+        font-weight: 500;
+        text-align: center;
+        /* Opsional: Beri background tipis biar rapi */
+        background: rgba(255, 255, 255, 0.6);
+        padding: 5px 15px;
+        border-radius: 20px;
+    }
+
+    .pagination {
+        display: flex;
+        gap: 8px;
+        padding: 10px 15px; /* Padding dalam kotak */
+        margin: 0;
+        list-style: none;
+
+        /* Style Glassmorphism */
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 249, 255, 0.9) 100%);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        box-shadow: 
+            0 10px 25px rgba(30, 64, 175, 0.08),
+            0 0 0 1px rgba(255, 255, 255, 0.6);
+        border: 1px solid rgba(226, 232, 240, 0.6);
+
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .page-item .page-link {
+        border: none !important;
+        border-radius: 12px !important;
+        width: 40px;  /* Ukuran fix */
+        height: 40px; /* Ukuran fix */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #64748b;
+        font-weight: 700;
+        font-size: 0.95rem;
+        background: transparent; /* Transparan agar ikut background induk */
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .page-item:not(.active):not(.disabled) .page-link:hover {
+        transform: translateY(-3px);
+        background: #fff;
+        color: #3b82f6;
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+    }
+
+        .page-item:not(.active):not(.disabled) .page-link:hover::before {
+        left: 100%;
+    }    
+
+    .page-item.active .page-link {
+        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+        color: white !important;
+        box-shadow: 0 8px 16px -4px rgba(37, 99, 235, 0.4);
+        transform: scale(1.1);
+        z-index: 1;
+    }
+
+    .page-item.disabled .page-link {
+        background: transparent;
+        color: #cbd5e1;
+        cursor: not-allowed;
+    }
+
+    .page-link:focus {
+        box-shadow: none !important;
+    }
+
+    .pagination .text-sm {
+        text-align: center;
+        width: 100%;
+        margin-bottom: 1rem;
+        color: #64748b;
+        font-size: 0.9rem;
+        font-weight: 500;
+        order: -1; /* ← Letakkan di atas button pagination */
+    }
+
+    .page-item {
+        margin: 0;
+    }
+
+    .page-link {
+        border: none !important;
+        border-radius: 14px !important;
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #64748b;
+        font-weight: 700;
+        font-size: 1rem;
+        background: transparent;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .page-link::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+        transition: left 0.5s;
+    }                          
+
+
+    /* Enhanced Clear Search Button */
+    .clear-search-btn {
+        position: absolute;
+        right: 90px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #9ca3af;
+        display: none;
+        padding: 8px;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        z-index: 4;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        border: 1px solid #e0f2fe;
+    }
+
+    .clear-search-btn:hover {
+        background-color: #f3f4f6;
+        color: #ef4444;
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    /* Search Button Enhancement */
+    .search-submit-btn {
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        height: calc(100% - 10px);
+        border-radius: 12px;
+        padding: 0 1.5rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1200px) {
+        .tasks-grid {
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .tugas-container {
+            padding: 2rem 0;
+        }
+
+        .tugas-title {
+            font-size: 2.5rem;
+        }
+
+        .control-card {
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tasks-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .task-card {
+            padding: 1.5rem;
+        }
+
+        .search-input {
+            padding-right: 120px;
+        }
+
+        .clear-search-btn {
+            right: 80px;
+        }
+
+        /* Mobile Pagination */
+        .pagination {
+            padding: 0.75rem 1rem;
+            border-radius: 16px;
+        }
+
+        .page-link {
+            width: 42px;
+            height: 42px;
+            font-size: 0.9rem;
+            border-radius: 12px !important;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .tugas-title {
+            font-size: 2rem;
+        }
+
+        .control-card {
+            padding: 1.25rem;
+        }
+
+        .task-card {
+            padding: 1.25rem;
+        }
+
+        .btn-modern {
+            padding: 0.75rem 1.5rem;
+        }
+
+        .pagination {
+            gap: 0.25rem;
+            padding: 0.5rem;
+        }
+
+        .page-link {
+            width: 38px;
+            height: 38px;
+            min-width: 38px;
+        }
+    }
+</style>
 
                             <div class="tugas-container">
                                 <div class="container">
@@ -844,23 +866,23 @@
                                     <div class="tasks-grid fade-in-up" id="tasksGrid" style="animation-delay: 0.3s;">
                                         @forelse($tugas as $index => $t)
                                             @php
-        $deadline = \Carbon\Carbon::parse($t->deadline);
-        $now = \Carbon\Carbon::now();
-        $diffInDays = $now->diffInDays($deadline, false);
+    $deadline = \Carbon\Carbon::parse($t->deadline);
+    $now = \Carbon\Carbon::now();
+    $diffInDays = $now->diffInDays($deadline, false);
 
-        if ($deadline->isPast()) {
-            $badgeClass = 'bg-urgent';
-            $statusText = 'terlambat';
-            $statusDisplay = 'Terlambat';
-        } elseif ($diffInDays <= 3) {
-            $badgeClass = 'bg-soon';
-            $statusText = 'Mendekati Deadline';
-            $statusDisplay = 'Mendekati Deadline';
-        } else {
-            $badgeClass = 'bg-normal';
-            $statusText = 'aktif';
-            $statusDisplay = 'Aktif';
-        }
+    if ($deadline->isPast()) {
+        $badgeClass = 'bg-urgent';
+        $statusText = 'terlambat';
+        $statusDisplay = 'Terlambat';
+    } elseif ($diffInDays <= 3) {
+        $badgeClass = 'bg-soon';
+        $statusText = 'Mendekati Deadline';
+        $statusDisplay = 'Mendekati Deadline';
+    } else {
+        $badgeClass = 'bg-normal';
+        $statusText = 'aktif';
+        $statusDisplay = 'Aktif';
+    }
                                             @endphp
 
                                             <div class="task-card task-card-theme" data-deadline="{{ $deadline->timestamp }}"
@@ -949,18 +971,7 @@
                                         @empty
                                             <div class="empty-state">
                                                 <div class="empty-animation"></div>
-                                                <h3 class="empty-title">Belum Ada Tugas</h3>
-                                                <p class="empty-text">Mulai dengan membuat tugas pertama Anda</p>
-                                                @if(Auth::user()->role == 'admin')
-                                                    <a href="{{ route('tugas.create') }}" class="btn-modern btn-primary-modern">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                                            viewBox="0 0 16 16">
-                                                            <path
-                                                                d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 0 1 0 2H9v6a1 1 0 0 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z" />
-                                                        </svg>
-                                                        Buat Tugas Pertama
-                                                    </a>
-                                                @endif
+                                                <h3 class="empty-title">Belum Ada Tugas</h3>                                                                                                
                                             </div>
                                         @endforelse
                                     </div>
