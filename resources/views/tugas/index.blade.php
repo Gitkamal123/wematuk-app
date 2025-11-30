@@ -667,44 +667,34 @@
 
                                         <div class="task-meta">
                                             <div class="meta-row">
-                                                {{-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                                    class="meta-icon" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
-                                                </svg> --}}
+                                                <span class="deadline-label">
+                                                    Deadline:
+                                                </span>
                                                 <span>{{ $deadline->format('d M Y, H:i') }} WIB</span>
                                             </div>
 
-                                            <div class="task-meta">
-                                                <div class="meta-row">
-                                                    <span class="deadline-label">
-                                                        Deadline:
-                                                    </span>
-                                                    <span>{{ $deadline->format('d M Y, H:i') }} WIB</span>
-                                                </div>
-
-                                                <div class="meta-row">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="meta-icon"
-                                                        viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0z" />
-                                                    </svg>
-                                                    @if($t->file_path)
-                                                        <a href="{{ route('tugas.download', $t->id) }}" class="download-link">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="me-1"
-                                                                viewBox="0 0 16 16">
-                                                                <path
-                                                                    d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
-                                                                <path
-                                                                    d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
-                                                            </svg>
-                                                            Download File
-                                                        </a>
-                                                    @else
-                                                        <span class="text-muted fst-italic">Tidak ada file</span>
-                                                    @endif
-                                                </div>
+                                            <div class="meta-row">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="meta-icon"
+                                                    viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0z" />
+                                                </svg>
+                                                @if($t->file_path)
+                                                    <a href="{{ route('tugas.download', $t->id) }}" class="download-link">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="me-1"
+                                                            viewBox="0 0 16 16">
+                                                            <path
+                                                                d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+                                                            <path
+                                                                d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
+                                                        </svg>
+                                                        Download File
+                                                    </a>
+                                                @else
+                                                    <span class="text-muted fst-italic">Tidak ada file</span>
+                                                @endif
                                             </div>
+                                        </div>
 
                                         @if(Auth::user()->role == 'admin')
                                             <div class="task-footer">
