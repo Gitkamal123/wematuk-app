@@ -600,7 +600,7 @@
                 /* Style untuk tombol silang (Clear) */
                 .clear-search-btn {
                     position: absolute;
-                    right: 70px; 
+                    right: 85px; 
                     top: 50%;
                     transform: translateY(-50%);
                     cursor: pointer;
