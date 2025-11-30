@@ -168,7 +168,7 @@
         }
 
         /* Warna Kartu dengan Gradien */
-        .color-1 {
+        .color {
             border-color: #06b6d4;
             background: linear-gradient(135deg, #ffffff 0%, #f0fff9 100%);
         }
@@ -650,30 +650,30 @@
             <div class="tasks-grid fade-in-up" id="tasksGrid" style="animation-delay: 0.3s;">
                 @forelse($tugas as $index => $t)
                 @php
-    // Color cycling logic (1-6)
-    $colorIndex = ($index % 6) + 1;
+                // Color cycling logic (1-6)
+                $colorIndex = ($index % 6) + 1;
 
-    // Deadline logic
-    $deadline = \Carbon\Carbon::parse($t->deadline);
-    $now = \Carbon\Carbon::now();
-    $diffInDays = $now->diffInDays($deadline, false);
+                // Deadline logic
+                $deadline = \Carbon\Carbon::parse($t->deadline);
+                $now = \Carbon\Carbon::now();
+                $diffInDays = $now->diffInDays($deadline, false);
 
-    if ($deadline->isPast()) {
-        $badgeClass = 'bg-urgent';
-        $statusText = 'terlambat';
-        $statusDisplay = 'Terlambat';
-    } elseif ($diffInDays <= 3) {
-        $badgeClass = 'bg-soon';
-        $statusText = 'segera';
-        $statusDisplay = 'Segera';
-    } else {
-        $badgeClass = 'bg-normal';
-        $statusText = 'aktif';
-        $statusDisplay = 'Aktif';
-    }
+                if ($deadline->isPast()) {
+                    $badgeClass = 'bg-urgent';
+                    $statusText = 'terlambat';
+                    $statusDisplay = 'Terlambat';
+                } elseif ($diffInDays <= 3) {
+                    $badgeClass = 'bg-soon';
+                    $statusText = 'segera';
+                    $statusDisplay = 'Segera';
+                } else {
+                    $badgeClass = 'bg-normal';
+                    $statusText = 'aktif';
+                    $statusDisplay = 'Aktif';
+                }
                 @endphp
 
-                <div class="task-card color-{{ $colorIndex }}" data-deadline="{{ $deadline->timestamp }}"
+                <div class="task-card color{{ $colorIndex }}" data-deadline="{{ $deadline->timestamp }}"
                     data-created="{{ $t->created_at->timestamp }}" data-status="{{ $statusText }}"
                     data-search="{{ strtolower($t->judul . ' ' . $t->deskripsi) }}">
 
