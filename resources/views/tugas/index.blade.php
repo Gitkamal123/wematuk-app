@@ -731,10 +731,9 @@
                 @empty
                     <div class="empty-state">
                         <div class="empty-animation"></div>
-                        <h3 class="empty-title">Belum Ada Tugas</h3>
-                        <p class="empty-text">Mulai dengan membuat tugas pertama Anda</p>
+                        <h3 class="empty-title">Tidak Ada Tugas</h3>                        
                         <div class="empty-actions">
-                            @if(Auth::user()->role == 'admin')
+                            {{-- @if(Auth::user()->role == 'admin')
                                 <a href="{{ route('tugas.create') }}" class="btn-modern btn-primary-modern mt-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="me-2"
                                         viewBox="0 0 16 16">
@@ -743,7 +742,7 @@
                                     </svg>
                                     Buat Tugas Pertama
                                 </a>
-                            @endif
+                            @endif --}}
                         </div>
                     </div>
                 @endforelse
