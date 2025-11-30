@@ -5,23 +5,23 @@
 @section('content')
     <style>
         /* ===================== */
-        /* GLOBAL STYLES         */
+        /* MODERN TASK STYLES - ENHANCED */
         /* ===================== */
         body {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             min-height: 100vh;
         }
 
         .tugas-container {
-            padding: 2rem 0;
+            padding: 3rem 0;
         }
 
-        /* Animasi Fade In Up */
+        /* Enhanced Animations */
         .fade-in-up {
-            animation: fadeInUp 0.6s ease forwards;
+            animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(30px);
         }
 
         @keyframes fadeInUp {
@@ -31,200 +31,180 @@
             }
         }
 
-        /* Header Title */
+        /* Glassmorphism Header */
         .tugas-title {
-            font-size: 2.2rem;
-            font-weight: 800;
+            font-size: 3rem;
+            font-weight: 900;
+            color: #1a202c;
             margin: 0;
-            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: -0.5px;
+            background-clip: text;
+            position: relative;
         }
 
-        /* ===================== */
-        /* BUTTONS               */
-        /* ===================== */
-        .btn-modern {
-            padding: 0.75rem 1.5rem;
-            border-radius: 12px;
-            font-weight: 600;
+        .tugas-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+        }
+
+        /* Enhanced Control Card */
+        .control-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .control-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        /* Enhanced Search Input */
+        .search-input-group {
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            z-index: 3;
             transition: all 0.3s ease;
+        }
+
+        .search-input {
+            padding-left: 3.5rem !important;
+            padding-right: 140px;
+            height: 56px;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .search-input:focus {
+            border-color: #667eea;
+            background: white;
+            box-shadow: 
+                0 0 0 4px rgba(102, 126, 234, 0.1),
+                0 10px 20px rgba(0, 0, 0, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .search-input:focus + .search-icon {
+            color: #667eea;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        /* Enhanced Buttons */
+        .btn-modern {
+            padding: 0.875rem 1.75rem;
+            border-radius: 16px;
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
             text-decoration: none;
             border: none;
             font-size: 0.95rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-modern::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-modern:hover::before {
+            left: 100%;
         }
 
         .btn-primary-modern {
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+            box-shadow: 
+                0 8px 25px rgba(102, 126, 234, 0.3),
+                0 2px 4px rgba(102, 126, 234, 0.1);
         }
 
         .btn-primary-modern:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(37, 99, 235, 0.3);
-            color: white;
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 
+                0 15px 35px rgba(102, 126, 234, 0.4),
+                0 5px 10px rgba(102, 126, 234, 0.2);
         }
 
         .btn-light-modern {
-            background: white;
+            background: rgba(255, 255, 255, 0.9);
             color: #475569;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border: 2px solid #e2e8f0;
+            box-shadow: 
+                0 4px 15px rgba(0, 0, 0, 0.05),
+                0 1px 2px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
         }
 
         .btn-light-modern:hover {
             border-color: #cbd5e1;
-            background: #f8fafc;
-            color: #1e293b;
-            transform: translateY(-1px);
-        }
-
-        /* ===================== */
-        /* CONTROL CARD (SEARCH) */
-        /* ===================== */
-        .control-card {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(12px);
-            border-radius: 24px;
-            padding: 1.5rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            margin-bottom: 4rem;
-            /* Jarak Control Card ke Daftar Tugas diperlebar */
-        }
-
-        .search-input-group,
-        .select-icon-wrapper {
-            position: relative;
-            height: 52px;
-            /* Tinggi seragam */
-        }
-
-        /* Input & Select Base Style */
-        .search-input,
-        .form-select-styled {
-            height: 100% !important;
-            border-radius: 16px !important;
-            border: 1px solid #e2e8f0;
-            background-color: #ffffff;
-            font-size: 0.95rem;
+            background: white;
             color: #334155;
-            font-weight: 500;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(-2px);
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.1),
+                0 3px 6px rgba(0, 0, 0, 0.05);
         }
 
-        .search-input {
-            padding-left: 48px !important;
-            padding-right: 100px !important;
-            /* Ruang untuk tombol Cari */
-        }
-
-        .form-select-styled {
-            padding-left: 48px !important;
-            padding-right: 40px !important;
-            cursor: pointer;
-            -webkit-appearance: none;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 1.25rem center;
-            background-size: 14px 10px;
-        }
-
-        /* Focus States */
-        .search-input:focus,
-        .form-select-styled:focus {
-            border-color: #3b82f6;
-            outline: 0;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1) !important;
-            transform: translateY(-1px);
-        }
-
-        .form-select-styled:focus {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%233b82f6' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
-        }
-
-        /* Icons */
-        .search-icon,
-        .select-icon {
-            position: absolute;
-            left: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #94a3b8;
-            z-index: 2;
-            pointer-events: none;
-            transition: color 0.3s;
-        }
-
-        .search-input:focus~.search-icon,
-        .form-select-styled:focus~.select-icon {
-            color: #3b82f6;
-        }
-
-        /* Button Search Inside Input */
-        .btn-search-inside {
-            position: absolute;
-            right: 6px;
-            top: 6px;
-            bottom: 6px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-            color: white;
-            border: none;
-            padding: 0 20px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
-        }
-
-        .btn-search-inside:hover {
-            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-        }
-
-        /* Clear Search Button (X) */
-        .clear-search-btn {
-            position: absolute;
-            right: 90px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: #cbd5e1;
-            padding: 4px;
-            display: none;
-            z-index: 5;
-            transition: color 0.2s;
-        }
-
-        .clear-search-btn:hover {
-            color: #ef4444;
-        }
-
-        /* ===================== */
-        /* TASK CARDS            */
-        /* ===================== */
+        /* Enhanced Tasks Grid */
         .tasks-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
         }
 
+        /* Enhanced Task Card */
         .task-card {
-            background: white;
-            border-radius: 20px;
-            padding: 1.75rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border-left: 5px solid;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.08),
+                0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left: 6px solid;
             display: flex;
             flex-direction: column;
             height: 100%;
@@ -232,109 +212,159 @@
             overflow: hidden;
         }
 
-        .task-card:hover {
-            transform: translateY(-8px) scale(1.01);
-            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
+        .task-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: inherit;
+            opacity: 0.2;
         }
 
+        .task-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.15),
+                0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Card Color Themes */
         .task-card-theme {
             border-color: #06b6d4;
-            /* Cyan Border */
-            background: linear-gradient(135deg, #ffffff 0%, #f0fdff 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #f0fdfa 100%);
         }
 
+        .task-card-theme::before {
+            background: linear-gradient(135deg, #06b6d4 0%, #0ea5e9 100%);
+        }
+
+        /* Enhanced Task Header */
         .task-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             gap: 1rem;
         }
 
         .task-title-text {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #1e293b;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #1f2937;
             line-height: 1.4;
             margin: 0;
             flex: 1;
+            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .task-desc {
-            color: #64748b;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-            flex-grow: 1;
-        }
-
-        /* Badges */
+        /* Enhanced Badges */
         .badge-deadline {
-            padding: 0.4rem 0.8rem;
+            padding: 0.6rem 1.2rem;
             border-radius: 50px;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             white-space: nowrap;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         .bg-urgent {
-            background: #fef2f2;
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
             color: #dc2626;
-            border: 1px solid #fee2e2;
+            border-color: #fecaca;
         }
 
         .bg-soon {
-            background: #fff7ed;
-            color: #ea580c;
-            border: 1px solid #ffedd5;
+            background: linear-gradient(135deg, #fffbeb 0%, #fed7aa 100%);
+            color: #c2410c;
+            border-color: #fdba74;
         }
 
         .bg-normal {
-            background: #f0fdf4;
-            color: #16a34a;
-            border: 1px solid #dcfce7;
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            color: #15803d;
+            border-color: #bbf7d0;
         }
 
-        /* Meta Info */
-        .task-meta {
-            background: rgba(255, 255, 255, 0.6);
-            padding: 1rem;
+        /* Enhanced Task Description */
+        .task-desc {
+            color: #6b7280;
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+            flex-grow: 1;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 1.25rem;
             border-radius: 12px;
-            margin-bottom: 1.25rem;
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-left: 3px solid #e5e7eb;
+        }
+
+        /* Enhanced Metadata Box */
+        .task-meta {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(15px);
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         .meta-row {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            color: #475569;
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
+            gap: 1rem;
+            color: #4b5563;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
         }
 
         .meta-row:last-child {
             margin-bottom: 0;
         }
 
+        .meta-icon {
+            color: #667eea;
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Enhanced Download Link */
         .download-link {
-            color: #2563eb;
+            color: #667eea;
             text-decoration: none;
             font-weight: 600;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.25rem;
+            border-radius: 12px;
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.2);
         }
 
         .download-link:hover {
-            color: #1d4ed8;
-            text-decoration: underline;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
         }
 
-        /* Footer Icons */
+        /* Enhanced Footer Actions */
         .task-footer {
-            padding-top: 1rem;
-            border-top: 1px solid #f1f5f9;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -342,200 +372,283 @@
         }
 
         .btn-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             border: none;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-icon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-icon:hover::before {
+            left: 100%;
         }
 
         .btn-edit-task {
-            background: #eff6ff;
-            color: #2563eb;
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            border: 1px solid rgba(102, 126, 234, 0.3);
         }
 
         .btn-edit-task:hover {
-            background: #2563eb;
+            background: #667eea;
             color: white;
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
         }
 
         .btn-delete-task {
-            background: #fef2f2;
+            background: rgba(239, 68, 68, 0.1);
             color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
         }
 
         .btn-delete-task:hover {
             background: #ef4444;
             color: white;
+            transform: scale(1.1) rotate(-5deg);
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
         }
 
-        /* ===================== */
-        /* EMPTY STATE           */
-        /* ===================== */
+        /* Enhanced Empty State */
         .empty-state {
             text-align: center;
-            padding: 4rem 2rem;
+            padding: 6rem 3rem;
             grid-column: 1 / -1;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 24px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            backdrop-filter: blur(20px);
+            border-radius: 28px;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.8);
             border: 2px dashed #cbd5e0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .empty-state::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
         .empty-animation {
             width: 120px;
             height: 120px;
-            margin: 0 auto 1.5rem;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2394a3b8'%3E%3Cpath d='M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z'/%3E%3C/svg%3E") no-repeat center/contain;
-            opacity: 0.5;
-        }
-
-        /* ===================== */
-        /* PAGINATION            */
-        /* ===================== */
-        .pagination-wrapper {
-            display: flex;
-            justify-content: center;
-            margin-top: 3rem;
-            padding-bottom: 2rem;
-        }
-
-        .pagination {
-            display: flex;
-            gap: 8px;
-            padding: 0;
-            margin: 0;
-            list-style: none;
-        }
-
-        .page-item .page-link {
-            border: none !important;
-            border-radius: 12px !important;
-            width: 42px;
-            height: 42px;
+            margin: 0 auto 2.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #64748b;
-            font-weight: 700;
-            background: white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            transition: all 0.2s;
-            text-decoration: none;
+            animation: float 3s ease-in-out infinite;
         }
 
-        .page-item.active .page-link {
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
-            color: white !important;
-            box-shadow: 0 8px 16px -4px rgba(37, 99, 235, 0.4);
-            transform: scale(1.1);
+        .empty-animation::before {
+            content: '📝';
+            font-size: 3rem;
         }
 
-        .page-item:not(.active):not(.disabled) .page-link:hover {
-            transform: translateY(-2px);
-            background: #f8fafc;
-            color: #2563eb;
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
         }
 
-        /* Responsive */
-        @media (max-width: 992px) {
+        .empty-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1f2937;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .empty-text {
+            color: #6b7280;
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+
+        /* Enhanced Clear Search Button */
+        .clear-search-btn {
+            position: absolute;
+            right: 90px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #9ca3af;
+            display: none;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            z-index: 4;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid #e5e7eb;
+        }
+
+        .clear-search-btn:hover {
+            background-color: #f3f4f6;
+            color: #ef4444;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        /* Search Button Enhancement */
+        .search-submit-btn {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            height: calc(100% - 10px);
+            border-radius: 12px;
+            padding: 0 1.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
             .tasks-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+                gap: 1.5rem;
             }
         }
 
-        @media (max-width: 576px) {
-            .tasks-grid {
-                grid-template-columns: 1fr;
+        @media (max-width: 768px) {
+            .tugas-container {
+                padding: 2rem 0;
             }
 
             .tugas-title {
-                font-size: 1.75rem;
+                font-size: 2.5rem;
             }
 
             .control-card {
-                padding: 1rem;
+                padding: 1.5rem;
+                margin-bottom: 2rem;
+            }
+
+            .tasks-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .task-card {
+                padding: 1.5rem;
+            }
+
+            .search-input {
+                padding-right: 120px;
+            }
+
+            .clear-search-btn {
+                right: 80px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tugas-title {
+                font-size: 2rem;
+            }
+
+            .control-card {
+                padding: 1.25rem;
+            }
+
+            .task-card {
+                padding: 1.25rem;
+            }
+
+            .btn-modern {
+                padding: 0.75rem 1.5rem;
             }
         }
     </style>
 
     <div class="tugas-container">
         <div class="container">
-
+            <!-- Enhanced Header Section -->
             <div class="d-flex justify-content-between align-items-center mb-5 fade-in-up" style="animation-delay: 0.1s;">
                 <div>
                     <h1 class="tugas-title">Daftar Tugas</h1>
-                    <p class="text-muted mb-0 mt-1">Kelola tugas akademik dengan mudah dan terorganisir.</p>
+                    <p class="text-muted mb-0 mt-2">Kelola dan pantau semua tugas Anda di satu tempat</p>
                 </div>
 
-                <div class="d-flex gap-2 flex-wrap">
+                <div class="d-flex gap-3 flex-wrap">
                     <a href="{{ route('laporan.cetak') }}" class="btn-modern btn-light-modern" target="_blank">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
-                            viewBox="0 0 16 16">
-                            <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z" />
-                            <path
-                                d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z" />
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                            <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z"/>
                         </svg>
-                        Cetak PDF
+                        Cetak Laporan
                     </a>
 
                     @if(Auth::user()->role == 'admin')
                         <a href="{{ route('tugas.create') }}" class="btn-modern btn-primary-modern">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                viewBox="0 0 16 16">
-                                <path
-                                    d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 0 1 0 2H9v6a1 1 0 0 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z" />
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 0 1 0 2H9v6a1 1 0 0 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z"/>
                             </svg>
-                            Tambah Tugas
+                            Tambah Tugas Baru
                         </a>
                     @endif
                 </div>
             </div>
 
+            <!-- Enhanced Control Card -->
             <div class="control-card fade-in-up" style="animation-delay: 0.2s;">
                 <form action="{{ route('home') }}" method="GET" id="filterForm">
-                    <div class="row g-3">
+                    <div class="row g-4">
                         <div class="col-md-6">
-                            <div class="search-input-group">
-                                <input type="text" name="cari" id="searchInput" class="form-control search-input"
-                                    placeholder="Cari judul atau deskripsi..." value="{{ request('cari') }}"
-                                    autocomplete="off">
-
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                    class="search-icon" viewBox="0 0 16 16">
-                                    <path
-                                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                            <div class="search-input-group position-relative">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="search-icon" viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
                                 </svg>
 
+                                <input type="text" name="cari" id="searchInput" class="form-control search-input" placeholder="Cari tugas berdasarkan judul atau deskripsi..." value="{{ request('cari') }}" autocomplete="off">
+
                                 <span id="clearSearchBtn" class="clear-search-btn" title="Hapus pencarian">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
-                                        viewBox="0 0 16 16">
-                                        <path
-                                            d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                                     </svg>
                                 </span>
 
-                                <button type="submit" class="btn-search-inside">Cari</button>
+                                <button type="submit" class="btn-modern btn-primary-modern search-submit-btn">
+                                    Cari
+                                </button>
                             </div>
                         </div>
 
                         <div class="col-md-3">
                             <div class="select-icon-wrapper">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                    class="select-icon" viewBox="0 0 16 16">
-                                    <path
-                                        d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="select-icon" viewBox="0 0 16 16">
+                                    <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z"/>
                                 </svg>
-                                <select class="form-select form-select-styled" name="status"
-                                    onchange="document.getElementById('filterForm').submit()">
+                                <select class="form-select form-select-styled" name="status" onchange="document.getElementById('filterForm').submit()">
                                     <option value="">Semua Status</option>
-                                    <option value="terlambat" {{ request('status') == 'terlambat' ? 'selected' : '' }}>
-                                        Terlambat</option>
-                                    <option value="segera" {{ request('status') == 'segera' ? 'selected' : '' }}>Segera
-                                    </option>
+                                    <option value="Lewat Deadline" {{ request('status') == 'Lewat Deadline' ? 'selected' : '' }}>Lewat Deadline</option>
+                                    <option value="Mendekati Deadline" {{ request('status') == 'Mendekati Deadline' ? 'selected' : '' }}>Mendekati Deadline</option>
                                     <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
                                 </select>
                             </div>
@@ -543,21 +656,12 @@
 
                         <div class="col-md-3">
                             <div class="select-icon-wrapper">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                    class="select-icon" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd"
-                                        d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5zm-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="select-icon" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5zm-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5z"/>
                                 </svg>
-                                <select class="form-select form-select-styled" name="sort"
-                                    onchange="document.getElementById('filterForm').submit()">
-                                    <option value="deadline_asc" {{ request('sort') == 'deadline_asc' ? 'selected' : '' }}>
-                                        Deadline Terdekat</option>
-                                    <option value="deadline_desc" {{ request('sort') == 'deadline_desc' ? 'selected' : '' }}>
-                                        Deadline Terjauh</option>
-                                    <option value="created_desc" {{ request('sort') == 'created_desc' ? 'selected' : '' }}>
-                                        Terbaru Dibuat</option>
-                                    <option value="created_asc" {{ request('sort') == 'created_asc' ? 'selected' : '' }}>
-                                        Terlama Dibuat</option>
+                                <select class="form-select form-select-styled" name="sort" onchange="document.getElementById('filterForm').submit()">
+                                    <option value="deadline_asc" {{ request('sort') == 'deadline_asc' ? 'selected' : '' }}>Deadline Terdekat</option>
+                                    <option value="deadline_desc" {{ request('sort') == 'deadline_desc' ? 'selected' : '' }}>Deadline Terjauh</option>                                
                                 </select>
                             </div>
                         </div>
@@ -565,13 +669,9 @@
                 </form>
             </div>
 
-            <div class="loading-state" id="loadingState" style="display: none;">
-                <div class="spinner-modern"></div>
-                <p class="text-muted">Memuat data...</p>
-            </div>
-
-            <div class="tasks-grid fade-in-up" style="animation-delay: 0.3s;">
-                @forelse($tugas as $t)
+            <!-- Tasks Grid -->
+            <div class="tasks-grid fade-in-up" id="tasksGrid" style="animation-delay: 0.3s;">
+                @forelse($tugas as $index => $t)
                     @php
                         $deadline = \Carbon\Carbon::parse($t->deadline);
                         $now = \Carbon\Carbon::now();
@@ -579,181 +679,208 @@
 
                         if ($deadline->isPast()) {
                             $badgeClass = 'bg-urgent';
+                            $statusText = 'terlambat';
                             $statusDisplay = 'Terlambat';
                         } elseif ($diffInDays <= 3) {
                             $badgeClass = 'bg-soon';
-                            $statusDisplay = 'Segera';
+                            $statusText = 'Mendekati Deadline';
+                            $statusDisplay = 'Mendekati Deadline';
                         } else {
                             $badgeClass = 'bg-normal';
+                            $statusText = 'aktif';
                             $statusDisplay = 'Aktif';
                         }
                     @endphp
 
-                    <div class="task-card task-card-theme">
+                    <div class="task-card task-card-theme" data-deadline="{{ $deadline->timestamp }}" data-status="{{ $statusText }}">
                         <div class="task-header">
                             <h3 class="task-title-text">{{ $t->judul }}</h3>
-                            <span class="badge-deadline {{ $badgeClass }}">
-                                {{ $statusDisplay }}
-                            </span>
+                            <span class="badge-deadline {{ $badgeClass }}">{{ $statusDisplay }}</span>
                         </div>
 
                         <div class="task-desc">
-                            {!! Str::limit($t->deskripsi, 100, '...') ?: '<em>Tidak ada deskripsi.</em>' !!}
+                            {!! Str::limit($t->deskripsi, 150, '...') ?: '<em class="text-muted">Tidak ada deskripsi</em>' !!}
                         </div>
 
                         <div class="task-meta">
                             <div class="meta-row">
-                                <span style="font-weight: 600;">DEADLINE:</span>
-                                <span>{{ $deadline->format('d M Y, H:i') }}</span>
-                            </div>
-                            <div class="meta-row">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    viewBox="0 0 16 16">
-                                    <path
-                                        d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="meta-icon" viewBox="0 0 16 16">
+                                    <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+                                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
                                 </svg>
-                                @if($t->file_path)
-                                    <a href="{{ route('tugas.download', $t->id) }}" class="download-link">Download Lampiran</a>
-                                @else
-                                    <span class="text-muted fst-italic">Tidak ada file</span>
-                                @endif
+                                <div>
+                                    <strong>Deadline:</strong><br>
+                                    <span>{{ $deadline->format('d F Y, H:i') }} WIB</span>
+                                </div>
+                            </div>
+
+                            <div class="meta-row">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="meta-icon" viewBox="0 0 16 16">
+                                    <path d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z"/>
+                                </svg>
+                                <div>
+                                    @if($t->file_path)
+                                        <a href="{{ route('tugas.download', $t->id) }}" class="download-link">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                                <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                                            </svg>
+                                            Download File Tugas
+                                        </a>
+                                    @else
+                                        <span class="text-muted fst-italic">Tidak ada file terlampir</span>
+                                    @endif
+                                </div>
                             </div>
                         </div>
 
                         @if(Auth::user()->role == 'admin')
                             <div class="task-footer">
-                                <small class="text-muted d-flex align-items-center gap-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
-                                        viewBox="0 0 16 16">
-                                        <path
-                                            d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
-                                        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
+                                <small class="text-muted d-flex align-items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+                                        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
                                     </svg>
                                     {{ $deadline->diffForHumans() }}
                                 </small>
                                 <div class="d-flex gap-2">
-                                    <a href="{{ route('tugas.edit', $t->id) }}" class="btn-icon btn-edit-task" title="Edit">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                            viewBox="0 0 16 16">
-                                            <path
-                                                d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                                    <a href="{{ route('tugas.edit', $t->id) }}" class="btn-icon btn-edit-task" title="Edit Tugas">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
                                         </svg>
                                     </a>
-                                    <button type="button" class="btn-icon btn-delete-task" data-bs-toggle="modal"
-                                        data-bs-target="#deleteModal{{ $t->id }}" title="Hapus">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                            viewBox="0 0 16 16">
-                                            <path
-                                                d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
-                                            <path
-                                                d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+                                    <button type="button" class="btn-icon btn-delete-task" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $t->id }}" title="Hapus Tugas">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
                                         </svg>
                                     </button>
                                 </div>
                             </div>
                         @endif
                     </div>
-
-                    @if(Auth::user()->role == 'admin')
-                        <div class="modal fade" id="deleteModal{{ $t->id }}" tabindex="-1" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
-                                    <div class="modal-header border-0"
-                                        style="background: linear-gradient(135deg, #ef4444, #dc2626); border-radius: 20px 20px 0 0;">
-                                        <h5 class="modal-title fw-bold text-white">Hapus Tugas?</h5>
-                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                                    </div>
-                                    <div class="modal-body text-center p-4">
-                                        <div class="text-danger mb-3">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor"
-                                                viewBox="0 0 16 16">
-                                                <path
-                                                    d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
-                                            </svg>
-                                        </div>
-                                        <p class="mb-1">Anda yakin ingin memindahkan tugas ini ke sampah?</p>
-                                        <h5 class="fw-bold text-dark">{{ $t->judul }}</h5>
-                                    </div>
-                                    <div class="modal-footer justify-content-center border-0 pb-4">
-                                        <button type="button" class="btn btn-light border px-4"
-                                            data-bs-dismiss="modal">Batal</button>
-                                        <form action="{{ route('tugas.destroy', $t->id) }}" method="POST">
-                                            @csrf @method('DELETE')
-                                            <button type="submit" class="btn btn-danger px-4">Ya, Hapus</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
-
                 @empty
                     <div class="empty-state">
                         <div class="empty-animation"></div>
-                        <h3 class="empty-title">Tidak Ada Tugas</h3>
-                        <p class="empty-text">Saat ini belum ada tugas yang sesuai dengan filter Anda.</p>
-                        @if(request('cari') || request('status'))
-                            <a href="{{ route('home') }}" class="btn-modern btn-light-modern">Reset Filter</a>
+                        <h3 class="empty-title">Belum Ada Tugas</h3>
+                        <p class="empty-text">Mulai dengan membuat tugas pertama Anda</p>
+                        @if(Auth::user()->role == 'admin')
+                            <a href="{{ route('tugas.create') }}" class="btn-modern btn-primary-modern">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 0 1 0 2H9v6a1 1 0 0 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z"/>
+                                </svg>
+                                Buat Tugas Pertama
+                            </a>
                         @endif
                     </div>
                 @endforelse
             </div>
 
+            <!-- Pagination -->
             @if($tugas->hasPages())
-                <div class="pagination-wrapper fade-in-up" style="animation-delay: 0.4s;">
+                <div class="pagination-wrapper fade-in-up" style="animation-delay: 0.4s;">                    
                     {{ $tugas->appends(request()->query())->onEachSide(1)->links() }}
                 </div>
             @endif
-
         </div>
     </div>
 
+    <!-- Delete Modals -->
+    @foreach($tugas as $t)
+        @if(Auth::user()->role == 'admin')
+            <div class="modal fade" id="deleteModal{{ $t->id }}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border-0 shadow-lg" style="border-radius: 24px;">
+                        <div class="modal-header border-0 text-white" style="background: linear-gradient(135deg, #ef4444, #dc2626); border-radius: 24px 24px 0 0;">
+                            <h5 class="modal-title fw-bold">Konfirmasi Hapus</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body text-center p-5">
+                            <div class="mb-4">
+                                <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #fef2f2, #fee2e2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#ef4444" viewBox="0 0 16 16">
+                                        <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            <p class="mb-3">Anda yakin ingin memindahkan tugas ini ke sampah?</p>
+                            <h6 class="fw-bold text-dark my-3">{{ $t->judul }}</h6>
+                            <small class="text-muted">Data masih bisa dipulihkan dari menu Sampah.</small>
+                        </div>
+                        <div class="modal-footer justify-content-center border-0 pb-5">
+                            <button type="button" class="btn btn-light border px-4 py-2" style="border-radius: 12px;" data-bs-dismiss="modal">Batal</button>
+                            <form action="{{ route('tugas.destroy', $t->id) }}" method="POST">
+                                @csrf @method('DELETE')
+                                <button type="submit" class="btn btn-danger px-4 py-2" style="border-radius: 12px; background: linear-gradient(135deg, #ef4444, #dc2626); border: none;">Ya, Hapus</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+    @endforeach
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Elements
+            // Enhanced animations and interactions
+            const actionButtons = document.querySelectorAll('.btn-icon');
+            actionButtons.forEach(btn => {
+                btn.addEventListener('mouseenter', function () {
+                    this.style.transform = 'scale(1.1)';
+                });
+                btn.addEventListener('mouseleave', function () {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+
+            // Search functionality
             const searchInput = document.getElementById('searchInput');
             const clearBtn = document.getElementById('clearSearchBtn');
             const filterForm = document.getElementById('filterForm');
 
-            // --- 1. Logic Button Clear (Silang) ---
             function toggleClearButton() {
-                if (searchInput && searchInput.value.trim().length > 0) {
+                if (searchInput.value.trim().length > 0) {
                     clearBtn.style.display = 'block';
-                } else if (clearBtn) {
+                } else {
                     clearBtn.style.display = 'none';
                 }
             }
 
-            // Init Check
-            toggleClearButton();
+            // Initialize animations
+            const elements = document.querySelectorAll('.fade-in-up');
+            elements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.style.animationPlayState = 'running';
+                }, index * 100);
+            });
 
             if (searchInput) {
-                // Event saat ngetik
+                toggleClearButton();
+
                 searchInput.addEventListener('input', function () {
                     toggleClearButton();
-                    // Auto submit jika dikosongkan manual
                     if (this.value === '') {
                         filterForm.submit();
                     }
                 });
 
-                // Event tombol silang
-                if (clearBtn) {
-                    clearBtn.addEventListener('click', function () {
-                        searchInput.value = '';
-                        toggleClearButton();
-                        filterForm.submit();
-                    });
-                }
+                clearBtn.addEventListener('click', function () {
+                    searchInput.value = '';
+                    toggleClearButton();
+                    filterForm.submit();
+                });
             }
 
-            // --- 2. Button Hover Animation Effect ---
-            const actionButtons = document.querySelectorAll('.btn-icon, .task-card');
-            actionButtons.forEach(btn => {
-                btn.addEventListener('mouseenter', function () {
-                    // Optional JS hover logic if CSS isn't enough
+            // Add hover effects to task cards
+            const taskCards = document.querySelectorAll('.task-card');
+            taskCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px) scale(1.02)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
                 });
             });
-        });
+        });                
     </script>
 @endsection

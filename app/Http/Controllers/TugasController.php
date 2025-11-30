@@ -49,8 +49,7 @@ class TugasController extends Controller
             }
         } else {
             $query->orderBy('deadline', 'asc');
-        }
-        // Jika data < 9, tombol pagination TIDAK akan muncul (itu normal)
+        }  
         $tugas = $query->paginate(6); 
 
         return view('tugas.index', compact('tugas'));
