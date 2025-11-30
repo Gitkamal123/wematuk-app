@@ -600,13 +600,13 @@
                         }
 
                         /* Pagination Info */
-                        .pagination-info {
+                        /* .pagination-info {
                             text-align: center;
                             margin-top: 1rem;
                             color: #64748b;
                             font-size: 0.9rem;
                             font-weight: 500;
-                        }
+                        } */
 
                         /* Enhanced Clear Search Button */
                         .clear-search-btn {
@@ -954,9 +954,6 @@
                             <!-- Enhanced Pagination -->
                             @if($tugas->hasPages())
                                 <div class="pagination-wrapper fade-in-up" style="animation-delay: 0.4s;">
-                                    <div class="pagination-info">
-                                        Menampilkan {{ $tugas->firstItem() ?? 0 }} - {{ $tugas->lastItem() ?? 0 }} dari {{ $tugas->total() }} tugas
-                                    </div>
                                     {{ $tugas->appends(request()->query())->onEachSide(1)->links() }}
                                 </div>
                             @endif
