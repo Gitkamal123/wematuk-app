@@ -167,33 +167,8 @@
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
         }
 
-        /* Warna Warni Kartu dengan Gradien */
+        /* Warna Kartu dengan Gradien */
         .color-1 {
-            border-color: #3b82f6;
-            background: linear-gradient(135deg, #ffffff 0%, #f0f7ff 100%);
-        }
-
-        .color-2 {
-            border-color: #10b981;
-            background: linear-gradient(135deg, #ffffff 0%, #f0fff4 100%);
-        }
-
-        .color-3 {
-            border-color: #f59e0b;
-            background: linear-gradient(135deg, #ffffff 0%, #fffbeb 100%);
-        }
-
-        .color-4 {
-            border-color: #8b5cf6;
-            background: linear-gradient(135deg, #ffffff 0%, #f5f3ff 100%);
-        }
-
-        .color-5 {
-            border-color: #ec4899;
-            background: linear-gradient(135deg, #ffffff 0%, #fdf2f8 100%);
-        }
-
-        .color-6 {
             border-color: #06b6d4;
             background: linear-gradient(135deg, #ffffff 0%, #f0fff9 100%);
         }
@@ -558,6 +533,25 @@
                 font-size: 0.9rem;
             }
         }
+        /* Style untuk tombol silang (Clear) */
+        .clear-search-btn {
+            position: absolute;
+            right: 80px; 
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #9ca3af;
+            display: none; 
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.2s;
+            z-index: 4;
+        }
+
+        .clear-search-btn:hover {
+            background-color: #f3f4f6;
+            color: #ef4444; 
+        }
     </style>
 
     <div class="tugas-container">
@@ -567,7 +561,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4 fade-in-up" style="animation-delay: 0.1s;">
                 <div>
                     <h1 class="tugas-title">Daftar Tugas</h1>
-                    <p class="text-muted mb-0">Kelola dan pantau tugas kuliah Anda dengan mudah</p>
+                    <p class="text-muted mb-0">List Tugas Yang Tersedia</p>
                 </div>
 
                 <div class="d-flex gap-2 flex-wrap">
@@ -599,14 +593,23 @@
                 <form action="{{ route('home') }}" method="GET" id="filterForm">
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <div class="search-input-group">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
-                                    class="search-icon" viewBox="0 0 16 16">
+                            <div class="search-input-group position-relative">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="search-icon"
+                                    viewBox="0 0 16 16">
                                     <path
                                         d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                                 </svg>
-                                <input type="search" name="cari" class="form-control form-control-custom search-input"
+
+                                <input type="text" name="cari" id="searchInput" class="form-control form-control-custom search-input"
                                     placeholder="Cari tugas..." value="{{ request('cari') }}" autocomplete="off">
+
+                                <span id="clearSearchBtn" class="clear-search-btn" title="Hapus pencarian">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                        <path
+                                            d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                                    </svg>
+                                </span>
+
                                 <button type="submit" class="btn-modern btn-primary-modern position-absolute"
                                     style="right: 5px; top: 50%; transform: translateY(-50%); height: calc(100% - 10px);">
                                     Cari
@@ -630,11 +633,7 @@
                                 <option value="deadline_asc" {{ request('sort') == 'deadline_asc' ? 'selected' : '' }}>Deadline
                                     Terdekat</option>
                                 <option value="deadline_desc" {{ request('sort') == 'deadline_desc' ? 'selected' : '' }}>Deadline
-                                    Terjauh</option>
-                                <option value="created_desc" {{ request('sort') == 'created_desc' ? 'selected' : '' }}>Terbaru Dibuat
-                                </option>
-                                <option value="created_asc" {{ request('sort') == 'created_asc' ? 'selected' : '' }}>Terlama Dibuat
-                                </option>
+                                    Terjauh</option>                               
                             </select>
                         </div>
                     </div>
@@ -825,6 +824,20 @@
                 });
             });
 
+            // === LOGIKA PENCARIAN ===
+            const searchInput = document.getElementById('searchInput');
+            const clearBtn = document.getElementById('clearSearchBtn');
+            const filterForm = document.getElementById('filterForm');
+
+            // Fungsi untuk cek status tombol silang
+            function toggleClearButton() {
+                if (searchInput.value.trim().length > 0) {
+                    clearBtn.style.display = 'block';
+                } else {
+                    clearBtn.style.display = 'none';
+                }
+            }
+
             // 2. Initialize animations (Fade In)
             const elements = document.querySelectorAll('.fade-in-up');
             elements.forEach((el, index) => {
@@ -832,6 +845,27 @@
                     el.style.animationPlayState = 'running';
                 }, index * 100);
             });
+            
+            if (searchInput) {
+                toggleClearButton();
+
+                // 2. Event saat mengetik/menghapus manual
+                searchInput.addEventListener('input', function () {
+                    toggleClearButton();
+
+                    // Jika user menghapus manual sampai kosong, auto submit
+                    if (this.value === '') {
+                        filterForm.submit();
+                    }
+                });
+
+                // 3. Event saat tombol silang diklik
+                clearBtn.addEventListener('click', function () {
+                    searchInput.value = ''; // Kosongkan input
+                    toggleClearButton();    // Sembunyikan tombol silang
+                    filterForm.submit();    // Submit form otomatis
+                });
+            }
         });
     </script>
 @endsection
