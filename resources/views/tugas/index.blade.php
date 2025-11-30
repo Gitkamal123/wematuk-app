@@ -659,9 +659,9 @@
                                                             </span>
                                                         </div>
 
-                                                        <div class="task-desc">
+                                                        {{-- <div class="task-desc">
                                                             {{ Str::limit($t->deskripsi, 120, '...') ?: 'Tidak ada deskripsi tambahan.' }}
-                                                        </div>
+                                                        </div> --}}
 
                                                         <div class="task-meta">
                                                             <div class="meta-row">
