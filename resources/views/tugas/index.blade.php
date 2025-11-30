@@ -306,9 +306,9 @@
                     <div class="col-md-3">
                         <select class="form-select form-select-custom" id="statusFilter">
                             <option value="">Semua Status</option>
-                            <option value="terlambat">Terlambat (Lewat Deadline)</option>
-                            <option value="segera">Segera (<= 3 Hari)</option>
-                            <option value="aktif">Aktif (Masih Lama)</option>
+                            <option value="terlambat">Terlambat</option>
+                            <option value="segera">Segera</option>
+                            <option value="aktif">Aktif</option>
                         </select>
                     </div>
                     <div class="col-md-3">
@@ -323,15 +323,11 @@
             <div class="tasks-grid fade-in-up" id="tasksGrid" style="animation-delay: 0.3s;">
                 @forelse($tugas as $index => $t)
                     @php
-                        // Logika Warna (Cycle 1-6)
                         $colorIndex = ($index % 6) + 1;
-
-                        // Logika Deadline
                         $deadline = \Carbon\Carbon::parse($t->deadline);
                         $now = \Carbon\Carbon::now();
-                        $diffInDays = $now->diffInDays($deadline, false); // False = bisa negatif
+                        $diffInDays = $now->diffInDays($deadline, false);
 
-                        // Tentukan Status & Class
                         if ($deadline->isPast()) {
                             $badgeClass = 'bg-urgent';
                             $statusText = 'Terlambat';
@@ -411,34 +407,10 @@
                             </div>
                         @endif
                     </div>
-
-                    @if(Auth::user()->role == 'admin')
-                        <div class="modal fade" id="deleteModal{{ $t->id }}" tabindex="-1" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content border-0 shadow-lg">
-                                    <div class="modal-header bg-danger text-white border-0">
-                                        <h5 class="modal-title fw-bold">Hapus Tugas?</h5>
-                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                                    </div>
-                                    <div class="modal-body text-center p-4">
-                                        <p class="mb-1">Anda yakin ingin memindahkan tugas ini ke sampah?</p>
-                                        <h5 class="fw-bold text-dark my-3">{{ $t->judul }}</h5>
-                                        <small class="text-muted">Data masih bisa dipulihkan dari menu Sampah.</small>
-                                    </div>
-                                    <div class="modal-footer justify-content-center border-0 pb-4">
-                                        <button type="button" class="btn btn-light border px-4"
-                                            data-bs-dismiss="modal">Batal</button>
-                                        <form action="{{ route('tugas.destroy', $t->id) }}" method="POST">
-                                            @csrf @method('DELETE')
-                                            <button type="submit" class="btn btn-danger px-4">Ya, Hapus</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
                 @empty
                     <div class="empty-state">
+                        <img src="https://cdni.iconscout.com/illustration/premium/thumb/folder-is-empty-illustration-download-in-svg-png-gif-file-formats--no-data-nothing-here-err-user-interface-pack-design-development-illustrations-4330693.png"
+                            alt="Empty" style="width: 150px; opacity: 0.7;">
                         <h3 class="mt-3 fw-bold text-secondary">Belum Ada Tugas</h3>
                         <p class="text-muted">Ayo mulai produktif! Tambahkan tugas pertamamu sekarang.</p>
                         @if(Auth::user()->role == 'admin')
@@ -457,6 +429,34 @@
         </div>
     </div>
 
+    @foreach($tugas as $t)
+        @if(Auth::user()->role == 'admin')
+            <div class="modal fade" id="deleteModal{{ $t->id }}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border-0 shadow-lg" style="border-radius: 16px;">
+                        <div class="modal-header border-0 text-white"
+                            style="background: linear-gradient(135deg, #ef4444, #dc2626); border-radius: 16px 16px 0 0;">
+                            <h5 class="modal-title fw-bold">Hapus Tugas?</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body text-center p-4">
+                            <p class="mb-1">Anda yakin ingin memindahkan tugas ini ke sampah?</p>
+                            <h5 class="fw-bold text-dark my-3">{{ $t->judul }}</h5>
+                            <small class="text-muted">Data masih bisa dipulihkan dari menu Sampah.</small>
+                        </div>
+                        <div class="modal-footer justify-content-center border-0 pb-4">
+                            <button type="button" class="btn btn-light border px-4" data-bs-dismiss="modal">Batal</button>
+                            <form action="{{ route('tugas.destroy', $t->id) }}" method="POST">
+                                @csrf @method('DELETE')
+                                <button type="submit" class="btn btn-danger px-4">Ya, Hapus</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+    @endforeach
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const statusFilter = document.getElementById('statusFilter');
@@ -469,18 +469,18 @@
                 const statusValue = statusFilter.value;
                 const sortValue = sortBy.value;
 
-                // 1. Filtering (Sembunyikan yang tidak cocok)
+                // 1. Filtering
                 cards.forEach(card => {
                     if (statusValue === '' || card.dataset.status === statusValue) {
-                        card.parentElement.style.display = 'block'; // Parent wrapper (if any) or card itself
+                        // Tampilkan cardnya, bukan parent wrapper
+                        card.parentElement.style.display = 'block';
                         card.style.display = 'flex';
                     } else {
                         card.style.display = 'none';
                     }
                 });
 
-                // 2. Sorting (Urutkan DOM elements)
-                // (Sort logic hanya bekerja efektif di halaman yang sama)
+                // 2. Sorting
                 const visibleCards = cards.filter(card => card.style.display !== 'none');
 
                 visibleCards.sort((a, b) => {
@@ -492,7 +492,7 @@
                     return 0;
                 });
 
-                // Re-append sorted cards
+                // Re-append
                 visibleCards.forEach(card => tasksGrid.appendChild(card));
             }
 
