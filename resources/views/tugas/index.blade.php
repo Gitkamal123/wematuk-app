@@ -677,7 +677,7 @@
             .search-submit-btn {
                 position: absolute;
                 right: 5px;
-                top: 15%;
+                top: 20%;
                 transform: translateY(-15%);
                 height: calc(100% - 10px);
                 border-radius: 12px;
