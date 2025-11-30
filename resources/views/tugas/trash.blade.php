@@ -449,116 +449,121 @@
                                 <th style="text-align: center;">Aksi</th>
                             </tr>
                         </thead>
-                    <tbody>
-                        @forelse($tugas as $t)
-                            <tr>
-                                <td>
-                                    <div class="task-item">
-                                        <div class="task-icon-wrapper">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="task-icon" fill="currentColor" viewBox="0 0 16 16">
-                                                <path
-                                                    d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5" />
-                                                <path
-                                                    d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z" />
-                                            </svg>
-                                        </div>
-                                        <div class="task-info">
-                                            <strong>{{ $t->judul }}</strong>
-                                            @if($t->deskripsi)
-                                                <small>{{ Str::limit($t->deskripsi, 50) }}</small>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="deadline-badge">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
-                                            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
-                                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
-                                        </svg>
-                                        {{ \Carbon\Carbon::parse($t->deadline)->format('d M Y, H:i') }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <span class="deleted-time">{{ $t->deleted_at->format('d M Y, H:i') }}</span>
-                                    <span class="deleted-relative">{{ $t->deleted_at->diffForHumans() }}</span>
-                                </td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <form action="{{ route('tugas.restore', $t->id) }}" method="POST">
-                                            @csrf
-                                            @method('PUT')
-                                            <button type="submit" class="btn-action btn-restore" title="Pulihkan tugas">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
-                                                    viewBox="0 0 16 16">
-                                                    <path fill-rule="evenodd"
-                                                        d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2z" />
+                        <tbody>
+                            @forelse($tugas as $t)
+                                <tr>
+                                    <td>
+                                        <div class="task-item">
+                                            <div class="task-icon-wrapper">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="task-icon" fill="currentColor" viewBox="0 0 16 16">
                                                     <path
-                                                        d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466" />
-                                                </svg>
-                                                Pulihkan
-                                            </button>
-                                        </form>
-
-                                        <button type="button" class="btn-action btn-delete" data-bs-toggle="modal"
-                                            data-bs-target="#deleteModal{{ $t->id }}" title="Hapus permanen">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
-                                                viewBox="0 0 16 16">
-                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                                                <path
-                                                    d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
-                                            </svg>
-                                            Hapus
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <div class="modal fade" id="deleteModal{{ $t->id }}" tabindex="-1" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header modal-header-danger">
-                                            <h5 class="modal-title modal-title-custom">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                                                    viewBox="0 0 16 16">
+                                                        d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5" />
                                                     <path
-                                                        d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                                                        d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z" />
                                                 </svg>
-                                                Hapus Tugas Ini?
-                                            </h5>
-                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                                        </div>
-                                        <div class="modal-body modal-body-custom">
-                                            <p>Anda yakin ingin menghapus tugas <strong>"{{ $t->judul }}"</strong> secara permanen?</p>
-                                            <div class="alert-danger-custom">
-                                                <small>Data tidak bisa dikembalikan lagi!</small>
+                                            </div>
+                                            <div class="task-info">
+                                                <strong>{{ $t->judul }}</strong>
+                                                @if($t->deskripsi)
+                                                    <small>{{ Str::limit($t->deskripsi, 50) }}</small>
+                                                @endif
                                             </div>
                                         </div>
-                                        <div class="modal-footer modal-footer-custom">
-                                            <button type="button" class="btn-custom btn-back" data-bs-dismiss="modal">Batal</button>
-                                            <form action="{{ route('tugas.forceDelete', $t->id) }}" method="POST" style="display: inline;">
+                                    </td>
+                                    <td>
+                                        <span class="deadline-badge">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                                                <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
+                                                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
+                                            </svg>
+                                            {{ \Carbon\Carbon::parse($t->deadline)->format('d M Y, H:i') }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="deleted-time">{{ $t->deleted_at->format('d M Y, H:i') }}</span>
+                                        <span class="deleted-relative">{{ $t->deleted_at->diffForHumans() }}</span>
+                                    </td>
+
+                                    <td>
+                                        <div class="action-buttons">
+                                            <form action="{{ route('tugas.restore', $t->id) }}" method="POST">
                                                 @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn-custom btn-danger-custom">Ya, Hapus</button>
+                                                @method('PUT')
+                                                <button type="submit" class="btn-action btn-restore" title="Pulihkan tugas">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
+                                                        viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd"
+                                                            d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2z" />
+                                                        <path
+                                                            d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466" />
+                                                    </svg>
+                                                    Pulihkan
+                                                </button>
                                             </form>
+
+                                            <button type="button" class="btn-action btn-delete" data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal{{ $t->id }}" title="Hapus permanen">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
+                                                    viewBox="0 0 16 16">
+                                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                                    <path
+                                                        d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                                </svg>
+                                                Hapus
+                                            </button>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @empty
-                            <tr>
-                                <td colspan="4">
-                                    <div class="empty-state">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="empty-icon" fill="currentColor" viewBox="0 0 16 16">
-                                            <path
-                                                d="M4.98 4a.5.5 0 0 0-.39.188L1.54 8H6a.5.5 0 0 1 .5.5 1.5 1.5 0 1 0 3 0A.5.5 0 0 1 10 8h4.46l-3.05-3.812A.5.5 0 0 0 11.02 4zm-1.17-.437A1.5 1.5 0 0 1 4.98 3h6.04a1.5 1.5 0 0 1 1.17.563l3.7 4.625a.5.5 0 0 1 .106.374l-.39 3.124A1.5 1.5 0 0 1 14.117 13H1.883a1.5 1.5 0 0 1-1.489-1.314l-.39-3.124a.5.5 0 0 1 .106-.374z" />
-                                        </svg>
-                                        <h3 class="empty-title">Tidak Ada Tugas yang dihapus</h3>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
+
+                                        <div class="modal fade" id="deleteModal{{ $t->id }}" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header modal-header-danger">
+                                                        <h5 class="modal-title modal-title-custom">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                                                viewBox="0 0 16 16">
+                                                                <path
+                                                                    d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                                                            </svg>
+                                                            Konfirmasi Penghapusan
+                                                        </h5>
+                                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body modal-body-custom">
+                                                        <p>Anda yakin ingin menghapus tugas ini secara <strong
+                                                                style="color: #e53e3e;">PERMANEN</strong>?</p>
+                                                        <div class="alert-danger-custom">
+                                                            <strong style="color: #e53e3e;">{{ $t->judul }}</strong>
+                                                            <br>
+                                                            <small style="color: #718096;">Tindakan ini tidak dapat dibatalkan!</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer modal-footer-custom">
+                                                        <button type="button" class="btn-custom btn-back" data-bs-dismiss="modal">Batal</button>
+                                                        <form action="{{ route('tugas.forceDelete', $t->id) }}" method="POST"
+                                                            style="display: inline;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn-custom btn-danger-custom">Ya, Hapus Permanen</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4">
+                                        <div class="empty-state">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="empty-icon" fill="currentColor" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M4.98 4a.5.5 0 0 0-.39.188L1.54 8H6a.5.5 0 0 1 .5.5 1.5 1.5 0 1 0 3 0A.5.5 0 0 1 10 8h4.46l-3.05-3.812A.5.5 0 0 0 11.02 4zm-1.17-.437A1.5 1.5 0 0 1 4.98 3h6.04a1.5 1.5 0 0 1 1.17.563l3.7 4.625a.5.5 0 0 1 .106.374l-.39 3.124A1.5 1.5 0 0 1 14.117 13H1.883a1.5 1.5 0 0 1-1.489-1.314l-.39-3.124a.5.5 0 0 1 .106-.374z" />
+                                            </svg>
+                                            <h3 class="empty-title">Tidak Ada Tugas yang dihapus</h3>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
                     </table>
                 </div>
             </div>
