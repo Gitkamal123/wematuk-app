@@ -877,8 +877,8 @@
 
         if ($deadline->isPast()) {
             $badgeClass = 'bg-urgent';
-            $statusText = 'terlambat';
-            $statusDisplay = 'Terlambat';
+            $statusText = 'Lewat Deadline';
+            $statusDisplay = 'Lewat Deadline';
         } elseif ($diffInDays <= 3) {
             $badgeClass = 'bg-soon';
             $statusText = 'Mendekati Deadline';
