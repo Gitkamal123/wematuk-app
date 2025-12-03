@@ -385,7 +385,10 @@ Route::get('/add-unique-nrp-fixed', function () {
  
 
 // --- ROUTE USER (WAJIB LOGIN) ---
-Route::middleware(['auth'])->group(function () {
+    // Gabungkan dengan middleware auth
+Route::middleware(['auth', 'prevent-back-history'])->group(function () {
+
+    // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/home', [TugasController::class, 'index'])->name('home');
     Route::get('/cari', [TugasController::class, 'cari'])->name('tugas.cari');
     Route::get('/laporan', [TugasController::class, 'cetakLaporan'])->name('laporan.cetak');
