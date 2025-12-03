@@ -378,111 +378,95 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Main container animation
+
+            /* ===============================
+               ANIMASI HALAMAN
+            =============================== */
+
+            // Main container
             const userManagementContainer = document.getElementById('userManagementContainer');
 
-            // Header animation
+            // Header
             const headerSection = document.getElementById('headerSection');
 
-            // Stat cards animations
+            // Stat cards
             const userStatCard = document.getElementById('userStatCard');
             const adminStatCard = document.getElementById('adminStatCard');
 
-            // Table card animation
+            // Table card
             const usersTableCard = document.getElementById('usersTableCard');
 
-            // Pagination animation
+            // Pagination
             const paginationSection = document.getElementById('paginationSection');
 
             // Table rows
             const tableRows = document.querySelectorAll('.table-row');
 
-            // Sequence animations with delays
-            setTimeout(() => {
-                userManagementContainer.classList.add('show');
-            }, 100);
 
-            setTimeout(() => {
-                headerSection.classList.add('show');
-            }, 200);
+            /* --- Sequence animation --- */
+            setTimeout(() => userManagementContainer.classList.add('show'), 100);
+            setTimeout(() => headerSection.classList.add('show'), 200);
+            setTimeout(() => userStatCard.classList.add('show'), 300);
+            setTimeout(() => adminStatCard.classList.add('show'), 400);
+            setTimeout(() => usersTableCard.classList.add('show'), 500);
 
-            setTimeout(() => {
-                userStatCard.classList.add('show');
-            }, 300);
-
-            setTimeout(() => {
-                adminStatCard.classList.add('show');
-            }, 400);
-
-            setTimeout(() => {
-                usersTableCard.classList.add('show');
-            }, 500);
-
-            // Animate table rows with staggered delay
+            // Row fade-in satu per satu
             tableRows.forEach((row, index) => {
                 setTimeout(() => {
                     row.classList.add('show');
                 }, 600 + (index * 100));
             });
 
-            setTimeout(() => {
-                paginationSection.classList.add('show');
-            }, 800 + (tableRows.length * 100));
+            setTimeout(() => paginationSection.classList.add('show'),
+                800 + (tableRows.length * 100)
+            );
 
-            // Enhanced hover effects
+
+            /* ===============================
+               HOVER EFFECTS
+            =============================== */
+
+            // Card hover
             const cards = document.querySelectorAll('.card');
             cards.forEach(card => {
-                card.addEventListener('mouseenter', function () {
-                    this.style.transform = 'translateY(-5px)';
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-5px)';
                 });
-
-                card.addEventListener('mouseleave', function () {
-                    this.style.transform = 'translateY(0)';
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0)';
                 });
             });
 
-            // Add click animation to dropdown items
+            // Dropdown item click "press" animation
             const dropdownItems = document.querySelectorAll('.dropdown-item');
             dropdownItems.forEach(item => {
-                item.addEventListener('click', function (e) {
-                    // Add subtle scale effect
+                item.addEventListener('click', function () {
                     this.style.transform = 'scale(0.98)';
-                    setTimeout(() => {
-                        this.style.transform = '';
-                    }, 200);
+                    setTimeout(() => (this.style.transform = ''), 200);
                 });
             });
 
-            // Avatar hover effect
+            // Avatar hover
             const avatars = document.querySelectorAll('.avatar-sm');
             avatars.forEach(avatar => {
-                avatar.addEventListener('mouseenter', function () {
-                    this.style.transform = 'scale(1.1) rotate(5deg)';
+                avatar.addEventListener('mouseenter', () => {
+                    avatar.style.transform = 'scale(1.1) rotate(5deg)';
                 });
-
-                avatar.addEventListener('mouseleave', function () {
-                    this.style.transform = 'scale(1) rotate(0deg)';
+                avatar.addEventListener('mouseleave', () => {
+                    avatar.style.transform = 'scale(1) rotate(0deg)';
                 });
             });
 
-            // Badge hover effects
+            // Badge hover
             const badges = document.querySelectorAll('.badge');
             badges.forEach(badge => {
                 badge.addEventListener('mouseenter', function () {
                     this.style.transform = 'scale(1.05)';
                     this.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
-                    this.style.cursor = 'pointer';                    
-                    this.style.transition = 'all 0.3s ease';
-                    this.style.zIndex = '10';
-                    this.style.position = 'relative';
+                    this.style.cursor = 'pointer';
                     this.style.fontWeight = '600';
                     this.style.letterSpacing = '0.5px';
-                    this.style.border = '1px solid rgba(255,255,255,0.2)';
                     this.style.backdropFilter = 'blur(10px)';
-                    this.style.webkitBackdropFilter = 'blur(10px)';
-                    this.style.backgroundColor = this.classList.contains('bg-primary') ?
-                        'rgba(13, 110, 253, 0.9)' :
-                        'rgba(255, 193, 7, 0.9)';
                 });
 
                 badge.addEventListener('mouseleave', function () {
@@ -490,34 +474,52 @@
                     this.style.boxShadow = 'none';
                     this.style.fontWeight = '500';
                     this.style.letterSpacing = 'normal';
-                    this.style.border = 'none';
                     this.style.backdropFilter = 'none';
-                    this.style.webkitBackdropFilter = 'none';
-                    this.style.backgroundColor = this.classList.contains('bg-primary') ?
-                        '' : '';
                 });
 
                 badge.addEventListener('click', function () {
-                    // Add pulse animation on click
                     this.style.animation = 'pulse 0.6s ease';
-                    setTimeout(() => {
-                        this.style.animation = '';
-                    }, 600);
+                    setTimeout(() => (this.style.animation = ''), 600);
                 });
+            });
+
+
+            /* ===============================
+               AUTO DROPUP UNTUK 2 ROW TERAKHIR
+            =============================== */
+
+            const lastTwo = Array.from(tableRows).slice(-2);
+
+            lastTwo.forEach(row => {
+                row.classList.add('dropup-row');   // CSS akan otomatis mengubah arah dropdown
+            });
+
+
+            /* ===============================
+               REFRESH ANIMASI KETIKA TAB KEMBALI AKTIF
+            =============================== */
+
+            document.addEventListener('visibilitychange', function () {
+                if (!document.hidden) {
+                    const elements = document.querySelectorAll('.stat-card, .users-table-card');
+                    elements.forEach(el => {
+                        el.style.animation = 'none';
+                        setTimeout(() => (el.style.animation = ''), 10);
+                    });
+                }
             });
         });
 
-        // Enhanced Confirm Delete Function with animations
+
+        /* ===============================
+           FUNCTION KONFIRMASI DELETE
+        =============================== */
         function confirmDelete(userId, userName) {
-            // Add shake animation to the row being deleted
+
             const row = document.getElementById(`userRow${userId}`);
             if (row) {
                 row.style.animation = 'shake 0.5s ease-in-out';
-
-                // Remove animation after it completes
-                setTimeout(() => {
-                    row.style.animation = '';
-                }, 500);
+                setTimeout(() => (row.style.animation = ''), 500);
             }
 
             Swal.fire({
@@ -531,22 +533,16 @@
                 cancelButtonText: 'Batal',
                 reverseButtons: true,
                 backdrop: 'rgba(0,0,0,0.4)',
-                showClass: {
-                    popup: 'animate__animated animate__fadeInDown'
-                },
-                hideClass: {
-                    popup: 'animate__animated animate__fadeOutUp'
-                }
+                showClass: { popup: 'animate__animated animate__fadeInDown' },
+                hideClass: { popup: 'animate__animated animate__fadeOutUp' }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Add loading state to the row
+
                     if (row) {
                         row.style.opacity = '0.5';
                         row.style.background = 'linear-gradient(45deg, #ff6b6b, #ee5a52)';
                         row.style.color = 'white';
                         row.style.transition = 'all 0.5s ease';
-
-                        // Add deleting animation
                         row.style.animation = 'slideOutLeft 0.5s ease forwards';
 
                         setTimeout(() => {
@@ -559,68 +555,33 @@
             });
         }
 
-        // Add CSS for delete animations
+
+        /* ===============================
+           DELETE ANIMATIONS KEYFRAMES
+        =============================== */
         const style = document.createElement('style');
         style.textContent = `
-                @keyframes shake {
-                    0%, 100% { transform: translateX(0); }
-                    25% { transform: translateX(-5px); }
-                    75% { transform: translateX(5px); }
-                }
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+    }
 
-                @keyframes slideOutLeft {
-                    from {
-                        opacity: 1;
-                        transform: translateX(0);
-                    }
-                    to {
-                        opacity: 0;
-                        transform: translateX(-100%);
-                    }
-                }
+    @keyframes slideOutLeft {
+        from { opacity: 1; transform: translateX(0); }
+        to   { opacity: 0; transform: translateX(-100%); }
+    }
 
-                @keyframes rowHighlight {
-                    0% {
-                        background-color: rgba(67, 97, 238, 0.1);
-                        transform: scale(1);
-                    }
-                    50% {
-                        background-color: rgba(67, 97, 238, 0.2);
-                        transform: scale(1.02);
-                    }
-                    100% {
-                        background-color: transparent;
-                        transform: scale(1);
-                    }
-                }
-            `;
+    @keyframes rowHighlight {
+        0%   { background-color: rgba(67, 97, 238, 0.1); transform: scale(1); }
+        50%  { background-color: rgba(67, 97, 238, 0.2); transform: scale(1.02); }
+        100% { background-color: transparent; transform: scale(1); }
+    }
+    `;
         document.head.appendChild(style);
 
-        // Re-run animations when page becomes visible
-        document.addEventListener('visibilitychange', function () {
-            if (!document.hidden) {
-                const elements = document.querySelectorAll('.stat-card, .users-table-card');
-                elements.forEach(el => {
-                    el.style.animation = 'none';
-                    setTimeout(() => {
-                        el.style.animation = '';
-                    }, 10);
-                });
-            }
-        });
-
-        document.addEventListener('DOMContentLoaded', function () {
-                const rows = document.querySelectorAll('.table-row');
-
-                // Ambil 2 row terakhir
-                const lastTwo = Array.from(rows).slice(-2);
-
-                lastTwo.forEach(row => {
-                    row.classList.add('dropup-row');
-                });
-            });
-
     </script>
+
 
     <!-- Include SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
