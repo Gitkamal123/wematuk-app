@@ -385,7 +385,8 @@ Route::get('/add-unique-nrp-fixed', function () {
  
 
 // --- ROUTE USER (WAJIB LOGIN) ---
-Route::middleware(['auth'])->group(function () {
+// Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'prevent-back-history'])->group(function () {
 
     Route::get('/home', [TugasController::class, 'index'])->name('home');
     Route::get('/cari', [TugasController::class, 'cari'])->name('tugas.cari');
@@ -401,27 +402,29 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/tugas/{tugas}/download', [TugasController::class, 'downloadFile'])->name('tugas.download');
     // Route khusus untuk preview file
     Route::get('/tugas/{tugas}/preview', [TugasController::class, 'previewFile'])->name('tugas.preview');
-});
-
 // --- ROUTE ADMIN (WAJIB LOGIN + ADMIN) ---
-Route::middleware(['auth', 'admin'])->group(function () {
-    // Tugas Admin
-    Route::get('/tugas/buat/baru', [TugasController::class, 'create'])->name('tugas.create');
-    Route::post('/tugas', [TugasController::class, 'store'])->name('tugas.store');
-    Route::get('/tugas/{tugas}/edit', [TugasController::class, 'edit'])->name('tugas.edit');
-    Route::put('/tugas/{tugas}', [TugasController::class, 'update'])->name('tugas.update');
-    Route::delete('/tugas/{tugas}', [TugasController::class, 'destroy'])->name('tugas.destroy');
-    
-    // Trash & Restore
-    Route::get('/admin/tugas/trash', [TugasController::class, 'trash'])->name('tugas.trash');
-    Route::put('/admin/tugas/{id}/restore', [TugasController::class, 'restore'])->name('tugas.restore');
-    Route::delete('/admin/tugas/{id}/force-delete', [TugasController::class, 'forceDelete'])->name('tugas.forceDelete');
-    Route::delete('/admin/tugas/trash/clear', [TugasController::class, 'clearTrash'])->name('tugas.clearTrash');
 
-    // Manajemen User
-    Route::get('/admin/dashboard', [UserController::class, 'dashboard'])->name('admin.dashboard');
-    Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users.index');
-    Route::get('/admin/users/{user}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
-    Route::put('/admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
-    Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+
+    Route::middleware(['auth', 'admin'])->group(function () {
+        // Tugas Admin
+        Route::get('/tugas/buat/baru', [TugasController::class, 'create'])->name('tugas.create');
+        Route::post('/tugas', [TugasController::class, 'store'])->name('tugas.store');
+        Route::get('/tugas/{tugas}/edit', [TugasController::class, 'edit'])->name('tugas.edit');
+        Route::put('/tugas/{tugas}', [TugasController::class, 'update'])->name('tugas.update');
+        Route::delete('/tugas/{tugas}', [TugasController::class, 'destroy'])->name('tugas.destroy');
+        
+        // Trash & Restore
+        Route::get('/admin/tugas/trash', [TugasController::class, 'trash'])->name('tugas.trash');
+        Route::put('/admin/tugas/{id}/restore', [TugasController::class, 'restore'])->name('tugas.restore');
+        Route::delete('/admin/tugas/{id}/force-delete', [TugasController::class, 'forceDelete'])->name('tugas.forceDelete');
+        Route::delete('/admin/tugas/trash/clear', [TugasController::class, 'clearTrash'])->name('tugas.clearTrash');
+
+        // Manajemen User
+        Route::get('/admin/dashboard', [UserController::class, 'dashboard'])->name('admin.dashboard');
+        Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users.index');
+        Route::get('/admin/users/{user}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
+        Route::put('/admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
+        Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+    });
+
 });
