@@ -403,7 +403,6 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function () {
     Route::get('/tugas/{tugas}/download', [TugasController::class, 'downloadFile'])->name('tugas.download');
     // Route khusus untuk preview file
 Route::get('/tugas/{tugas}/preview', [TugasController::class, 'previewFile'])->name('tugas.preview');
-});
 
 // --- ROUTE ADMIN (WAJIB LOGIN + ADMIN) ---
 Route::middleware(['auth', 'admin'])->group(function () {
@@ -426,4 +425,5 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/users/{user}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
     Route::put('/admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
     Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+});
 });
