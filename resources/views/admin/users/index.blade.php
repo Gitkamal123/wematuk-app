@@ -6,15 +6,16 @@
         <style>
             /* ===================== */
             /* USER MANAGEMENT ANIMATIONS */
-            /* ===================== */
-            .table-responsive {
-                overflow: visible !important;
-            }
+            /* ===================== */    
 
             .user-management-container {
                 opacity: 0;
                 transform: translateY(30px);
                 transition: all 0.8s ease;
+            }
+
+            .table-responsive {
+                overflow: visible !important;
             }
 
             .user-management-container.show {
@@ -275,7 +276,8 @@
                                             @else
                                                 <div class="btn-group">
                                                     <button type="button" class="btn btn-sm btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown"
-                                                        data-bs-boundary="viewport"> <i class="fas fa-ellipsis-h"></i>
+                                                        data-bs-display="static">
+                                                        <i class="fas fa-ellipsis-h"></i>
                                                     </button>
                                                     <ul class="dropdown-menu dropdown-menu-end">
                                                         <li>
