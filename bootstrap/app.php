@@ -11,10 +11,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->alias([ 'admin' => \App\Http\Middleware\AdminMiddleware::class, ]);
-        // $middleware->alias([
-        //     'prevent-back-history' => \App\Http\Middleware\PreventBackHistory::class,
-        // ]);
+        // GABUNGKAN DI SINI BIAR RAPI
+        $middleware->alias([
+            'admin' => \App\Http\Middleware\AdminMiddleware::class,
+            'prevent-back-history' => \App\Http\Middleware\PreventBackHistory::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
