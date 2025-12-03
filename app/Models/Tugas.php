@@ -2,15 +2,13 @@
 
 namespace App\Models;
 
-// 👇 1. TAMBAHKAN 'SoftDeletes' DI BARIS 'USE' INI 👇
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Tugas extends Model
 {
-    // 👇 2. TAMBAHKAN 'SoftDeletes' DI DALAM 'USE' INI 👇
-    // Ini akan mengaktifkan 'onlyTrashed()', 'restore()', 'forceDelete()', dll.
+    //1. Model softdeletes (tugas yg dihapus masuk keranjang sampah dulu), akan mengaktifkan 'onlyTrashed()', 'restore()', 'forceDelete()', dll.
     use HasFactory, SoftDeletes;
 
     /**
@@ -22,7 +20,6 @@ class Tugas extends Model
         'judul',
         'deskripsi',
         'deadline',
-        'file_path',
-        // 'status' sudah kita hapus, jadi ini sudah benar
+        'file_path',       
     ];
 }

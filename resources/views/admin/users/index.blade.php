@@ -270,9 +270,8 @@
                                             <span class="text-muted fst-italic">Akun Anda</span>
                                         @else
                                             <div class="btn-group">
-                                                <button type="button" class="btn btn-sm btn-outline-primary dropdown-toggle"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="fas fa-ellipsis-h"></i>
+                                                <button type="button" class="btn btn-sm btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown"
+                                                    data-bs-boundary="viewport"> <i class="fas fa-ellipsis-h"></i>
                                                 </button>
                                                 <ul class="dropdown-menu dropdown-menu-end">
                                                     <li>

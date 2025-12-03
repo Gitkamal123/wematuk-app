@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 class TugasController extends Controller
 {
-    /** Tampilkan SEMUA tugas dengan Filter, Sort, dan Cari */
+    /** Filter, Sort, dan Cari */
     public function index(Request $request)
     {
         $query = Tugas::query();
@@ -131,7 +131,7 @@ class TugasController extends Controller
         return redirect()->route('home')->with('success', 'Tugas berhasil diperbarui!');
     }
 
-    /** Hapus tugas (Soft Delete) */
+    /** Hapus tugas (masuk keranjang sampah dulu) */
     public function destroy(Tugas $tugas)
     {
         $tugas->delete();
