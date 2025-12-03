@@ -187,6 +187,45 @@
             margin-bottom: 8px;
         }
 
+        /* desain ubah role tambahan */
+
+        /* --- AUTO DROPUP UNTUK 2 ROW TERAKHIR --- */
+        .table-row.dropup-row .dropdown-menu {
+            top: auto !important;
+            bottom: 100% !important;
+            margin-bottom: 10px !important;
+        }
+
+        /* --- ANIMASI DROPDOWN LEBIH HALUS --- */
+        .dropdown-menu {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity .25s ease, transform .25s ease;
+        }
+
+        .dropdown.show .dropdown-menu {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .dropdown.dropstart .dropdown-menu {
+            transform: translateX(-10px);
+        }
+
+        .dropdown.dropstart.show .dropdown-menu {
+            transform: translateX(0);
+        }
+
+        /* Jika dropup */
+        .dropdown-menu[data-popper-placement^="top"] {
+            transform: translateY(-10px);
+        }
+
+        .dropdown.show .dropdown-menu[data-popper-placement^="top"] {
+            transform: translateY(0);
+        }
+
+
     </style>
 
     <div class="user-management-container" id="userManagementContainer">
@@ -570,6 +609,18 @@
             }
         });
     </script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+    const rows = document.querySelectorAll('.table-row');
+
+    // Ambil 2 row terakhir
+    const lastTwo = Array.from(rows).slice(-2);
+
+    lastTwo.forEach(row => {
+    row.classList.add('dropup-row');
+    });
+    });
+
 
     <!-- Include SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
