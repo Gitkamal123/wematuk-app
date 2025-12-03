@@ -608,6 +608,18 @@
                 });
             }
         });
+
+        document.addEventListener('DOMContentLoaded', function () {
+                const rows = document.querySelectorAll('.table-row');
+
+                // Ambil 2 row terakhir
+                const lastTwo = Array.from(rows).slice(-2);
+
+                lastTwo.forEach(row => {
+                    row.classList.add('dropup-row');
+                });
+            });
+
     </script>
 
     <!-- Include SweetAlert2 -->
