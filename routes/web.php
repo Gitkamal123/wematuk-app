@@ -400,7 +400,7 @@ Route::middleware(['auth'])->group(function () {
     // Route khusus untuk download file Base64
     Route::get('/tugas/{tugas}/download', [TugasController::class, 'downloadFile'])->name('tugas.download');
     // Route khusus untuk preview file
-Route::get('/tugas/{tugas}/preview', [TugasController::class, 'previewFile'])->name('tugas.preview');
+    Route::get('/tugas/{tugas}/preview', [TugasController::class, 'previewFile'])->name('tugas.preview');
 });
 
 // --- ROUTE ADMIN (WAJIB LOGIN + ADMIN) ---
