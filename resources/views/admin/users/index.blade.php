@@ -270,9 +270,8 @@
                                             <span class="text-muted fst-italic">Akun Anda</span>
                                         @else
                                             <div class="btn-group">
-                                                <button type="button" class="btn btn-sm btn-outline-primary dropdown-toggle"
-                                                    data-bs-toggle="dropdown" data-bs-boundary="viewport">
-                                                    <i class="fas fa-ellipsis-h"></i>
+                                                <button type="button" class="btn btn-sm btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown"
+                                                    data-bs-boundary="viewport"> <i class="fas fa-ellipsis-h"></i>
                                                 </button>
                                                 <ul class="dropdown-menu dropdown-menu-end">
                                                     <li>
@@ -289,7 +288,7 @@
                                                             id="delete-form-{{ $user->id }}">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="button" class="dropdown-item text-danger delete-btn"
+                                                            <button type="button" class="dropdown-item text-danger"
                                                                 onclick="confirmDelete({{ $user->id }}, '{{ $user->name }}')">
                                                                 <i class="fas fa-trash me-2"></i>Hapus
                                                             </button>
@@ -413,11 +412,30 @@
                 badge.addEventListener('mouseenter', function () {
                     this.style.transform = 'scale(1.05)';
                     this.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+                    this.style.cursor = 'pointer';                    
+                    this.style.transition = 'all 0.3s ease';
+                    this.style.zIndex = '10';
+                    this.style.position = 'relative';
+                    this.style.fontWeight = '600';
+                    this.style.letterSpacing = '0.5px';
+                    this.style.border = '1px solid rgba(255,255,255,0.2)';
+                    this.style.backdropFilter = 'blur(10px)';
+                    this.style.webkitBackdropFilter = 'blur(10px)';
+                    this.style.backgroundColor = this.classList.contains('bg-primary') ?
+                        'rgba(13, 110, 253, 0.9)' :
+                        'rgba(255, 193, 7, 0.9)';
                 });
 
                 badge.addEventListener('mouseleave', function () {
                     this.style.transform = 'scale(1)';
                     this.style.boxShadow = 'none';
+                    this.style.fontWeight = '500';
+                    this.style.letterSpacing = 'normal';
+                    this.style.border = 'none';
+                    this.style.backdropFilter = 'none';
+                    this.style.webkitBackdropFilter = 'none';
+                    this.style.backgroundColor = this.classList.contains('bg-primary') ?
+                        '' : '';
                 });
 
                 badge.addEventListener('click', function () {
@@ -430,7 +448,19 @@
             });
         });
 
+        // Enhanced Confirm Delete Function with animations
         function confirmDelete(userId, userName) {
+            // Add shake animation to the row being deleted
+            const row = document.getElementById(`userRow${userId}`);
+            if (row) {
+                row.style.animation = 'shake 0.5s ease-in-out';
+
+                // Remove animation after it completes
+                setTimeout(() => {
+                    row.style.animation = '';
+                }, 500);
+            }
+
             Swal.fire({
                 title: 'Hapus Pengguna?',
                 html: `Anda akan menghapus pengguna <strong>${userName}</strong>. Tindakan ini tidak dapat dibatalkan.`,
@@ -441,17 +471,31 @@
                 confirmButtonText: 'Ya, Hapus!',
                 cancelButtonText: 'Batal',
                 reverseButtons: true,
-                backdrop: 'rgba(0,0,0,0.4)'
+                backdrop: 'rgba(0,0,0,0.4)',
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp'
+                }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Add loading animation to the row
-                    const row = document.getElementById(`userRow${userId}`);
+                    // Add loading state to the row
                     if (row) {
                         row.style.opacity = '0.5';
-                        row.style.transition = 'all 0.3s ease';
-                    }
+                        row.style.background = 'linear-gradient(45deg, #ff6b6b, #ee5a52)';
+                        row.style.color = 'white';
+                        row.style.transition = 'all 0.5s ease';
 
-                    document.getElementById(`delete-form-${userId}`).submit();
+                        // Add deleting animation
+                        row.style.animation = 'slideOutLeft 0.5s ease forwards';
+
+                        setTimeout(() => {
+                            document.getElementById(`delete-form-${userId}`).submit();
+                        }, 500);
+                    } else {
+                        document.getElementById(`delete-form-${userId}`).submit();
+                    }
                 }
             });
         }
@@ -509,4 +553,6 @@
 
     <!-- Include SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Include Animate.css for SweetAlert animations -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 @endsection
