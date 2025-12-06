@@ -259,7 +259,7 @@
                     width: 100%;
                 }
 
-                ..spinner {
+                .spinner {
                     width: 18px; 
                     height: 18px; 
                     border: 2px solid rgba(255, 255, 255, 0.3);
