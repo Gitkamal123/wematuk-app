@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
-
+use App\Http\Controllers\StudentTaskController;
 // --- HALAMAN UTAMA ---
 Route::get('/', function () {
     return view('welcome');
@@ -402,9 +402,15 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function () {
     Route::get('/tugas/{tugas}/download', [TugasController::class, 'downloadFile'])->name('tugas.download');
     // Route khusus untuk preview file
     Route::get('/tugas/{tugas}/preview', [TugasController::class, 'previewFile'])->name('tugas.preview');
-// --- ROUTE ADMIN (WAJIB LOGIN + ADMIN) ---
+    // --- FITUR TUGAS MAHASISWA ---
+    Route::controller(StudentTaskController::class)->group(function () {
+        Route::get('/tugas-ku', 'index')->name('my-tasks.index');
+        Route::post('/tugas-ku/ambil', 'store')->name('my-tasks.store');
+        Route::patch('/tugas-ku/update/{id}', 'updateStatus')->name('my-tasks.update');
+        Route::delete('/tugas-ku/hapus/{id}', 'destroy')->name('my-tasks.destroy');
+    });
 
-
+    // --- ROUTE ADMIN (WAJIB LOGIN + ADMIN) ---
     Route::middleware(['auth', 'admin'])->group(function () {
         // Tugas Admin
         Route::get('/tugas/buat/baru', [TugasController::class, 'create'])->name('tugas.create');

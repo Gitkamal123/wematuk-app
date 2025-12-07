@@ -316,6 +316,13 @@
                                 Daftar Tugas
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link-custom {{ request()->routeIs('my-tasks.*') ? 'active' : '' }}"
+                                href="{{ route('my-tasks.index') }}">
+                                <i class="fas fa-tasks"></i>
+                                Tugas Saya
+                            </a>
+                        </li>
                     @endauth
                 </ul>
 

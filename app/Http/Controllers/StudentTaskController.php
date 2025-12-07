@@ -23,7 +23,7 @@ class StudentTaskController extends Controller
         $existingTaskIds = $user->myTasks()->pluck('task_id')->toArray();
         $availableTasks = Task::whereNotIn('id', $existingTaskIds)->get();
 
-        return view('student.my_tasks', compact('myTasks', 'availableTasks'));
+        return view('student.tugasku', compact('myTasks', 'availableTasks'));
     }
 
     // 2. Ambil Tugas Baru
