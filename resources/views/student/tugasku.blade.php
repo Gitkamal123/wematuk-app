@@ -3,6 +3,14 @@
 @section('content')
     <div class="container-fluid px-lg-4 px-xl-5">
 
+        {{-- 👇👇 1. TOMBOL KEMBALI DITAMBAHKAN DI SINI 👇👇 --}}
+        <div class="mb-4 mt-3">
+            <a href="{{ route('home') }}" class="btn btn-white-blue shadow-sm rounded-pill px-4">
+                <i class="fas fa-arrow-left me-2"></i> Kembali ke Dashboard
+            </a>
+        </div>
+        {{-- 👆👆 -------------------------------------- 👆👆 --}}
+
         {{-- Hero Header --}}
         <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between mb-5">
             <div class="mb-4 mb-md-0">
@@ -131,21 +139,6 @@
                                                         @endif
                                                     </div>
                                                 </div>
-
-                                                {{-- Progress Bar
-                                                @if(!$task->pivot->is_completed)
-                                                    <div class="mb-4">
-                                                        <div class="d-flex justify-content-between mb-1">
-                                                            <small class="text-muted">Progress</small>
-                                                            <small
-                                                                class="text-primary fw-semibold">{{ $task->progress ?? '0' }}%</small>
-                                                        </div>
-                                                        <div class="progress" style="height: 6px;">
-                                                            <div class="progress-bar bg-primary" role="progressbar"
-                                                                style="width: {{ $task->progress ?? '0' }}%"></div>
-                                                        </div>
-                                                    </div>
-                                                @endif --}}
 
                                                 {{-- Action Buttons --}}
                                                 <div class="d-flex gap-2">
@@ -309,6 +302,27 @@
             --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
             --shadow-hover: 0 15px 35px rgba(0, 0, 0, 0.15);
         }
+
+        /* 👇👇 2. CSS TOMBOL KEMBALI GRADASI PUTIH BIRU 👇👇 */
+        .btn-white-blue {
+            background: linear-gradient(135deg, #ffffff 0%, #e0f2fe 100%);
+            /* Putih ke Biru Muda */
+            color: #0284c7;
+            /* Warna Teks Biru */
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-white-blue:hover {
+            transform: translateX(-5px);
+            /* Efek gerak ke kiri */
+            background: linear-gradient(135deg, #f0f9ff 0%, #bae6fd 100%);
+            color: #0369a1;
+            box-shadow: 0 5px 15px rgba(224, 242, 254, 0.6);
+        }
+
+        /* 👆👆 ------------------------------------------- 👆👆 */
 
         .bg-gradient-primary {
             background: var(--primary-gradient) !important;
