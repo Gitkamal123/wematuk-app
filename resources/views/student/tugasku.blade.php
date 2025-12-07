@@ -132,7 +132,7 @@
                                                     </div>
                                                 </div>
 
-                                                {{-- Progress Bar --}}
+                                                {{-- Progress Bar
                                                 @if(!$task->pivot->is_completed)
                                                     <div class="mb-4">
                                                         <div class="d-flex justify-content-between mb-1">
@@ -145,7 +145,7 @@
                                                                 style="width: {{ $task->progress ?? '0' }}%"></div>
                                                         </div>
                                                     </div>
-                                                @endif
+                                                @endif --}}
 
                                                 {{-- Action Buttons --}}
                                                 <div class="d-flex gap-2">
