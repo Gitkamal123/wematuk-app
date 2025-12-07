@@ -3,13 +3,12 @@
 @section('content')
     <div class="container-fluid px-lg-4 px-xl-5">
 
-        {{-- 👇👇 1. TOMBOL KEMBALI DITAMBAHKAN DI SINI 👇👇 --}}
+        {{-- Tombol Kembali --}}
         <div class="mb-4 mt-3">
-            <a href="{{ route('home') }}" class="btn btn-white-blue shadow-sm rounded-pill px-4">
+            <a href="{{ route('home') }}" class="btn btn-outline-primary shadow-sm px-4">
                 <i class="fas fa-arrow-left me-2"></i> Kembali ke Dashboard
             </a>
         </div>
-        {{-- 👆👆 -------------------------------------- 👆👆 --}}
 
         {{-- Hero Header --}}
         <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between mb-5">
@@ -198,23 +197,23 @@
         <div class="row mb-5" id="available-tasks">
             <div class="col-12">
                 <div class="card border-0 shadow-lg">
-                    <div class="card-header bg-gradient-info py-4">
+                    <div class="card-header bg-gradient-blue-white py-4">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <h4 class="mb-0 text-white fw-bold">
+                                <h4 class="mb-0 text-primary fw-bold">
                                     <i class="fas fa-bolt me-2"></i>Tugas Baru Tersedia
                                 </h4>
-                                <p class="mb-0 text-white-50 mt-1">Tugas yang dapat Anda ambil dari admin</p>
+                                <p class="mb-0 text-muted mt-1">Tugas yang dapat Anda ambil dari admin</p>
                             </div>
-                            <div class="text-white">
-                                <span class="badge bg-white bg-opacity-25 text-white py-2 px-3">
+                            <div class="">
+                                <span class="badge bg-primary bg-opacity-10 text-primary py-2 px-3">
                                     {{ $availableTasks->count() }} Tugas Tersedia
                                 </span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card-body p-4">
+                    <div class="card-body p-0">
                         @if($availableTasks->isEmpty())
                             <div class="text-center py-5">
                                 <div class="mb-4">
@@ -225,7 +224,7 @@
                             </div>
                         @else
                             <div class="table-responsive">
-                                <table class="table table-hover align-middle" id="availableTasksTable">
+                                <table class="table table-hover align-middle mb-0" id="availableTasksTable">
                                     <thead class="table-light">
                                         <tr>
                                             <th class="ps-4" width="25%">
@@ -243,12 +242,12 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($availableTasks as $task)
-                                            <tr class="hover-shadow">
+                                        @foreach($availableTasks as $index => $task)
+                                            <tr class="{{ $index % 2 == 0 ? 'table-row-even' : 'table-row-odd' }} hover-lift">
                                                 <td class="ps-4">
                                                     <div class="d-flex align-items-center">
                                                         <div
-                                                            class="avatar-sm bg-info bg-opacity-10 text-info rounded-circle d-flex align-items-center justify-content-center me-3">
+                                                            class="avatar-sm bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center me-3">
                                                             <i class="fas fa-tasks"></i>
                                                         </div>
                                                         <div>
@@ -276,7 +275,7 @@
                                                     <form action="{{ route('my-tasks.store') }}" method="POST">
                                                         @csrf
                                                         <input type="hidden" name="task_id" value="{{ $task->id }}">
-                                                        <button type="submit" class="btn btn-primary btn-gradient px-4 shadow-sm">
+                                                        <button type="submit" class="btn btn-primary px-4 shadow-sm">
                                                             <i class="fas fa-plus-circle me-2"></i>Ambil Tugas
                                                         </button>
                                                     </form>
@@ -298,38 +297,191 @@
     <style>
         :root {
             --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --info-gradient: linear-gradient(135deg, #17ead9 0%, #6078ea 100%);
+            --blue-white-gradient: linear-gradient(135deg, #e0f2ff 0%, #ffffff 100%);
+            --table-gradient-even: linear-gradient(135deg, #f0f8ff 0%, #e6f2ff 100%);
+            --table-gradient-odd: linear-gradient(135deg, #ffffff 0%, #f5faff 100%);
             --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
             --shadow-hover: 0 15px 35px rgba(0, 0, 0, 0.15);
         }
 
-        /* 👇👇 2. CSS TOMBOL KEMBALI GRADASI PUTIH BIRU 👇👇 */
-        .btn-white-blue {
-            background: linear-gradient(135deg, #ffffff 0%, #e0f2fe 100%);
-            /* Putih ke Biru Muda */
-            color: #0284c7;
-            /* Warna Teks Biru */
-            border: 1px solid rgba(255, 255, 255, 0.5);
+        /* Tombol Kembali Default */
+        .btn-outline-primary {
+            border-width: 2px;
             font-weight: 600;
             transition: all 0.3s ease;
         }
 
-        .btn-white-blue:hover {
-            transform: translateX(-5px);
-            /* Efek gerak ke kiri */
-            background: linear-gradient(135deg, #f0f9ff 0%, #bae6fd 100%);
-            color: #0369a1;
-            box-shadow: 0 5px 15px rgba(224, 242, 254, 0.6);
+        .btn-outline-primary:hover {
+            transform: translateX(-3px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
         }
 
-        /* 👆👆 ------------------------------------------- 👆👆 */
+        /* Gradient Blue-White untuk Header Tabel */
+        .bg-gradient-blue-white {
+            background: var(--blue-white-gradient) !important;
+            border-bottom: 3px solid #e0f2ff;
+        }
 
+        /* Tabel dengan Gradasi Biru-Putih */
+        #availableTasksTable {
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        #availableTasksTable thead {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+        }
+
+        #availableTasksTable thead th {
+            color: white !important;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            border: none;
+            padding: 1rem 1.5rem;
+        }
+
+        #availableTasksTable thead th i {
+            opacity: 0.9;
+        }
+
+        #availableTasksTable tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        /* Gradasi baris genap (biru muda) */
+        #availableTasksTable tbody tr.table-row-even {
+            background: var(--table-gradient-even);
+        }
+
+        /* Gradasi baris ganjil (putih dengan sedikit biru) */
+        #availableTasksTable tbody tr.table-row-odd {
+            background: var(--table-gradient-odd);
+        }
+
+        /* Hover effect untuk baris tabel */
+        #availableTasksTable tbody tr:hover {
+            background: linear-gradient(135deg, #dbeafe 0%, #e0f2ff 100%) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+        }
+
+        #availableTasksTable tbody td {
+            padding: 1.25rem 1.5rem;
+            vertical-align: middle;
+            border-bottom: 1px solid rgba(219, 234, 254, 0.5);
+            color: #374151;
+        }
+
+        #availableTasksTable tbody td:first-child {
+            border-left: 3px solid transparent;
+            transition: border-left 0.3s ease;
+        }
+
+        #availableTasksTable tbody tr:hover td:first-child {
+            border-left: 3px solid #3b82f6;
+        }
+
+        /* Avatar styling */
+        .avatar-sm {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        #availableTasksTable tbody tr:hover .avatar-sm {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            color: white;
+        }
+
+        /* Text styling dalam tabel */
+        #availableTasksTable tbody .fw-semibold {
+            color: #1e40af;
+            transition: color 0.3s ease;
+        }
+
+        #availableTasksTable tbody tr:hover .fw-semibold {
+            color: #1d4ed8;
+        }
+
+        /* Deadline styling */
+        #availableTasksTable tbody .text-muted {
+            color: #6b7280 !important;
+        }
+
+        /* Tombol dalam tabel */
+        #availableTasksTable .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            border: none;
+            padding: 0.5rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        #availableTasksTable .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .card-header .d-flex {
+                flex-direction: column;
+                align-items: flex-start !important;
+            }
+
+            .card-header .badge {
+                margin-top: 10px;
+            }
+
+            #availableTasksTable {
+                font-size: 0.875rem;
+            }
+
+            #availableTasksTable thead th,
+            #availableTasksTable tbody td {
+                padding: 0.75rem 1rem;
+            }
+
+            #availableTasksTable .btn-primary {
+                padding: 0.375rem 1rem;
+                font-size: 0.875rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .task-card,
+        #availableTasksTable tbody tr {
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* Staggered animation for table rows */
+        #availableTasksTable tbody tr {
+            animation-delay: calc(var(--row-index) * 0.05s);
+        }
+
+        /* Card styling untuk tugas saya */
         .bg-gradient-primary {
             background: var(--primary-gradient) !important;
-        }
-
-        .bg-gradient-info {
-            background: var(--info-gradient) !important;
         }
 
         .bg-light-gradient {
@@ -360,95 +512,11 @@
         }
 
         .hover-lift:hover {
-            transform: translateY(-5px);
-        }
-
-        .hover-shadow:hover {
-            box-shadow: var(--shadow-lg);
-            transition: box-shadow 0.3s ease;
-        }
-
-        .btn-gradient {
-            background: var(--primary-gradient);
-            color: white;
-            border: none;
-            transition: all 0.3s ease;
-        }
-
-        .btn-gradient:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .avatar-sm {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .progress {
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            border-radius: 10px;
-        }
-
-        #availableTasksTable thead th {
-            border-bottom: 2px solid #e3e6f0;
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            letter-spacing: 0.5px;
-            color: #6c757d;
-        }
-
-        #availableTasksTable tbody tr {
-            transition: all 0.3s ease;
-        }
-
-        #availableTasksTable tbody tr:hover {
-            background-color: rgba(102, 126, 234, 0.05);
         }
 
         .badge {
             border-radius: 8px;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .task-card {
-            animation: fadeIn 0.5s ease;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .card-header .d-flex {
-                flex-direction: column;
-                align-items: flex-start !important;
-            }
-
-            .card-header .badge {
-                margin-top: 10px;
-            }
-
-            #availableTasksTable th,
-            #availableTasksTable td {
-                white-space: nowrap;
-            }
         }
     </style>
 
@@ -461,16 +529,11 @@
                 card.style.animationDelay = `${index * 0.1}s`;
             });
 
-            // Add hover effect to table rows
+            // Add staggered animation to table rows
             const tableRows = document.querySelectorAll('#availableTasksTable tbody tr');
-            tableRows.forEach(row => {
-                row.addEventListener('mouseenter', function () {
-                    this.style.transform = 'translateX(5px)';
-                });
-
-                row.addEventListener('mouseleave', function () {
-                    this.style.transform = 'translateX(0)';
-                });
+            tableRows.forEach((row, index) => {
+                row.style.setProperty('--row-index', index);
+                row.style.animationDelay = `${index * 0.05}s`;
             });
 
             // Smooth scroll to available tasks
