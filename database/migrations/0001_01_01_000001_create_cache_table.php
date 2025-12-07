@@ -6,30 +6,29 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
-        Schema::create('cache', function (Blueprint $table) {
-            $table->string('key')->primary();
-            $table->mediumText('value');
-            $table->integer('expiration');
-        });
+        Schema::create('task_user', function (Blueprint $table) {
+            $table->id();
 
-        Schema::create('cache_locks', function (Blueprint $table) {
-            $table->string('key')->primary();
-            $table->string('owner');
-            $table->integer('expiration');
+            // FIX: PostgreSQL tidak mendukung unsigned
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('task_id');
+
+            $table->boolean('is_completed')->default(false);
+            $table->timestamps();
+
+            // Foreign keys
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('task_id')->references('id')->on('tugas')->onDelete('cascade');
+
+            // Unique constraint
+            $table->unique(['user_id', 'task_id']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('cache');
-        Schema::dropIfExists('cache_locks');
+        Schema::dropIfExists('task_user');
     }
-};
+};  

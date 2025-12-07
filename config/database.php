@@ -82,26 +82,42 @@ return [
             ]) : [],
         ],
 
+        // 'pgsql' => [
+        //     'driver' => 'pgsql',
+        //     'url' => env('DATABASE_URL'),
+        //     'host' => env('DB_HOST', '127.0.0.1'),
+        //     'port' => env('DB_PORT', '5432'),
+        //     'database' => env('DB_DATABASE', 'laravel'),
+        //     'username' => env('DB_USERNAME', 'root'),
+        //     'password' => env('DB_PASSWORD', ''),
+        //     'charset' => 'utf8',
+        //     'prefix' => '',
+        //     'prefix_indexes' => true,
+        //     'search_path' => 'public',
+            
+        //     // --- LOGIKA PINTAR (SMART CONFIG) ---
+        //     // Jika di Local (Laptop), pakai trik Endpoint ID.
+        //     // Jika di Production (Vercel), pakai standar Require.
+        //     'sslmode' => env('APP_ENV') === 'local' 
+        //         ? 'require;options=endpoint=' . explode('.', env('DB_HOST'))[0] 
+        //         : 'require',
+        //     // ------------------------------------
+        // ],
+
+        // pakai ini kalau ingin php artisan migrate ke neon
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'laravel'),
-            'username' => env('DB_USERNAME', 'root'),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
             'search_path' => 'public',
-            
-            // --- LOGIKA PINTAR (SMART CONFIG) ---
-            // Jika di Local (Laptop), pakai trik Endpoint ID.
-            // Jika di Production (Vercel), pakai standar Require.
-            'sslmode' => env('APP_ENV') === 'local' 
-                ? 'require;options=endpoint=' . explode('.', env('DB_HOST'))[0] 
-                : 'require',
-            // ------------------------------------
+            'sslmode' => 'require;options=endpoint=ep-sweet-math-a14epe5w-pooler',              
         ],
 
         'sqlsrv' => [

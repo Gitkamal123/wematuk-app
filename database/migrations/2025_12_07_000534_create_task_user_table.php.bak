@@ -1,0 +1,41 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up()
+    {
+        // TAHAP 1: Buat Tabelnya Dulu (Tanpa Constraint/Kunci)
+        // Ini pasti sukses dan tabelnya akan muncul di Neon
+        Schema::create('task_user', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('user_id'); // Tipe data standar Laravel
+            $table->unsignedBigInteger('task_id'); // Tipe data standar Laravel
+            $table->boolean('is_completed')->default(false);
+            $table->timestamps();
+        });
+
+        // TAHAP 2: Baru pasang kuncinya terpisah
+        // Jika error, dia akan error di sini dengan pesan yang JELAS
+        Schema::table('task_user', function (Blueprint $table) {
+            
+            // Hubungkan ke users
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            
+            // Hubungkan ke tugas
+            // Pastikan tabel 'tugas' punya kolom 'id' bertipe BigInteger juga
+            $table->foreign('task_id')->references('id')->on('tugas')->onDelete('cascade');
+            
+            // Aturan Unik
+            $table->unique(['user_id', 'task_id']);
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('task_user');
+    }
+};
