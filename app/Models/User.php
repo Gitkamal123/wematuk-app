@@ -6,7 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
+use App\Models\Task;
 
 class User extends Authenticatable
 {
@@ -43,5 +43,11 @@ class User extends Authenticatable
         return [
             'password' => 'hashed',
         ];
+    }
+    public function myTasks()
+    {
+        return $this->belongsToMany(Task::class, 'task_user', 'user_id', 'task_id')
+                    ->withPivot('is_completed')
+                    ->withTimestamps();
     }
 }
