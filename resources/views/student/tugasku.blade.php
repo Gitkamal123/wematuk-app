@@ -1,456 +1,650 @@
 @extends('layouts.master')
 
+@section('title', 'Manajemen Tugas Saya - WeMaTuK')
+
 @section('content')
-    {{-- Memuat SweetAlert2 (CDN) untuk Notifikasi Cantik --}}
+    {{-- SweetAlert2 untuk notifikasi --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <div class="container-fluid px-lg-4 px-xl-5">
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
 
-        {{-- 1. HEADER SECTION --}}
-        <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
-            <a href="{{ route('home') }}" class="btn btn-white-blue shadow-sm rounded-pill px-4">
-                <i class="fas fa-arrow-left me-2"></i> Dashboard
-            </a>
-            <div class="text-end d-none d-md-block">
-                <small class="text-muted">{{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}</small>
-            </div>
-        </div>
+        .tasks-container {
+            padding: 2rem 0;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
 
-        <div class="row align-items-center mb-5">
-            <div class="col-md-7">
-                <h1 class="h2 fw-bold text-gradient-primary mb-2">Manajemen Tugas Saya</h1>
-                <p class="text-muted mb-0">
-                    Pantau progress, deadline, dan riwayat tugas Anda di sini.
-                </p>
+        /* Header */
+        .page-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: #718096;
+            font-size: 1rem;
+        }
+
+        /* Stats Cards */
+        .stats-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            flex: 1;
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .stat-value.ongoing {
+            color: #4a90e2;
+        }
+
+        .stat-value.completed {
+            color: #48bb78;
+        }
+
+        /* Section Title */
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Task Grid */
+        .tasks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        /* Task Card */
+        .task-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s ease;
+            border-left: 4px solid;
+        }
+
+        .task-card.urgent {
+            border-left-color: #e53e3e;
+        }
+
+        .task-card.warning {
+            border-left-color: #ed8936;
+        }
+
+        .task-card.normal {
+            border-left-color: #48bb78;
+        }
+
+        .task-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .task-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
+
+        .task-desc {
+            color: #718096;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .task-deadline {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: #f7fafc;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .deadline-icon {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        .task-card.urgent .deadline-icon {
+            color: #e53e3e;
+        }
+
+        .task-card.warning .deadline-icon {
+            color: #ed8936;
+        }
+
+        .task-card.normal .deadline-icon {
+            color: #48bb78;
+        }
+
+        .deadline-text {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        /* Task Actions */
+        .task-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-task {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-complete {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: #ffffff;
+        }
+
+        .btn-complete:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+        }
+
+        .btn-remove {
+            background: #f7fafc;
+            color: #718096;
+            width: 44px;
+            padding: 0;
+        }
+
+        .btn-remove:hover {
+            background: #e53e3e;
+            color: #ffffff;
+        }
+
+        /* Completed Section */
+        .completed-table {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            margin-bottom: 3rem;
+        }
+
+        .table-header {
+            padding: 1.5rem;
+            background: #f7fafc;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .table-header-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1a202c;
+            margin: 0;
+        }
+
+        .table-custom {
+            width: 100%;
+        }
+
+        .table-custom thead th {
+            padding: 1rem 1.5rem;
+            background: #f7fafc;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .table-custom tbody td {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #f7fafc;
+            color: #2d3748;
+        }
+
+        .table-custom tbody tr:hover {
+            background: #f7fafc;
+        }
+
+        .task-name {
+            font-weight: 600;
+            color: #1a202c;
+        }
+
+        .completed-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.35rem 0.75rem;
+            background: rgba(72, 187, 120, 0.1);
+            color: #48bb78;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .btn-table-action {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-undo {
+            background: rgba(237, 137, 54, 0.1);
+            color: #ed8936;
+        }
+
+        .btn-undo:hover {
+            background: #ed8936;
+            color: #ffffff;
+        }
+
+        .btn-delete {
+            background: rgba(229, 62, 62, 0.1);
+            color: #e53e3e;
+            margin-left: 0.5rem;
+        }
+
+        .btn-delete:hover {
+            background: #e53e3e;
+            color: #ffffff;
+        }
+
+        /* Available Tasks */
+        .available-tasks {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+        }
+
+        .available-header {
+            padding: 1.5rem;
+            background: rgba(74, 144, 226, 0.05);
+            border-bottom: 1px solid rgba(74, 144, 226, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .available-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1a202c;
+            margin: 0;
+        }
+
+        .count-badge {
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, #4a90e2 0%, #63b3ed 100%);
+            color: #ffffff;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .btn-take {
+            padding: 0.5rem 1.25rem;
+            background: linear-gradient(135deg, #4a90e2 0%, #63b3ed 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-take:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .empty-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            color: #cbd5e0;
+        }
+
+        .empty-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-text {
+            color: #718096;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .stats-row {
+                flex-direction: column;
+            }
+
+            .tasks-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-custom {
+                font-size: 0.85rem;
+            }
+
+            .table-custom thead th,
+            .table-custom tbody td {
+                padding: 0.75rem 1rem;
+            }
+        }
+    </style>
+
+    <div class="tasks-container">
+        <div class="container-fluid">
+
+            <!-- Header -->
+            <div class="page-header">
+                <h1 class="page-title">Manajemen Tugas Saya</h1>
+                <p class="page-subtitle">Kelola dan pantau progress tugas Anda</p>
             </div>
-            {{-- Statistik Ringkas --}}
-            <div class="col-md-5 mt-3 mt-md-0 d-flex justify-content-md-end gap-3">
-                <div class="card border-0 shadow-sm px-3 py-2 text-center" style="min-width: 100px;">
-                    <small class="text-muted d-block fw-bold" style="font-size: 0.7rem;">BERJALAN</small>
-                    <span
-                        class="h4 fw-bold text-primary mb-0">{{ $myTasks->where('pivot.is_completed', false)->count() }}</span>
+
+            <!-- Stats -->
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-label">Sedang Berjalan</div>
+                    <div class="stat-value ongoing">{{ $myTasks->where('pivot.is_completed', false)->count() }}</div>
                 </div>
-                <div class="card border-0 shadow-sm px-3 py-2 text-center" style="min-width: 100px;">
-                    <small class="text-muted d-block fw-bold" style="font-size: 0.7rem;">SELESAI</small>
-                    <span
-                        class="h4 fw-bold text-success mb-0">{{ $myTasks->where('pivot.is_completed', true)->count() }}</span>
+                <div class="stat-card">
+                    <div class="stat-label">Telah Selesai</div>
+                    <div class="stat-value completed">{{ $myTasks->where('pivot.is_completed', true)->count() }}</div>
                 </div>
             </div>
-        </div>
 
-        {{-- 2. TABS NAVIGASI --}}
-        <ul class="nav nav-pills mb-4 gap-2" id="pills-tab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active rounded-pill px-4" id="pills-ongoing-tab" data-bs-toggle="pill"
-                    data-bs-target="#pills-ongoing" type="button" role="tab">
-                    <i class="fas fa-spinner me-2"></i> Tugas Berjalan
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link rounded-pill px-4" id="pills-history-tab" data-bs-toggle="pill"
-                    data-bs-target="#pills-history" type="button" role="tab">
-                    <i class="fas fa-history me-2"></i> Riwayat Selesai
-                </button>
-            </li>
-            <li class="nav-item ms-auto" role="presentation">
-                <button class="nav-link btn-outline-dashed px-4"
-                    onclick="document.getElementById('available-tasks').scrollIntoView({behavior: 'smooth'})">
-                    <i class="fas fa-plus me-2"></i> Ambil Baru
-                </button>
-            </li>
-        </ul>
+            <!-- Ongoing Tasks -->
+            @php
+                $ongoingTasks = $myTasks->where('pivot.is_completed', false);
+            @endphp
 
-        {{-- 3. CONTENT TABS --}}
-        <div class="tab-content mb-5" id="pills-tabContent">
+            <h2 class="section-title">Tugas Berjalan</h2>
 
-            {{-- TAB 1: TUGAS BERJALAN (Card View) --}}
-            <div class="tab-pane fade show active" id="pills-ongoing" role="tabpanel">
-                @php
-                    $ongoingTasks = $myTasks->where('pivot.is_completed', false);
-                @endphp
+            @if($ongoingTasks->isEmpty())
+                <div class="empty-state"
+                    style="background: #ffffff; border-radius: 16px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04); margin-bottom: 3rem;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="empty-icon" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M8.5 2.687c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z" />
+                    </svg>
+                    <h3 class="empty-title">Tidak Ada Tugas Berjalan</h3>
+                    <p class="empty-text">Anda belum mengambil tugas apapun</p>
+                </div>
+            @else
+                <div class="tasks-grid">
+                    @foreach($ongoingTasks as $task)
+                        @php
+                            $deadline = \Carbon\Carbon::parse($task->deadline);
+                            $now = \Carbon\Carbon::now();
+                            $diff = $now->diffInDays($deadline, false);
 
-                @if($ongoingTasks->isEmpty())
-                    <div class="text-center py-5 card border-0 shadow-sm">
-                        <div class="mb-3">
-                            <i class="fas fa-mug-hot fa-3x text-gray-300"></i>
+                            if ($diff < 0) {
+                                $statusClass = 'urgent';
+                            } elseif ($diff <= 3) {
+                                $statusClass = 'warning';
+                            } else {
+                                $statusClass = 'normal';
+                            }
+                        @endphp
+
+                        <div class="task-card {{ $statusClass }}">
+                            <h3 class="task-title">{{ $task->judul_tugas }}</h3>
+                            <p class="task-desc">{{ Str::limit($task->deskripsi, 90) }}</p>
+
+                            <div class="task-deadline">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="deadline-icon" fill="currentColor"
+                                    viewBox="0 0 16 16">
+                                    <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
+                                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
+                                </svg>
+                                <span class="deadline-text">{{ $deadline->format('d M Y, H:i') }}</span>
+                            </div>
+
+                            <div class="task-actions">
+                                <form action="{{ route('my-tasks.update', $task->id) }}" method="POST" class="confirm-finish-form"
+                                    style="flex: 1;">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="btn-task btn-complete">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                            viewBox="0 0 16 16">
+                                            <path
+                                                d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                        </svg>
+                                        Selesai
+                                    </button>
+                                </form>
+                                <form action="{{ route('my-tasks.destroy', $task->id) }}" method="POST" class="delete-form">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn-task btn-remove">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                            viewBox="0 0 16 16">
+                                            <path
+                                                d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+                                            <path
+                                                d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
                         </div>
-                        <h5 class="text-gray-500">Tidak ada tugas yang sedang berjalan.</h5>
-                        <p class="text-muted">Santai sejenak atau ambil tugas baru di bawah.</p>
-                    </div>
-                @else
-                    <div class="row g-4">
-                        @foreach($ongoingTasks as $task)
-                            @php
-                                // --- LOGIKA DEADLINE DI LEVEL VIEW (Lebih Aman) ---
-                                // Kita parse manual agar tidak error jika Model tidak punya fungsi isDeadlineNear
-                                $deadline = \Carbon\Carbon::parse($task->deadline);
-                                $now = \Carbon\Carbon::now();
-                                $diff = $now->diffInDays($deadline, false);
+                    @endforeach
+                </div>
+            @endif
 
-                                if ($diff < 0) {
-                                    $statusColor = 'danger';
-                                    $statusText = 'Lewat Deadline';
-                                    $icon = 'fa-exclamation-triangle';
-                                    $borderClass = 'border-danger';
-                                } elseif ($diff <= 3) {
-                                    $statusColor = 'warning';
-                                    $statusText = 'Mendekati Deadline';
-                                    $icon = 'fa-hourglass-half';
-                                    $borderClass = 'border-warning';
-                                } else {
-                                    $statusColor = 'success';
-                                    $statusText = 'Aktif';
-                                    $icon = 'fa-check-circle';
-                                    $borderClass = 'border-success-subtle';
-                                }
-                            @endphp
+            <!-- Completed Tasks -->
+            @php
+                $completedTasks = $myTasks->where('pivot.is_completed', true);
+            @endphp
 
-                            <div class="col-xl-4 col-lg-6">
-                                <div class="card border-0 shadow-sm h-100 task-card hover-lift {{ $borderClass }}"
-                                    style="border-left: 5px solid !important;">
-                                    <div class="card-body p-4 d-flex flex-column">
+            @if($completedTasks->isNotEmpty())
+                <h2 class="section-title">Riwayat Selesai</h2>
 
-                                        {{-- Header Kartu --}}
-                                        <div class="d-flex justify-content-between align-items-start mb-3">
-                                            <span
-                                                class="badge bg-{{ $statusColor }} bg-opacity-10 text-{{ $statusColor }} py-2 px-3 rounded-pill fw-bold">
-                                                <i class="fas {{ $icon }} me-1"></i> {{ $statusText }}
+                <div class="completed-table">
+                    <div class="table-responsive">
+                        <table class="table-custom">
+                            <thead>
+                                <tr>
+                                    <th>Judul Tugas</th>
+                                    <th>Deadline</th>
+                                    <th>Selesai Pada</th>
+                                    <th>Status</th>
+                                    <th style="text-align: center;">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($completedTasks as $task)
+                                    <tr>
+                                        <td class="task-name">{{ $task->judul_tugas }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($task->deadline)->format('d M Y') }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($task->pivot->updated_at)->format('d M Y, H:i') }}</td>
+                                        <td>
+                                            <span class="completed-badge">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
+                                                    viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                                </svg>
+                                                Selesai
                                             </span>
-
-                                            <div class="dropdown">
-                                                <button class="btn btn-sm btn-light rounded-circle" type="button"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="fas fa-ellipsis-v text-muted"></i>
-                                                </button>
-                                                <ul class="dropdown-menu dropdown-menu-end shadow border-0">
-                                                    <li>
-                                                        <form action="{{ route('my-tasks.destroy', $task->id) }}" method="POST"
-                                                            class="delete-form">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="button" class="dropdown-item text-danger btn-delete-task">
-                                                                <i class="fas fa-trash me-2"></i>Lepas Tugas
-                                                            </button>
-                                                        </form>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-
-                                        {{-- Isi Kartu --}}
-                                        <h5 class="fw-bold text-dark mb-2">{{ $task->judul_tugas }}</h5>
-                                        <p class="text-muted mb-4 flex-grow-1">
-                                            {{ Str::limit($task->deskripsi, 90) }}
-                                        </p>
-
-                                        {{-- Info Deadline --}}
-                                        <div class="d-flex align-items-center mb-4 bg-light rounded p-2">
-                                            <div class="flex-shrink-0 bg-white p-2 rounded shadow-sm">
-                                                <i class="fas fa-calendar-alt text-{{ $statusColor }}"></i>
-                                            </div>
-                                            <div class="ms-3">
-                                                <small class="text-muted d-block" style="font-size: 0.75rem;">Batas Waktu</small>
-                                                <span class="fw-bold text-dark" style="font-size: 0.9rem;">
-                                                    {{ $deadline->translatedFormat('d F Y, H:i') }}
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        {{-- Tombol Aksi --}}
-                                        <div class="d-flex gap-2 mt-auto">
+                                        </td>
+                                        <td style="text-align: center;">
                                             <form action="{{ route('my-tasks.update', $task->id) }}" method="POST"
-                                                class="flex-grow-1 confirm-finish-form">
+                                                style="display: inline;">
                                                 @csrf
                                                 @method('PATCH')
-                                                <button type="button" class="btn btn-primary w-100 btn-finish-task">
-                                                    <i class="fas fa-check me-2"></i> Tandai Selesai
+                                                <button type="submit" class="btn-table-action btn-undo" title="Kembalikan ke aktif">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                        fill="currentColor" viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd"
+                                                            d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2z" />
+                                                        <path
+                                                            d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z" />
+                                                    </svg>
                                                 </button>
                                             </form>
-                                            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                                                data-bs-target="#detailModal{{ $task->id }}">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                            <form action="{{ route('my-tasks.destroy', $task->id) }}" method="POST"
+                                                class="delete-history-form" style="display: inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" class="btn-table-action btn-delete btn-delete-history"
+                                                    title="Hapus dari riwayat">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                        fill="currentColor" viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+                                                        <path
+                                                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+                                                    </svg>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            @endif
 
-                            {{-- Modal Detail --}}
-                            <div class="modal fade" id="detailModal{{ $task->id }}" tabindex="-1">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content border-0 shadow">
-                                        <div class="modal-header bg-light">
-                                            <h5 class="modal-title fw-bold">{{ $task->judul_tugas }}</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <h6 class="fw-bold text-primary">Deskripsi Lengkap</h6>
-                                            <p class="text-muted bg-light p-3 rounded">{{ $task->deskripsi }}</p>
+            <!-- Available Tasks -->
+            <h2 class="section-title">Tugas Tersedia</h2>
 
-                                            <div class="row mt-4">
-                                                <div class="col-6">
-                                                    <small class="text-muted d-block">Deadline</small>
-                                                    <span class="fw-bold">{{ $deadline->translatedFormat('l, d F Y') }}</span>
-                                                </div>
-                                                <div class="col-6 text-end">
-                                                    <small class="text-muted d-block">Sisa Waktu</small>
-                                                    <span
-                                                        class="badge bg-{{ $statusColor }}">{{ $deadline->diffForHumans() }}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="available-tasks">
+                <div class="available-header">
+                    <h3 class="available-title">Ambil Tugas Baru</h3>
+                    <span class="count-badge">{{ $availableTasks->count() }} Tersedia</span>
+                </div>
 
-                        @endforeach
+                @if($availableTasks->isEmpty())
+                    <div class="empty-state">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="empty-icon" fill="currentColor" viewBox="0 0 16 16">
+                            <path
+                                d="M4.98 4a.5.5 0 0 0-.39.188L1.54 8H6a.5.5 0 0 1 .5.5 1.5 1.5 0 1 0 3 0A.5.5 0 0 1 10 8h4.46l-3.05-3.812A.5.5 0 0 0 11.02 4zm-1.17-.437A1.5 1.5 0 0 1 4.98 3h6.04a1.5 1.5 0 0 1 1.17.563l3.7 4.625a.5.5 0 0 1 .106.374l-.39 3.124A1.5 1.5 0 0 1 14.117 13H1.883a1.5 1.5 0 0 1-1.489-1.314l-.39-3.124a.5.5 0 0 1 .106-.374z" />
+                        </svg>
+                        <h3 class="empty-title">Tidak Ada Tugas Tersedia</h3>
+                        <p class="empty-text">Belum ada tugas baru dari admin</p>
+                    </div>
+                @else
+                    <div class="table-responsive">
+                        <table class="table-custom">
+                            <thead>
+                                <tr>
+                                    <th>Judul Tugas</th>
+                                    <th>Deskripsi</th>
+                                    <th>Deadline</th>
+                                    <th style="text-align: center;">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($availableTasks as $task)
+                                    <tr>
+                                        <td class="task-name">{{ $task->judul_tugas }}</td>
+                                        <td>{{ Str::limit($task->deskripsi, 60) }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($task->deadline)->format('d M Y') }}</td>
+                                        <td style="text-align: center;">
+                                            <form action="{{ route('my-tasks.store') }}" method="POST" class="take-task-form">
+                                                @csrf
+                                                <input type="hidden" name="task_id" value="{{ $task->id }}">
+                                                <button type="submit" class="btn-take">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                        fill="currentColor" viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                                                    </svg>
+                                                    Ambil Tugas
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 @endif
             </div>
 
-            {{-- TAB 2: RIWAYAT SELESAI (Table View) --}}
-            <div class="tab-pane fade" id="pills-history" role="tabpanel">
-                @php
-                    $completedTasks = $myTasks->where('pivot.is_completed', true);
-                @endphp
-
-                <div class="card border-0 shadow-sm overflow-hidden">
-                    <div class="card-header bg-white py-3">
-                        <h5 class="mb-0 fw-bold text-success"><i class="fas fa-check-double me-2"></i> Tugas Telah
-                            Diselesaikan</h5>
-                    </div>
-                    <div class="card-body p-0">
-                        @if($completedTasks->isEmpty())
-                            <div class="text-center py-5">
-                                <p class="text-muted mb-0">Belum ada tugas yang diselesaikan.</p>
-                            </div>
-                        @else
-                            <div class="table-responsive">
-                                <table class="table table-hover align-middle mb-0">
-                                    <thead class="bg-light">
-                                        <tr>
-                                            <th class="ps-4">Judul Tugas</th>
-                                            <th>Deadline Awal</th>
-                                            <th>Tanggal Selesai</th>
-                                            <th>Status</th>
-                                            <th class="text-center">Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($completedTasks as $task)
-                                            <tr>
-                                                <td class="ps-4 fw-semibold">{{ $task->judul_tugas }}</td>
-                                                <td class="text-muted small">
-                                                    {{ \Carbon\Carbon::parse($task->deadline)->translatedFormat('d M Y') }}</td>
-                                                <td class="text-primary small">
-                                                    <i class="fas fa-calendar-check me-1"></i>
-                                                    {{-- PERBAIKAN BUG 500: Bungkus updated_at dengan Carbon::parse() --}}
-                                                    {{ \Carbon\Carbon::parse($task->pivot->updated_at)->translatedFormat('d M Y, H:i') }}
-                                                </td>
-                                                <td>
-                                                    <span class="badge bg-success bg-opacity-10 text-success rounded-pill">
-                                                        Selesai
-                                                    </span>
-                                                </td>
-                                                <td class="text-center">
-                                                    {{-- Hapus History --}}
-                                                    <form action="{{ route('my-tasks.destroy', $task->id) }}" method="POST"
-                                                        class="d-inline delete-history-form">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="button"
-                                                            class="btn btn-sm btn-outline-danger btn-delete-history"
-                                                            title="Hapus dari Riwayat">
-                                                            <i class="fas fa-trash-alt"></i>
-                                                        </button>
-                                                    </form>
-                                                    {{-- Batal Selesai --}}
-                                                    <form action="{{ route('my-tasks.update', $task->id) }}" method="POST"
-                                                        class="d-inline ms-1">
-                                                        @csrf
-                                                        @method('PATCH')
-                                                        <button type="submit" class="btn btn-sm btn-outline-secondary"
-                                                            title="Kembalikan ke Aktif">
-                                                            <i class="fas fa-undo"></i>
-                                                        </button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        @endif
-                    </div>
-                </div>
-            </div>
         </div>
-
-        {{-- 4. AVAILABLE TASKS SECTION --}}
-        <div class="row mb-5" id="available-tasks">
-            <div class="col-12">
-                <div class="card border-0 shadow-lg">
-                    <div class="card-header bg-gradient-blue-white py-4 d-flex justify-content-between align-items-center">
-                        <div>
-                            <h4 class="mb-0 text-primary fw-bold"><i class="fas fa-bolt me-2"></i>Tugas Baru Tersedia</h4>
-                            <p class="mb-0 text-muted mt-1 small">Daftar tugas dari admin yang belum diambil.</p>
-                        </div>
-                        <span class="badge bg-primary rounded-pill px-3">{{ $availableTasks->count() }} Tersedia</span>
-                    </div>
-
-                    <div class="card-body p-0">
-                        @if($availableTasks->isEmpty())
-                            <div class="text-center py-5">
-                                <div class="mb-3 text-gray-300"><i class="fas fa-inbox fa-3x"></i></div>
-                                <h6 class="text-muted">Tidak ada tugas baru saat ini.</h6>
-                            </div>
-                        @else
-                            <div class="table-responsive">
-                                <table class="table table-hover align-middle mb-0" id="availableTasksTable">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th class="ps-4">Judul Tugas</th>
-                                            <th>Deskripsi</th>
-                                            <th>Deadline</th>
-                                            <th class="text-center">Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($availableTasks as $task)
-                                            <tr class="hover-lift-row">
-                                                <td class="ps-4 fw-bold text-dark">{{ $task->judul_tugas }}</td>
-                                                <td class="text-muted text-truncate" style="max-width: 250px;">
-                                                    {{ Str::limit($task->deskripsi, 60) }}</td>
-                                                <td>
-                                                    <span class="badge bg-light text-dark border">
-                                                        <i class="far fa-calendar me-1"></i>
-                                                        {{ date('d M Y', strtotime($task->deadline)) }}
-                                                    </span>
-                                                </td>
-                                                <td class="text-center">
-                                                    <form action="{{ route('my-tasks.store') }}" method="POST"
-                                                        class="take-task-form">
-                                                        @csrf
-                                                        <input type="hidden" name="task_id" value="{{ $task->id }}">
-                                                        <button type="button"
-                                                            class="btn btn-sm btn-primary px-3 rounded-pill btn-take-task">
-                                                            <i class="fas fa-plus me-1"></i> Ambil
-                                                        </button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 
-    {{-- Custom CSS --}}
-    <style>
-        :root {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --blue-white-gradient: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%);
-        }
-
-        /* Nav Pills Styling */
-        .nav-pills .nav-link {
-            color: #64748b;
-            font-weight: 600;
-            background: #fff;
-            border: 1px solid #e2e8f0;
-            transition: all 0.3s;
-        }
-
-        .nav-pills .nav-link.active {
-            background: var(--primary-gradient);
-            color: white;
-            border: none;
-            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
-        }
-
-        .btn-outline-dashed {
-            border: 2px dashed #cbd5e1;
-            color: #64748b;
-            font-weight: 600;
-        }
-
-        .btn-outline-dashed:hover {
-            border-color: #667eea;
-            color: #667eea;
-            background: #f8fafc;
-        }
-
-        /* Text Gradients */
-        .text-gradient-primary {
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .bg-gradient-blue-white {
-            background: var(--blue-white-gradient) !important;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        /* Buttons */
-        .btn-white-blue {
-            background: white;
-            color: #4f46e5;
-            border: 1px solid #e0e7ff;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .btn-white-blue:hover {
-            transform: translateX(-3px);
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
-            border-color: #4f46e5;
-        }
-
-        /* Cards & Hover Effects */
-        .task-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .hover-lift:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
-        }
-
-        .hover-lift-row:hover {
-            background-color: #f8fafc;
-        }
-
-        /* Status Borders */
-        .border-success-subtle {
-            border-color: #86efac !important;
-        }
-
-        .border-warning {
-            border-color: #fca5a5 !important;
-        }
-
-        .border-danger {
-            border-color: #ef4444 !important;
-        }
-
-        /* Smooth Scroll */
-        html {
-            scroll-behavior: smooth;
-        }
-    </style>
-
-    {{-- JAVASCRIPT LOGIC & NOTIFICATIONS --}}
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
-            // 1. Cek Flash Message dari Laravel (Server Side)
+            // Flash message (hanya untuk session success dari controller)
             @if(session('success'))
                 Swal.fire({
                     icon: 'success',
@@ -463,84 +657,28 @@
                 });
             @endif
 
-            // 2. Konfirmasi Tandai Selesai
-            document.querySelectorAll('.btn-finish-task').forEach(button => {
-                button.addEventListener('click', function () {
-                    const form = this.closest('.confirm-finish-form');
-
-                    Swal.fire({
-                        title: 'Tandai Selesai?',
-                        text: "Tugas akan dipindahkan ke tab Riwayat Selesai.",
-                        icon: 'question',
-                        showCancelButton: true,
-                        confirmButtonColor: '#10b981',
-                        cancelButtonColor: '#6b7280',
-                        confirmButtonText: 'Ya, Selesai!',
-                        cancelButtonText: 'Batal'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            form.submit();
-                        }
-                    });
-                });
-            });
-
-            // 3. Konfirmasi Lepas Tugas
-            document.querySelectorAll('.btn-delete-task').forEach(button => {
-                button.addEventListener('click', function () {
-                    const form = this.closest('.delete-form');
-
-                    Swal.fire({
-                        title: 'Lepas Tugas ini?',
-                        text: "Anda harus mengambilnya lagi jika ingin mengerjakannya.",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#ef4444',
-                        cancelButtonColor: '#6b7280',
-                        confirmButtonText: 'Ya, Lepas!',
-                        cancelButtonText: 'Batal'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            form.submit();
-                        }
-                    });
-                });
-            });
-
-            // 4. Konfirmasi Hapus History
+            // Hanya konfirmasi hapus dari riwayat
             document.querySelectorAll('.btn-delete-history').forEach(button => {
                 button.addEventListener('click', function () {
                     const form = this.closest('.delete-history-form');
-
                     Swal.fire({
-                        title: 'Hapus Riwayat?',
-                        text: "Data tugas ini akan dihapus permanen dari riwayat Anda.",
+                        title: 'Hapus dari Riwayat?',
+                        text: "Data tugas ini akan dihapus dari riwayat selesai.",
                         icon: 'warning',
                         showCancelButton: true,
-                        confirmButtonColor: '#d33',
-                        cancelButtonColor: '#3085d6',
-                        confirmButtonText: 'Ya, Hapus Permanen!'
+                        confirmButtonColor: '#e53e3e',
+                        cancelButtonColor: '#718096',
+                        confirmButtonText: 'Ya, Hapus',
+                        cancelButtonText: 'Batal'
                     }).then((result) => {
                         if (result.isConfirmed) {
                             form.submit();
                         }
                     });
-                });
-            });
-
-            // 5. Konfirmasi Ambil Tugas Baru
-            document.querySelectorAll('.btn-take-task').forEach(button => {
-                button.addEventListener('click', function () {
-                    const form = this.closest('.take-task-form');
-                    let btn = this;
-                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
-                    btn.disabled = true;
-                    setTimeout(() => {
-                        form.submit();
-                    }, 500);
                 });
             });
 
         });
     </script>
+
 @endsection
