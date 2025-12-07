@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Task extends Model
 {
     use HasFactory;
-    
-    // PENTING: Kasih tau Laravel nama tabelnya 'tugas'
+
+    // PENTING: Wajib definisikan ini karena nama tabel di Neon adalah 'tugas'
     protected $table = 'tugas'; 
 
     protected $fillable = [
@@ -18,7 +18,7 @@ class Task extends Model
         'deadline',
     ];
 
-    // Relasi ke User
+    // Relasi ke User (Mahasiswa)
     public function users()
     {
         return $this->belongsToMany(User::class, 'task_user', 'task_id', 'user_id')
