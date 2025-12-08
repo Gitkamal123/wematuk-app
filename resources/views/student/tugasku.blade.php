@@ -7,10 +7,20 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
+        :root {
+            --urgent-color: #e53e3e;
+            --warning-color: #ed8936;
+            --normal-color: #48bb78;
+            --primary-color: #4a90e2;
+            --bg-light: #f8f9fa;
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --card-shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             min-height: 100vh;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         .tasks-container {
@@ -19,65 +29,52 @@
             margin: 0 auto;
         }
 
-        /* Header dengan animasi */
+        /* Header dengan efek glassmorphism */
         .page-header {
-            margin-bottom: 2.5rem;
-            animation: fadeInDown 0.6s ease-out;
-        }
-
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            margin-bottom: 3rem;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: slideInDown 0.6s ease-out;
         }
 
         .page-title {
             font-size: 2.5rem;
             font-weight: 800;
-            color: #ffffff;
+            background: linear-gradient(135deg, #1a202c 0%, #4a5568 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 0.5rem;
-            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            letter-spacing: -0.5px;
         }
 
         .page-subtitle {
-            color: rgba(255, 255, 255, 0.9);
+            color: #718096;
             font-size: 1.1rem;
-            font-weight: 400;
+            font-weight: 500;
         }
 
-        /* Stats Cards dengan efek hover */
+        /* Stats Cards dengan efek glass */
         .stats-row {
             display: flex;
             gap: 1.5rem;
-            margin-bottom: 2.5rem;
+            margin-bottom: 3rem;
             animation: fadeInUp 0.6s ease-out 0.2s both;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         .stat-card {
             flex: 1;
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
         }
@@ -87,25 +84,24 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
+            right: 0;
             height: 4px;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.4s ease;
+            background: linear-gradient(90deg, var(--primary-color), var(--normal-color));
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
         .stat-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            transform: translateY(-8px);
+            box-shadow: var(--card-shadow-hover);
         }
 
         .stat-card:hover::before {
-            transform: scaleX(1);
+            opacity: 1;
         }
 
         .stat-label {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #718096;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -114,203 +110,151 @@
         }
 
         .stat-value {
-            font-size: 2.5rem;
+            font-size: 3rem;
             font-weight: 800;
-            transition: transform 0.3s ease;
-        }
-
-        .stat-card:hover .stat-value {
-            transform: scale(1.1);
+            line-height: 1;
         }
 
         .stat-value.ongoing {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary-color), #63b3ed);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
         .stat-value.completed {
-            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            background: linear-gradient(135deg, var(--normal-color), #68d391);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
         /* Section Title */
         .section-title {
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 1.5rem;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #1a202c;
+            margin-bottom: 2rem;
+            padding-left: 1rem;
+            position: relative;
             animation: fadeInUp 0.6s ease-out 0.3s both;
         }
 
-        /* Task Grid dengan animasi stagger */
-        .tasks-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-
-        .tasks-grid .task-card {
-            animation: fadeInUp 0.6s ease-out both;
-        }
-
-        .tasks-grid .task-card:nth-child(1) {
-            animation-delay: 0.4s;
-        }
-
-        .tasks-grid .task-card:nth-child(2) {
-            animation-delay: 0.5s;
-        }
-
-        .tasks-grid .task-card:nth-child(3) {
-            animation-delay: 0.6s;
-        }
-
-        .tasks-grid .task-card:nth-child(4) {
-            animation-delay: 0.7s;
-        }
-
-        .tasks-grid .task-card:nth-child(5) {
-            animation-delay: 0.8s;
-        }
-
-        .tasks-grid .task-card:nth-child(6) {
-            animation-delay: 0.9s;
-        }
-
-        /* Task Card dengan efek hover premium */
-        .task-card {
-            background: #ffffff;
-            border-radius: 20px;
-            padding: 1.75rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border-left: 5px solid;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .task-card::after {
+        .section-title::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg,
-                    transparent,
-                    rgba(255, 255, 255, 0.1),
-                    transparent);
-            transform: rotate(45deg);
-            transition: all 0.5s ease;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 24px;
+            background: linear-gradient(135deg, var(--primary-color), #63b3ed);
+            border-radius: 3px;
         }
 
-        .task-card:hover::after {
-            left: 100%;
+        /* Task Grid dengan stagger animation */
+        .tasks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
         }
 
-        /* Warna Border Status */
-        .task-card.urgent {
-            border-left-color: #e53e3e;
+        /* Task Card dengan efek glassmorphism */
+        .task-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.6s ease-out;
+            animation-fill-mode: both;
         }
 
-        .task-card.warning {
-            border-left-color: #ed8936;
+        .task-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            transition: all 0.4s ease;
         }
 
-        .task-card.normal {
-            border-left-color: #48bb78;
+        .task-card.urgent::before {
+            background: linear-gradient(90deg, var(--urgent-color), #fc8181);
+        }
+
+        .task-card.warning::before {
+            background: linear-gradient(90deg, var(--warning-color), #f6ad55);
+        }
+
+        .task-card.normal::before {
+            background: linear-gradient(90deg, var(--normal-color), #68d391);
         }
 
         .task-card:hover {
-            transform: translateY(-12px) scale(1.02);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--card-shadow-hover);
         }
 
-        .task-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #1a202c;
-            margin-bottom: 0.75rem;
-            line-height: 1.4;
-            transition: color 0.3s ease;
-        }
-
-        .task-card:hover .task-title {
-            color: #667eea;
-        }
-
-        .task-desc {
-            color: #718096;
-            font-size: 0.95rem;
-            margin-bottom: 1.25rem;
-            line-height: 1.6;
-        }
-
-        .task-deadline {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.85rem;
-            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
-            border-radius: 12px;
-            margin-bottom: 1.25rem;
-            transition: all 0.3s ease;
-        }
-
-        .task-card:hover .task-deadline {
-            background: linear-gradient(135deg, #edf2f7 0%, #e2e8f0 100%);
-            transform: translateX(5px);
-        }
-
-        .deadline-icon {
-            width: 20px;
-            height: 20px;
-            flex-shrink: 0;
-            transition: transform 0.3s ease;
-        }
-
-        .task-card:hover .deadline-icon {
-            transform: rotate(360deg);
-        }
-
-        .task-card.urgent .deadline-icon {
-            color: #e53e3e;
-        }
-
-        .task-card.warning .deadline-icon {
-            color: #ed8936;
-        }
-
-        .task-card.normal .deadline-icon {
-            color: #48bb78;
-        }
-
-        .deadline-text {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: #2d3748;
+        .task-card:hover::before {
+            height: 6px;
+            filter: brightness(1.2);
         }
 
         /* Status Badge dengan animasi */
         .status-badge {
             display: inline-block;
-            padding: 0.4rem 1rem;
+            padding: 0.5rem 1.25rem;
             border-radius: 50px;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             font-weight: 700;
             text-transform: uppercase;
-            margin-bottom: 1rem;
             letter-spacing: 0.5px;
-            animation: pulse 2s ease-in-out infinite;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: badgePulse 2s infinite;
         }
 
-        @keyframes pulse {
+        .status-badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .task-card:hover .status-badge::before {
+            left: 100%;
+        }
+
+        .status-badge.urgent {
+            background: linear-gradient(135deg, #fed7d7, #fc8181);
+            color: #9b2c2c;
+            box-shadow: 0 4px 15px rgba(229, 62, 62, 0.2);
+        }
+
+        .status-badge.warning {
+            background: linear-gradient(135deg, #feebc8, #f6ad55);
+            color: #744210;
+            box-shadow: 0 4px 15px rgba(237, 137, 54, 0.2);
+        }
+
+        .status-badge.normal {
+            background: linear-gradient(135deg, #c6f6d5, #68d391);
+            color: #22543d;
+            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.2);
+        }
+
+        @keyframes badgePulse {
 
             0%,
             100% {
@@ -322,39 +266,79 @@
             }
         }
 
-        .status-badge.urgent {
-            background: linear-gradient(135deg, #fc8181 0%, #e53e3e 100%);
-            color: #ffffff;
-            box-shadow: 0 4px 12px rgba(229, 62, 62, 0.3);
+        .task-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+            transition: color 0.3s ease;
         }
 
-        .status-badge.warning {
-            background: linear-gradient(135deg, #f6ad55 0%, #ed8936 100%);
-            color: #ffffff;
-            box-shadow: 0 4px 12px rgba(237, 137, 54, 0.3);
+        .task-card:hover .task-title {
+            color: var(--primary-color);
         }
 
-        .status-badge.normal {
-            background: linear-gradient(135deg, #68d391 0%, #38a169 100%);
-            color: #ffffff;
-            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+        .task-desc {
+            color: #718096;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        /* Deadline dengan efek glow */
+        .task-deadline {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, rgba(247, 250, 252, 0.8), rgba(226, 232, 240, 0.8));
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .task-card:hover .task-deadline {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(247, 250, 252, 0.9));
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .deadline-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .task-card:hover .deadline-icon {
+            transform: rotate(15deg);
+        }
+
+        .deadline-text {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #2d3748;
+            font-feature-settings: "tnum";
         }
 
         /* Task Actions dengan efek hover */
         .task-actions {
             display: flex;
             gap: 0.75rem;
+            margin-top: 1rem;
         }
 
         .btn-task {
             flex: 1;
-            padding: 0.85rem;
+            padding: 0.875rem;
             border: none;
             border-radius: 12px;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -371,9 +355,9 @@
             width: 0;
             height: 0;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.2);
             transform: translate(-50%, -50%);
-            transition: width 0.6s ease, height 0.6s ease;
+            transition: width 0.6s, height 0.6s;
         }
 
         .btn-task:hover::before {
@@ -382,7 +366,7 @@
         }
 
         .btn-complete {
-            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            background: linear-gradient(135deg, var(--normal-color), #38a169);
             color: #ffffff;
             box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
         }
@@ -393,64 +377,81 @@
         }
 
         .btn-remove {
-            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            background: linear-gradient(135deg, #f7fafc, #e2e8f0);
             color: #718096;
             width: 50px;
             padding: 0;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 15px rgba(113, 128, 150, 0.1);
         }
 
         .btn-remove:hover {
-            background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+            background: linear-gradient(135deg, var(--urgent-color), #c53030);
             color: #ffffff;
-            transform: translateY(-3px) rotate(10deg);
-            box-shadow: 0 8px 20px rgba(229, 62, 62, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(229, 62, 62, 0.4);
         }
 
-        /* Completed Section & Tables */
+        /* Completed Section dengan efek glass */
         .completed-table {
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            box-shadow: var(--card-shadow);
             overflow: hidden;
-            margin-bottom: 3rem;
-            animation: fadeInUp 0.6s ease-out 0.5s both;
+            margin-bottom: 4rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 0.6s ease-out 0.4s both;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            border-radius: 20px;
         }
 
         .table-custom {
             width: 100%;
+            border-collapse: collapse;
         }
 
         .table-custom thead th {
-            padding: 1.25rem 1.75rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            font-size: 0.9rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(247, 250, 252, 0.9), rgba(226, 232, 240, 0.9));
+            font-size: 0.85rem;
             font-weight: 700;
-            color: #ffffff;
+            color: #4a5568;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
-            border: none;
-        }
-
-        .table-custom tbody td {
-            padding: 1.5rem 1.75rem;
-            border-bottom: 1px solid #f7fafc;
-            color: #2d3748;
-            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid rgba(226, 232, 240, 0.5);
+            position: sticky;
+            top: 0;
+            backdrop-filter: blur(10px);
         }
 
         .table-custom tbody tr {
             transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.3);
         }
 
         .table-custom tbody tr:hover {
-            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
-            transform: scale(1.01);
+            background: rgba(247, 250, 252, 0.7);
+            transform: translateX(5px);
+        }
+
+        .table-custom tbody td {
+            padding: 1.5rem;
+            color: #2d3748;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .table-custom tbody tr:hover td {
+            color: #1a202c;
         }
 
         .task-name {
-            font-weight: 700;
+            font-weight: 600;
             color: #1a202c;
+            font-size: 1rem;
         }
 
         .completed-badge {
@@ -458,119 +459,169 @@
             align-items: center;
             gap: 0.5rem;
             padding: 0.5rem 1rem;
-            background: linear-gradient(135deg, #68d391 0%, #48bb78 100%);
-            color: #ffffff;
-            border-radius: 50px;
+            background: linear-gradient(135deg, rgba(72, 187, 120, 0.1), rgba(56, 161, 105, 0.1));
+            color: var(--normal-color);
+            border-radius: 8px;
             font-size: 0.85rem;
-            font-weight: 600;
-            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.2);
+            font-weight: 700;
         }
 
+        /* Table Action Buttons */
         .btn-table-action {
             width: 40px;
             height: 40px;
             border: none;
             border-radius: 10px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-table-action::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-table-action:hover::before {
+            width: 200px;
+            height: 200px;
         }
 
         .btn-undo {
-            background: linear-gradient(135deg, #f6ad55 0%, #ed8936 100%);
-            color: #ffffff;
-            box-shadow: 0 4px 12px rgba(237, 137, 54, 0.2);
+            background: linear-gradient(135deg, rgba(237, 137, 54, 0.1), rgba(214, 158, 46, 0.1));
+            color: var(--warning-color);
         }
 
         .btn-undo:hover {
-            transform: translateY(-4px) rotate(-15deg);
-            box-shadow: 0 8px 20px rgba(237, 137, 54, 0.3);
+            background: linear-gradient(135deg, var(--warning-color), #d69e2e);
+            color: #ffffff;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(237, 137, 54, 0.3);
         }
 
         .btn-delete {
-            background: linear-gradient(135deg, #fc8181 0%, #e53e3e 100%);
-            color: #ffffff;
+            background: linear-gradient(135deg, rgba(229, 62, 62, 0.1), rgba(197, 48, 48, 0.1));
+            color: var(--urgent-color);
             margin-left: 0.5rem;
-            box-shadow: 0 4px 12px rgba(229, 62, 62, 0.2);
         }
 
         .btn-delete:hover {
-            transform: translateY(-4px) rotate(15deg);
-            box-shadow: 0 8px 20px rgba(229, 62, 62, 0.3);
+            background: linear-gradient(135deg, var(--urgent-color), #c53030);
+            color: #ffffff;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(229, 62, 62, 0.3);
         }
 
-        /* Available Tasks */
+        /* Available Tasks dengan efek glass */
         .available-tasks {
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            box-shadow: var(--card-shadow);
             overflow: hidden;
-            animation: fadeInUp 0.6s ease-out 0.6s both;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 0.6s ease-out 0.5s both;
         }
 
         .available-header {
-            padding: 1.75rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1.75rem 2rem;
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.1), rgba(99, 179, 237, 0.1));
+            border-bottom: 1px solid rgba(74, 144, 226, 0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .available-title {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 700;
-            color: #ffffff;
+            color: #1a202c;
             margin: 0;
         }
 
         .count-badge {
-            padding: 0.6rem 1.25rem;
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(10px);
+            padding: 0.5rem 1.25rem;
+            background: linear-gradient(135deg, var(--primary-color), #63b3ed);
             color: #ffffff;
             border-radius: 50px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 700;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
         }
 
         .btn-take {
-            padding: 0.65rem 1.5rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 0.625rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary-color), #63b3ed);
             color: #ffffff;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-weight: 600;
             font-size: 0.9rem;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-take::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-take:hover::before {
+            width: 200px;
+            height: 200px;
         }
 
         .btn-take:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(74, 144, 226, 0.4);
         }
 
+        /* Empty State */
         .empty-state {
             text-align: center;
             padding: 4rem 2rem;
-            animation: fadeIn 0.8s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin: 2rem 0;
         }
 
         .empty-icon {
@@ -578,24 +629,12 @@
             height: 100px;
             margin: 0 auto 1.5rem;
             color: #cbd5e0;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-10px);
-            }
+            opacity: 0.7;
         }
 
         .empty-title {
             font-size: 1.3rem;
-            font-weight: 700;
+            font-weight: 600;
             color: #2d3748;
             margin-bottom: 0.75rem;
         }
@@ -603,45 +642,110 @@
         .empty-text {
             color: #718096;
             font-size: 1rem;
+            max-width: 400px;
+            margin: 0 auto;
         }
 
+        /* Animations */
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Stagger animation untuk task cards */
+        .task-card {
+            animation-delay: calc(var(--card-index) * 0.1s);
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
             .page-title {
-                font-size: 1.75rem;
+                font-size: 2rem;
             }
 
             .stats-row {
                 flex-direction: column;
             }
 
-            .tasks-grid {
-                grid-template-columns: 1fr;
+            .stat-card {
+                padding: 1.5rem;
             }
 
-            .table-custom {
-                font-size: 0.85rem;
+            .stat-value {
+                font-size: 2.5rem;
+            }
+
+            .tasks-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
             }
 
             .table-custom thead th,
             .table-custom tbody td {
-                padding: 1rem 1.25rem;
+                padding: 1rem;
+                font-size: 0.85rem;
+            }
+
+            .btn-table-action {
+                width: 36px;
+                height: 36px;
             }
         }
 
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(247, 250, 252, 0.5);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary-color), #63b3ed);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #3182ce, #4299e1);
         }
     </style>
 
     <div class="tasks-container">
         <div class="container-fluid">
 
+            <!-- Header -->
             <div class="page-header">
                 <h1 class="page-title">Manajemen Tugas Saya</h1>
-                <p class="page-subtitle">Kelola dan pantau progress tugas Anda dengan mudah</p>
+                <p class="page-subtitle">Kelola dan pantau progress tugas Anda</p>
             </div>
 
+            <!-- Stats -->
             <div class="stats-row">
                 <div class="stat-card">
                     <div class="stat-label">Sedang Berjalan</div>
@@ -653,6 +757,7 @@
                 </div>
             </div>
 
+            <!-- Ongoing Tasks -->
             @php
                 $ongoingTasks = $myTasks->where('pivot.is_completed', false);
             @endphp
@@ -660,18 +765,17 @@
             <h2 class="section-title">Tugas Berjalan</h2>
 
             @if($ongoingTasks->isEmpty())
-                <div class="empty-state"
-                    style="background: #ffffff; border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); margin-bottom: 3rem;">
+                <div class="empty-state" style="margin-bottom: 3rem;">
                     <svg xmlns="http://www.w3.org/2000/svg" class="empty-icon" fill="currentColor" viewBox="0 0 16 16">
                         <path
                             d="M8.5 2.687c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z" />
                     </svg>
                     <h3 class="empty-title">Tidak Ada Tugas Berjalan</h3>
-                    <p class="empty-text">Anda belum mengambil tugas apapun</p>
+                    <p class="empty-text">Ambil tugas baru dari bagian "Tugas Tersedia" untuk memulai</p>
                 </div>
             @else
                 <div class="tasks-grid">
-                    @foreach($ongoingTasks as $task)
+                    @foreach($ongoingTasks as $index => $task)
                         @php
                             $deadline = \Carbon\Carbon::parse($task->deadline);
                             $now = \Carbon\Carbon::now();
@@ -689,7 +793,7 @@
                             }
                         @endphp
 
-                        <div class="task-card {{ $statusClass }}">
+                        <div class="task-card {{ $statusClass }}" style="--card-index: {{ $index % 10 }};">
                             <div class="status-badge {{ $statusClass }}">
                                 {{ $statusLabel }}
                             </div>
@@ -739,6 +843,7 @@
                 </div>
             @endif
 
+            <!-- Completed Tasks -->
             @php
                 $completedTasks = $myTasks->where('pivot.is_completed', true);
             @endphp
@@ -813,6 +918,7 @@
                 </div>
             @endif
 
+            <!-- Available Tasks -->
             <h2 class="section-title">Tugas Tersedia</h2>
 
             <div class="available-tasks">
@@ -874,8 +980,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-
-            // Flash message (hanya untuk session success dari controller)
+            // Flash message
             @if(session('success'))
                 Swal.fire({
                     icon: 'success',
@@ -884,7 +989,9 @@
                     timer: 3000,
                     showConfirmButton: false,
                     toast: true,
-                    position: 'top-end'
+                    position: 'top-end',
+                    background: 'linear-gradient(135deg, #48bb78 0%, #38a169 100%)',
+                    color: '#ffffff'
                 });
             @endif
 
@@ -901,7 +1008,15 @@
                         confirmButtonColor: '#e53e3e',
                         cancelButtonColor: '#718096',
                         confirmButtonText: 'Ya, Hapus',
-                        cancelButtonText: 'Batal'
+                        cancelButtonText: 'Batal',
+                        background: 'rgba(255, 255, 255, 0.95)',
+                        backdrop: 'rgba(0, 0, 0, 0.4)',
+                        showClass: {
+                            popup: 'animate__animated animate__fadeInDown'
+                        },
+                        hideClass: {
+                            popup: 'animate__animated animate__fadeOutUp'
+                        }
                     }).then((result) => {
                         if (result.isConfirmed) {
                             form.submit();
@@ -910,7 +1025,7 @@
                 });
             });
 
-            // Konfirmasi Selesai
+            // Konfirmasi Selesai dengan efek hover
             document.querySelectorAll('.btn-complete').forEach(button => {
                 button.addEventListener('click', function (e) {
                     e.preventDefault();
@@ -923,7 +1038,15 @@
                         confirmButtonColor: '#48bb78',
                         cancelButtonColor: '#718096',
                         confirmButtonText: 'Ya, Selesai!',
-                        cancelButtonText: 'Batal'
+                        cancelButtonText: 'Batal',
+                        background: 'rgba(255, 255, 255, 0.95)',
+                        backdrop: 'rgba(0, 0, 0, 0.4)',
+                        showClass: {
+                            popup: 'animate__animated animate__fadeInDown'
+                        },
+                        hideClass: {
+                            popup: 'animate__animated animate__fadeOutUp'
+                        }
                     }).then((result) => {
                         if (result.isConfirmed) {
                             form.submit();
@@ -945,7 +1068,15 @@
                         confirmButtonColor: '#e53e3e',
                         cancelButtonColor: '#718096',
                         confirmButtonText: 'Ya, Lepas',
-                        cancelButtonText: 'Batal'
+                        cancelButtonText: 'Batal',
+                        background: 'rgba(255, 255, 255, 0.95)',
+                        backdrop: 'rgba(0, 0, 0, 0.4)',
+                        showClass: {
+                            popup: 'animate__animated animate__fadeInDown'
+                        },
+                        hideClass: {
+                            popup: 'animate__animated animate__fadeOutUp'
+                        }
                     }).then((result) => {
                         if (result.isConfirmed) {
                             form.submit();
@@ -954,6 +1085,64 @@
                 });
             });
 
+            // Efek hover untuk card dengan delay staggered
+            const taskCards = document.querySelectorAll('.task-card');
+            taskCards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+
+                // Efek glow saat hover
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-8px) scale(1.02)';
+                    card.style.boxShadow = '0 20px 60px rgba(0, 0, 0, 0.2)';
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0) scale(1)';
+                    card.style.boxShadow = 'var(--card-shadow)';
+                });
+            });
+
+            // Efek ripple untuk semua tombol
+            const buttons = document.querySelectorAll('.btn-task, .btn-take, .btn-table-action');
+            buttons.forEach(button => {
+                button.addEventListener('click', function (e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+
+                    const ripple = document.createElement('span');
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    ripple.classList.add('ripple');
+
+                    this.appendChild(ripple);
+
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+
+            // Tambah style untuk ripple effect
+            const style = document.createElement('style');
+            style.textContent = `
+                    .ripple {
+                        position: absolute;
+                        border-radius: 50%;
+                        background: rgba(255, 255, 255, 0.6);
+                        transform: scale(0);
+                        animation: ripple-animation 0.6s linear;
+                        pointer-events: none;
+                    }
+
+                    @keyframes ripple-animation {
+                        to {
+                            transform: scale(4);
+                            opacity: 0;
+                        }
+                    }
+                `;
+            document.head.appendChild(style);
         });
     </script>
 
