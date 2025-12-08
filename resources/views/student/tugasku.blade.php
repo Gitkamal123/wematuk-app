@@ -33,6 +33,33 @@
             animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
+        /* --- CSS TOMBOL KEMBALI (BARU) --- */
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: #ffffff;
+            color: #4a5568;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1.5rem;
+            /* Jarak ke judul */
+        }
+
+        .btn-back:hover {
+            background-color: #f7fafc;
+            color: #2d3748;
+            transform: translateX(-3px);
+            /* Efek gerak ke kiri */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
         /* Header */
         .page-header {
             margin-bottom: 2.5rem;
@@ -110,6 +137,7 @@
             border-radius: 16px;
             padding: 1.5rem;
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            /* UPDATE: Waktu transisi diperlambat jadi 0.5s agar lebih smooth */
             transition: all 0.5s ease;
             border-left: 4px solid;
             position: relative;
@@ -221,6 +249,7 @@
             font-weight: 600;
             font-size: 0.9rem;
             cursor: pointer;
+            /* UPDATE: Transisi diperlambat jadi 0.5s */
             transition: all 0.5s ease;
             display: flex;
             align-items: center;
@@ -259,6 +288,7 @@
             margin-right: 0.5rem;
             border-radius: 12px;
             padding: 0.75rem 1.5rem;
+            /* UPDATE: Transisi diperlambat jadi 0.3s (standar) tapi terasa smooth */
             transition: all 0.3s ease;
         }
 
@@ -323,6 +353,7 @@
 
         /* Hover Baris Gradasi */
         .table-custom tbody tr {
+            /* UPDATE: Transisi tabel diperlambat jadi 0.4s */
             transition: all 0.4s ease;
         }
 
@@ -480,6 +511,12 @@
 
     <div class="tasks-container">
         <div class="container-fluid">
+
+            <div class="mb-4">
+                <a href="{{ route('home') }}" class="btn-back">
+                    <i class="fas fa-arrow-left"></i> Kembali ke Dashboard
+                </a>
+            </div>
 
             <div class="page-header">
                 <h1 class="page-title">Manajemen Tugas Saya</h1>
