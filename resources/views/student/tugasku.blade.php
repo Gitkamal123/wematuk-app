@@ -110,7 +110,7 @@
             border-radius: 16px;
             padding: 1.5rem;
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             border-left: 4px solid;
             position: relative;
         }
@@ -221,7 +221,7 @@
             font-weight: 600;
             font-size: 0.9rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -323,7 +323,7 @@
 
         /* Hover Baris Gradasi */
         .table-custom tbody tr {
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
         }
 
         .table-custom tbody tr:hover {
