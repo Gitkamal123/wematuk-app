@@ -526,7 +526,7 @@
 
             <div class="page-header">
                 <h1 class="page-title">Manajemen Tugas Saya</h1>
-                <p class="page-subtitle">Kelola dan pantau progress tugas Anda</p>
+                <p class="page-subtitle">Kelola tugas kamu</p>
             </div>
 
             <div class="stats-row">
@@ -732,7 +732,7 @@
 
             <div class="available-tasks">
                 <div class="available-header">
-                    <h3 class="available-title">Ambil Tugas Baru</h3>
+                    <h3 class="available-title">Tugas Yang Tersedia</h3>
                     <span class="count-badge">{{ $availableTasks->count() }} Tersedia</span>
                 </div>
 
