@@ -49,8 +49,7 @@
             text-decoration: none;
             box-shadow: 0 4px 6px rgba(74, 144, 226, 0.3);
             margin-bottom: 1.5rem;
-            
-            /* WAKTU TRANSISI HOVER (Smooth) */
+                        
             transition: all 0.5s ease;
         }
 
@@ -297,7 +296,7 @@
             margin-right: 0.5rem;
             border-radius: 12px;
             padding: 0.75rem 1.5rem;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
         }
 
         .nav-pills .nav-link:hover {
@@ -395,7 +394,7 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.5s ease;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -457,7 +456,7 @@
             font-weight: 600;
             font-size: 0.85rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
