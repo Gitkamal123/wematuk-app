@@ -461,7 +461,7 @@
                         @endphp
 
                         <div class="task-card {{ $statusClass }}">
-                            <h3 class="task-title">{{ $task->judul_tugas }}</h3>
+                            <h3 class="task-title">{{ $task->judul }}</h3>
                             <p class="task-desc">{{ Str::limit($task->deskripsi, 90) }}</p>
 
                             <div class="task-deadline">
@@ -529,7 +529,7 @@
                             <tbody>
                                 @foreach($completedTasks as $task)
                                     <tr>
-                                        <td class="task-name">{{ $task->judul_tugas }}</td>
+                                        <td class="task-name">{{ $task->judul}}</td>
                                         <td>{{ \Carbon\Carbon::parse($task->deadline)->format('d M Y') }}</td>
                                         <td>{{ \Carbon\Carbon::parse($task->pivot->updated_at)->format('d M Y, H:i') }}</td>
                                         <td>
@@ -613,7 +613,7 @@
                             <tbody>
                                 @foreach($availableTasks as $task)
                                     <tr>
-                                        <td class="task-name">{{ $task->judul_tugas }}</td>
+                                        <td class="task-name">{{ $task->judul}}</td>
                                         <td>{{ Str::limit($task->deskripsi, 60) }}</td>
                                         <td>{{ \Carbon\Carbon::parse($task->deadline)->format('d M Y') }}</td>
                                         <td style="text-align: center;">
