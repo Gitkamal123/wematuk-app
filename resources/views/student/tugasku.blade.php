@@ -95,19 +95,26 @@
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
             transition: all 0.3s ease;
             border-left: 4px solid;
+            position: relative;
+            /* Untuk positioning jika perlu */
         }
 
+        /* Warna Border Status */
         .task-card.urgent {
             border-left-color: #e53e3e;
         }
 
+        /* Merah */
         .task-card.warning {
             border-left-color: #ed8936;
         }
 
+        /* Orange */
         .task-card.normal {
             border-left-color: #48bb78;
         }
+
+        /* Hijau */
 
         .task-card:hover {
             transform: translateY(-4px);
@@ -163,6 +170,32 @@
             color: #2d3748;
         }
 
+        /* Status Badge Baru */
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .status-badge.urgent {
+            background-color: #ffeaea;
+            color: #e53e3e;
+        }
+
+        .status-badge.warning {
+            background-color: #feebc8;
+            color: #ed8936;
+        }
+
+        .status-badge.normal {
+            background-color: #c6f6d5;
+            color: #38a169;
+        }
+
         /* Task Actions */
         .task-actions {
             display: flex;
@@ -206,7 +239,7 @@
             color: #ffffff;
         }
 
-        /* Completed Section */
+        /* Completed Section & Tables (Tidak berubah) */
         .completed-table {
             background: #ffffff;
             border-radius: 16px;
@@ -303,7 +336,7 @@
             color: #ffffff;
         }
 
-        /* Available Tasks */
+        /* Available Tasks & Responsive (Tidak berubah) */
         .available-tasks {
             background: #ffffff;
             border-radius: 16px;
@@ -356,7 +389,6 @@
             box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
         }
 
-        /* Empty State */
         .empty-state {
             text-align: center;
             padding: 3rem;
@@ -380,7 +412,6 @@
             color: #718096;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .page-title {
                 font-size: 1.5rem;
@@ -408,13 +439,11 @@
     <div class="tasks-container">
         <div class="container-fluid">
 
-            <!-- Header -->
             <div class="page-header">
                 <h1 class="page-title">Manajemen Tugas Saya</h1>
                 <p class="page-subtitle">Kelola dan pantau progress tugas Anda</p>
             </div>
 
-            <!-- Stats -->
             <div class="stats-row">
                 <div class="stat-card">
                     <div class="stat-label">Sedang Berjalan</div>
@@ -426,7 +455,6 @@
                 </div>
             </div>
 
-            <!-- Ongoing Tasks -->
             @php
                 $ongoingTasks = $myTasks->where('pivot.is_completed', false);
             @endphp
@@ -451,17 +479,26 @@
                             $now = \Carbon\Carbon::now();
                             $diff = $now->diffInDays($deadline, false);
 
+                            // LOGIKA STATUS BARU (Sesuai Request)
                             if ($diff < 0) {
-                                $statusClass = 'urgent';
+                                $statusClass = 'urgent'; // Class CSS
+                                $statusLabel = 'Lewat Deadline'; // Teks Label
                             } elseif ($diff <= 3) {
                                 $statusClass = 'warning';
+                                $statusLabel = 'Mendekati Deadline';
                             } else {
                                 $statusClass = 'normal';
+                                $statusLabel = 'Aktif';
                             }
                         @endphp
 
                         <div class="task-card {{ $statusClass }}">
-                            <h3 class="task-title">{{ $task->judul_tugas }}</h3>
+                            {{-- LABEL STATUS (DITAMBAHKAN) --}}
+                            <div class="status-badge {{ $statusClass }}">
+                                {{ $statusLabel }}
+                            </div>
+
+                            <h3 class="task-title">{{ $task->judul }}</h3>
                             <p class="task-desc">{{ Str::limit($task->deskripsi, 90) }}</p>
 
                             <div class="task-deadline">
@@ -478,7 +515,7 @@
                                     style="flex: 1;">
                                     @csrf
                                     @method('PATCH')
-                                    <button type="button" class="btn-task btn-complete btn-finish-task">
+                                    <button type="submit" class="btn-task btn-complete">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                             viewBox="0 0 16 16">
                                             <path
@@ -490,7 +527,7 @@
                                 <form action="{{ route('my-tasks.destroy', $task->id) }}" method="POST" class="delete-form">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="button" class="btn-task btn-remove btn-delete-task">
+                                    <button type="submit" class="btn-task btn-remove">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                             viewBox="0 0 16 16">
                                             <path
@@ -506,7 +543,6 @@
                 </div>
             @endif
 
-            <!-- Completed Tasks -->
             @php
                 $completedTasks = $myTasks->where('pivot.is_completed', true);
             @endphp
@@ -529,7 +565,7 @@
                             <tbody>
                                 @foreach($completedTasks as $task)
                                     <tr>
-                                        <td class="task-name">{{ $task->judul_tugas }}</td>
+                                        <td class="task-name">{{ $task->judul }}</td>
                                         <td>{{ \Carbon\Carbon::parse($task->deadline)->format('d M Y') }}</td>
                                         <td>{{ \Carbon\Carbon::parse($task->pivot->updated_at)->format('d M Y, H:i') }}</td>
                                         <td>
@@ -581,7 +617,6 @@
                 </div>
             @endif
 
-            <!-- Available Tasks -->
             <h2 class="section-title">Tugas Tersedia</h2>
 
             <div class="available-tasks">
@@ -613,14 +648,14 @@
                             <tbody>
                                 @foreach($availableTasks as $task)
                                     <tr>
-                                        <td class="task-name">{{ $task->judul_tugas }}</td>
+                                        <td class="task-name">{{ $task->judul }}</td>
                                         <td>{{ Str::limit($task->deskripsi, 60) }}</td>
                                         <td>{{ \Carbon\Carbon::parse($task->deadline)->format('d M Y') }}</td>
                                         <td style="text-align: center;">
                                             <form action="{{ route('my-tasks.store') }}" method="POST" class="take-task-form">
                                                 @csrf
                                                 <input type="hidden" name="task_id" value="{{ $task->id }}">
-                                                <button type="button" class="btn-take btn-take-task">
+                                                <button type="submit" class="btn-take">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                                                         fill="currentColor" viewBox="0 0 16 16">
                                                         <path
@@ -644,7 +679,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
-            // Flash message
+            // Flash message (hanya untuk session success dari controller)
             @if(session('success'))
                 Swal.fire({
                     icon: 'success',
@@ -657,9 +692,32 @@
                 });
             @endif
 
-            // Konfirmasi tandai selesai
-            document.querySelectorAll('.btn-finish-task').forEach(button => {
-                button.addEventListener('click', function () {
+            // Hanya konfirmasi hapus dari riwayat
+            document.querySelectorAll('.btn-delete-history').forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault(); // Mencegah form submit langsung
+                    const form = this.closest('.delete-history-form');
+                    Swal.fire({
+                        title: 'Hapus dari Riwayat?',
+                        text: "Data tugas ini akan dihapus dari riwayat selesai.",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#e53e3e',
+                        cancelButtonColor: '#718096',
+                        confirmButtonText: 'Ya, Hapus',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+
+            // Konfirmasi Selesai
+            document.querySelectorAll('.btn-complete').forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
                     const form = this.closest('.confirm-finish-form');
                     Swal.fire({
                         title: 'Tandai Selesai?',
@@ -678,56 +736,29 @@
                 });
             });
 
-            // Konfirmasi hapus tugas
-            document.querySelectorAll('.btn-delete-task').forEach(button => {
-                button.addEventListener('click', function () {
+            // Konfirmasi Lepas Tugas (Opsional, agar user tidak salah klik)
+            document.querySelectorAll('.btn-remove').forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
                     const form = this.closest('.delete-form');
                     Swal.fire({
                         title: 'Lepas Tugas?',
-                        text: "Anda harus mengambilnya lagi jika ingin mengerjakannya.",
+                        text: "Anda harus mengambil ulang jika ingin mengerjakannya lagi.",
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#e53e3e',
                         cancelButtonColor: '#718096',
-                        confirmButtonText: 'Ya, Lepas!',
+                        confirmButtonText: 'Ya, Lepas',
                         cancelButtonText: 'Batal'
                     }).then((result) => {
                         if (result.isConfirmed) {
                             form.submit();
                         }
                     });
-                });
-            });
-
-            // Konfirmasi hapus riwayat
-            document.querySelectorAll('.btn-delete-history').forEach(button => {
-                button.addEventListener('click', function () {
-                    const form = this.closest('.delete-history-form');
-                    Swal.fire({
-                        title: 'Hapus dari Riwayat?',
-                        text: "Data tugas ini akan dihapus permanen.",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#e53e3e',
-                        cancelButtonColor: '#718096',
-                        confirmButtonText: 'Ya, Hapus!',
-                        cancelButtonText: 'Batal'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            form.submit();
-                        }
-                    });
-                });
-            });
-
-            // Ambil tugas
-            document.querySelectorAll('.btn-take-task').forEach(button => {
-                button.addEventListener('click', function () {
-                    const form = this.closest('.take-task-form');
-                    form.submit();
                 });
             });
 
         });
     </script>
+
 @endsection
