@@ -8,7 +8,8 @@
 
     <style>
         body {
-            background: #f8f9fa;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
@@ -18,85 +19,199 @@
             margin: 0 auto;
         }
 
-        /* Header */
+        /* Header dengan animasi */
         .page-header {
             margin-bottom: 2.5rem;
+            animation: fadeInDown 0.6s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .page-title {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #1a202c;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #ffffff;
             margin-bottom: 0.5rem;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
         .page-subtitle {
-            color: #718096;
-            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            font-weight: 400;
         }
 
-        /* Stats Cards */
+        /* Stats Cards dengan efek hover */
         .stats-row {
             display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+            animation: fadeInUp 0.6s ease-out 0.2s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .stat-card {
             flex: 1;
             background: #ffffff;
-            border-radius: 16px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
         }
 
         .stat-label {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: #718096;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
         }
 
         .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
+            font-size: 2.5rem;
+            font-weight: 800;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover .stat-value {
+            transform: scale(1.1);
         }
 
         .stat-value.ongoing {
-            color: #4a90e2;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .stat-value.completed {
-            color: #48bb78;
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         /* Section Title */
         .section-title {
-            font-size: 1.5rem;
+            font-size: 1.75rem;
             font-weight: 700;
-            color: #1a202c;
+            color: #ffffff;
             margin-bottom: 1.5rem;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 0.6s ease-out 0.3s both;
         }
 
-        /* Task Grid */
+        /* Task Grid dengan animasi stagger */
         .tasks-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
             gap: 1.5rem;
             margin-bottom: 3rem;
         }
 
-        /* Task Card */
+        .tasks-grid .task-card {
+            animation: fadeInUp 0.6s ease-out both;
+        }
+
+        .tasks-grid .task-card:nth-child(1) {
+            animation-delay: 0.4s;
+        }
+
+        .tasks-grid .task-card:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .tasks-grid .task-card:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        .tasks-grid .task-card:nth-child(4) {
+            animation-delay: 0.7s;
+        }
+
+        .tasks-grid .task-card:nth-child(5) {
+            animation-delay: 0.8s;
+        }
+
+        .tasks-grid .task-card:nth-child(6) {
+            animation-delay: 0.9s;
+        }
+
+        /* Task Card dengan efek hover premium */
         .task-card {
             background: #ffffff;
-            border-radius: 16px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-            transition: all 0.3s ease;
-            border-left: 4px solid;
+            border-radius: 20px;
+            padding: 1.75rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-left: 5px solid;
             position: relative;
-            /* Untuk positioning jika perlu */
+            overflow: hidden;
+        }
+
+        .task-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.1),
+                    transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+        }
+
+        .task-card:hover::after {
+            left: 100%;
         }
 
         /* Warna Border Status */
@@ -104,52 +219,64 @@
             border-left-color: #e53e3e;
         }
 
-        /* Merah */
         .task-card.warning {
             border-left-color: #ed8936;
         }
 
-        /* Orange */
         .task-card.normal {
             border-left-color: #48bb78;
         }
 
-        /* Hijau */
-
         .task-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
         }
 
         .task-title {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: #1a202c;
             margin-bottom: 0.75rem;
             line-height: 1.4;
+            transition: color 0.3s ease;
+        }
+
+        .task-card:hover .task-title {
+            color: #667eea;
         }
 
         .task-desc {
             color: #718096;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            line-height: 1.5;
+            font-size: 0.95rem;
+            margin-bottom: 1.25rem;
+            line-height: 1.6;
         }
 
         .task-deadline {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.75rem;
-            background: #f7fafc;
-            border-radius: 10px;
-            margin-bottom: 1rem;
+            padding: 0.85rem;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 12px;
+            margin-bottom: 1.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .task-card:hover .task-deadline {
+            background: linear-gradient(135deg, #edf2f7 0%, #e2e8f0 100%);
+            transform: translateX(5px);
         }
 
         .deadline-icon {
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .task-card:hover .deadline-icon {
+            transform: rotate(360deg);
         }
 
         .task-card.urgent .deadline-icon {
@@ -165,100 +292,129 @@
         }
 
         .deadline-text {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 600;
             color: #2d3748;
         }
 
-        /* Status Badge Baru */
+        /* Status Badge dengan animasi */
         .status-badge {
             display: inline-block;
-            padding: 0.25rem 0.75rem;
+            padding: 0.4rem 1rem;
             border-radius: 50px;
             font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
             margin-bottom: 1rem;
+            letter-spacing: 0.5px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
         }
 
         .status-badge.urgent {
-            background-color: #ffeaea;
-            color: #e53e3e;
+            background: linear-gradient(135deg, #fc8181 0%, #e53e3e 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(229, 62, 62, 0.3);
         }
 
         .status-badge.warning {
-            background-color: #feebc8;
-            color: #ed8936;
+            background: linear-gradient(135deg, #f6ad55 0%, #ed8936 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(237, 137, 54, 0.3);
         }
 
         .status-badge.normal {
-            background-color: #c6f6d5;
-            color: #38a169;
+            background: linear-gradient(135deg, #68d391 0%, #38a169 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
         }
 
-        /* Task Actions */
+        /* Task Actions dengan efek hover */
         .task-actions {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.75rem;
         }
 
         .btn-task {
             flex: 1;
-            padding: 0.75rem;
+            padding: 0.85rem;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-task::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .btn-task:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .btn-complete {
             background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
             color: #ffffff;
+            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
         }
 
         .btn-complete:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(72, 187, 120, 0.4);
         }
 
         .btn-remove {
-            background: #f7fafc;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
             color: #718096;
-            width: 44px;
+            width: 50px;
             padding: 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         .btn-remove:hover {
-            background: #e53e3e;
+            background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
             color: #ffffff;
+            transform: translateY(-3px) rotate(10deg);
+            box-shadow: 0 8px 20px rgba(229, 62, 62, 0.3);
         }
 
-        /* Completed Section & Tables (Tidak berubah) */
+        /* Completed Section & Tables */
         .completed-table {
             background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             overflow: hidden;
             margin-bottom: 3rem;
-        }
-
-        .table-header {
-            padding: 1.5rem;
-            background: #f7fafc;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .table-header-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #1a202c;
-            margin: 0;
+            animation: fadeInUp 0.6s ease-out 0.5s both;
         }
 
         .table-custom {
@@ -266,155 +422,192 @@
         }
 
         .table-custom thead th {
-            padding: 1rem 1.5rem;
-            background: #f7fafc;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #718096;
+            padding: 1.25rem 1.75rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #ffffff;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-bottom: 1px solid #e2e8f0;
+            letter-spacing: 0.8px;
+            border: none;
         }
 
         .table-custom tbody td {
-            padding: 1.25rem 1.5rem;
+            padding: 1.5rem 1.75rem;
             border-bottom: 1px solid #f7fafc;
             color: #2d3748;
+            transition: all 0.3s ease;
+        }
+
+        .table-custom tbody tr {
+            transition: all 0.3s ease;
         }
 
         .table-custom tbody tr:hover {
-            background: #f7fafc;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            transform: scale(1.01);
         }
 
         .task-name {
-            font-weight: 600;
+            font-weight: 700;
             color: #1a202c;
         }
 
         .completed-badge {
             display: inline-flex;
             align-items: center;
-            gap: 0.35rem;
-            padding: 0.35rem 0.75rem;
-            background: rgba(72, 187, 120, 0.1);
-            color: #48bb78;
-            border-radius: 6px;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, #68d391 0%, #48bb78 100%);
+            color: #ffffff;
+            border-radius: 50px;
             font-size: 0.85rem;
             font-weight: 600;
+            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.2);
         }
 
         .btn-table-action {
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: inline-flex;
             align-items: center;
             justify-content: center;
         }
 
         .btn-undo {
-            background: rgba(237, 137, 54, 0.1);
-            color: #ed8936;
+            background: linear-gradient(135deg, #f6ad55 0%, #ed8936 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(237, 137, 54, 0.2);
         }
 
         .btn-undo:hover {
-            background: #ed8936;
-            color: #ffffff;
+            transform: translateY(-4px) rotate(-15deg);
+            box-shadow: 0 8px 20px rgba(237, 137, 54, 0.3);
         }
 
         .btn-delete {
-            background: rgba(229, 62, 62, 0.1);
-            color: #e53e3e;
+            background: linear-gradient(135deg, #fc8181 0%, #e53e3e 100%);
+            color: #ffffff;
             margin-left: 0.5rem;
+            box-shadow: 0 4px 12px rgba(229, 62, 62, 0.2);
         }
 
         .btn-delete:hover {
-            background: #e53e3e;
-            color: #ffffff;
+            transform: translateY(-4px) rotate(15deg);
+            box-shadow: 0 8px 20px rgba(229, 62, 62, 0.3);
         }
 
-        /* Available Tasks & Responsive (Tidak berubah) */
+        /* Available Tasks */
         .available-tasks {
             background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             overflow: hidden;
+            animation: fadeInUp 0.6s ease-out 0.6s both;
         }
 
         .available-header {
-            padding: 1.5rem;
-            background: rgba(74, 144, 226, 0.05);
-            border-bottom: 1px solid rgba(74, 144, 226, 0.1);
+            padding: 1.75rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .available-title {
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            color: #1a202c;
+            color: #ffffff;
             margin: 0;
         }
 
         .count-badge {
-            padding: 0.5rem 1rem;
-            background: linear-gradient(135deg, #4a90e2 0%, #63b3ed 100%);
+            padding: 0.6rem 1.25rem;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
             color: #ffffff;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .btn-take {
-            padding: 0.5rem 1.25rem;
-            background: linear-gradient(135deg, #4a90e2 0%, #63b3ed 100%);
+            padding: 0.65rem 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: #ffffff;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         }
 
         .btn-take:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
         }
 
         .empty-state {
             text-align: center;
-            padding: 3rem;
+            padding: 4rem 2rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         .empty-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 1rem;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1.5rem;
             color: #cbd5e0;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
         }
 
         .empty-title {
-            font-size: 1.1rem;
-            font-weight: 600;
+            font-size: 1.3rem;
+            font-weight: 700;
             color: #2d3748;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
         }
 
         .empty-text {
             color: #718096;
+            font-size: 1rem;
         }
 
         @media (max-width: 768px) {
             .page-title {
-                font-size: 1.5rem;
+                font-size: 1.75rem;
             }
 
             .stats-row {
@@ -431,8 +624,13 @@
 
             .table-custom thead th,
             .table-custom tbody td {
-                padding: 0.75rem 1rem;
+                padding: 1rem 1.25rem;
             }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
         }
     </style>
 
@@ -441,7 +639,7 @@
 
             <div class="page-header">
                 <h1 class="page-title">Manajemen Tugas Saya</h1>
-                <p class="page-subtitle">Kelola dan pantau progress tugas Anda</p>
+                <p class="page-subtitle">Kelola dan pantau progress tugas Anda dengan mudah</p>
             </div>
 
             <div class="stats-row">
@@ -463,7 +661,7 @@
 
             @if($ongoingTasks->isEmpty())
                 <div class="empty-state"
-                    style="background: #ffffff; border-radius: 16px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04); margin-bottom: 3rem;">
+                    style="background: #ffffff; border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); margin-bottom: 3rem;">
                     <svg xmlns="http://www.w3.org/2000/svg" class="empty-icon" fill="currentColor" viewBox="0 0 16 16">
                         <path
                             d="M8.5 2.687c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z" />
@@ -479,10 +677,9 @@
                             $now = \Carbon\Carbon::now();
                             $diff = $now->diffInDays($deadline, false);
 
-                            // LOGIKA STATUS BARU (Sesuai Request)
                             if ($diff < 0) {
-                                $statusClass = 'urgent'; // Class CSS
-                                $statusLabel = 'Lewat Deadline'; // Teks Label
+                                $statusClass = 'urgent';
+                                $statusLabel = 'Lewat Deadline';
                             } elseif ($diff <= 3) {
                                 $statusClass = 'warning';
                                 $statusLabel = 'Mendekati Deadline';
@@ -493,7 +690,6 @@
                         @endphp
 
                         <div class="task-card {{ $statusClass }}">
-                            {{-- LABEL STATUS (DITAMBAHKAN) --}}
                             <div class="status-badge {{ $statusClass }}">
                                 {{ $statusLabel }}
                             </div>
@@ -695,7 +891,7 @@
             // Hanya konfirmasi hapus dari riwayat
             document.querySelectorAll('.btn-delete-history').forEach(button => {
                 button.addEventListener('click', function (e) {
-                    e.preventDefault(); // Mencegah form submit langsung
+                    e.preventDefault();
                     const form = this.closest('.delete-history-form');
                     Swal.fire({
                         title: 'Hapus dari Riwayat?',
@@ -736,7 +932,7 @@
                 });
             });
 
-            // Konfirmasi Lepas Tugas (Opsional, agar user tidak salah klik)
+            // Konfirmasi Lepas Tugas
             document.querySelectorAll('.btn-remove').forEach(button => {
                 button.addEventListener('click', function (e) {
                     e.preventDefault();
