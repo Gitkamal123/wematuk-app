@@ -28,25 +28,42 @@ class Task extends Model
     }
     
     /**
-     * Cek apakah deadline sudah dekat (kurang dari 3 hari)
+     * Cek apakah deadline sudah dekat
      */
-    public function isDeadlineNear()
+    public function getDeadlineStatusAttribute()
     {
-        if (!$this->deadline) return false;
+        if (!$this->deadline) return null;
 
-        $deadlineDate = Carbon::parse($this->deadline);
-        $today = Carbon::now();
+        $deadline = Carbon::parse($this->deadline);
+        $now = Carbon::now();
+        // Hitung selisih hari (false = hasil bisa negatif kalau lewat)
+        $diff = $now->diffInDays($deadline, false); 
 
-        // Jika deadline sudah lewat atau kurang dari 3 hari dari sekarang
-        return $deadlineDate->isPast() || $deadlineDate->diffInDays($today) <= 3;
-    }
-    
-    // Aksesor Progress
-    public function getProgressAttribute()
-    {
-        if ($this->pivot && $this->pivot->is_completed) {
-            return 100;
+        // LOGIKA STATUS
+        if ($diff < 0) {
+            // Sudah Lewat
+            return [
+                'text' => 'Lewat Deadline',
+                'color' => 'danger', // Merah
+                'icon' => 'fa-exclamation-triangle',
+                'border' => 'border-danger'
+            ];
+        } elseif ($diff <= 3) {
+            // Kurang dari atau sama dengan 3 hari (Mendekati)
+            return [
+                'text' => 'Mendekati Deadline',
+                'color' => 'warning', // Kuning
+                'icon' => 'fa-hourglass-half',
+                'border' => 'border-warning'
+            ];
+        } else {
+            // Lebih dari 3 hari (Aktif/Aman)
+            return [
+                'text' => 'Aktif',
+                'color' => 'success', // Hijau
+                'icon' => 'fa-check-circle',
+                'border' => 'border-success'
+            ];
         }
-        return 0;
     }
 }
