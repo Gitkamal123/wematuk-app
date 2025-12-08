@@ -33,31 +33,42 @@
             animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
-        /* --- CSS TOMBOL KEMBALI (BARU) --- */
+        /* --- CSS TOMBOL KEMBALI (UPDATED) --- */
         .btn-back {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background-color: #ffffff;
-            color: #4a5568;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
+            padding: 0.6rem 1.2rem;
+            /* Warna Awal: Biru */
+            background: linear-gradient(135deg, #4a90e2 0%, #3182ce 100%);
+            color: #ffffff;
+            border: 2px solid transparent; /* Border transparan agar ukuran tetap sama */
+            border-radius: 10px;
             font-weight: 600;
             font-size: 0.9rem;
             text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 6px rgba(74, 144, 226, 0.3);
             margin-bottom: 1.5rem;
-            /* Jarak ke judul */
+            
+            /* WAKTU TRANSISI HOVER (Smooth) */
+            transition: all 0.5s ease;
         }
 
         .btn-back:hover {
-            background-color: #f7fafc;
-            color: #2d3748;
-            transform: translateX(-3px);
-            /* Efek gerak ke kiri */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            /* Warna Hover: Putih dengan Border Biru */
+            background: #ffffff;
+            color: #3182ce;
+            border-color: #3182ce;
+            transform: translateX(-5px); /* Geser sedikit ke kiri */
+            box-shadow: 0 6px 12px rgba(74, 144, 226, 0.2);
+        }
+        
+        .btn-back i {
+            transition: transform 0.5s ease;
+        }
+        
+        .btn-back:hover i {
+            transform: translateX(-3px); /* Animasi panah ikut bergerak */
         }
 
         /* Header */
@@ -136,9 +147,8 @@
             background: #ffffff;
             border-radius: 16px;
             padding: 1.5rem;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-            /* UPDATE: Waktu transisi diperlambat jadi 0.5s agar lebih smooth */
-            transition: all 0.5s ease;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);            
+            transition: all 0.6s ease;
             border-left: 4px solid;
             position: relative;
         }
@@ -156,8 +166,8 @@
         }
 
         .task-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            transform: translateY(-8px); /* Naik lebih tinggi */
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
         }
 
         .task-title {
@@ -249,8 +259,7 @@
             font-weight: 600;
             font-size: 0.9rem;
             cursor: pointer;
-            /* UPDATE: Transisi diperlambat jadi 0.5s */
-            transition: all 0.5s ease;
+            transition: all 0.6s ease;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -288,7 +297,6 @@
             margin-right: 0.5rem;
             border-radius: 12px;
             padding: 0.75rem 1.5rem;
-            /* UPDATE: Transisi diperlambat jadi 0.3s (standar) tapi terasa smooth */
             transition: all 0.3s ease;
         }
 
@@ -352,9 +360,8 @@
         }
 
         /* Hover Baris Gradasi */
-        .table-custom tbody tr {
-            /* UPDATE: Transisi tabel diperlambat jadi 0.4s */
-            transition: all 0.4s ease;
+        .table-custom tbody tr {            
+            transition: all 0.5s ease;
         }
 
         .table-custom tbody tr:hover {
