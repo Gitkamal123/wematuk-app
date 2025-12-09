@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Tambah Tugas Baru')
+@section('title', 'Tambah Tugas Baru - SiMatkul')
 
 @section('content')
     <!-- Header Section -->

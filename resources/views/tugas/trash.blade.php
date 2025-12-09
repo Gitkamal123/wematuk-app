@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Keranjang Sampah - TaskA')
+@section('title', 'Keranjang Sampah - SiMatkul')
 
 @section('content')
     {{-- SweetAlert2 untuk notifikasi --}}

@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Admin Dashboard')
+@section('title', 'Admin Dashboard - SiMatkul')
 
 @section('content')
     <style>

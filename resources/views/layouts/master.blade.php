@@ -4,87 +4,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'TaskA - Task Assistant')</title>
+    <title>@yield('title', 'SiMatkul - Sistem Manajemen Tugas Kuliah')</title>
 
-    <!-- CSS (Bootstrap & Font Awesome) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     @stack('styles')
 
     <style>
-        /* ===================== */
-        /* DARK BLUE NAVBAR STYLES 
-         * (Gradien biru gelap Anda)
-        /* ===================== */
+        :root {
+            --primary-gradient: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            --secondary-bg: #f3f4f6;
+            --text-color: #1f2937;
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --nav-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
 
+        body {
+            background-color: var(--secondary-bg);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- NAVBAR MEWAH --- */
         .navbar-wematuk {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
-            padding: 1rem 0;
-            box-shadow: 0 4px 20px rgba(30, 58, 138, 0.3);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--primary-gradient);
+            padding: 0.8rem 0;
+            box-shadow: var(--nav-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         .navbar-brand-wematuk {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #ffffff 0%, #e0f2fe 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: #ffffff;
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            transition: all 0.3s ease;
-            padding: 0.5rem 0;
-        }
-
-        .navbar-brand-wematuk:hover {
-            transform: translateY(-1px);
-            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.2);
-        }
-
-        /* * CSS untuk .brand-icon dan .brand-icon svg 
-         * masih ada di sini, tapi tidak terpakai 
-         * (sesuai permintaan Anda untuk menghapus logo).
-        */
-        .brand-icon {
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .brand-icon svg {
-            color: #ffffff;
-            width: 20px;
-            height: 20px;
-        }
-
-
-        .nav-link-custom {
-            color: rgba(255, 255, 255, 0.85) !important;
-            font-weight: 500;
-            padding: 0.75rem 1.25rem !important;
-            margin: 0 0.25rem;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
             gap: 0.5rem;
-            position: relative;
+            letter-spacing: -0.5px;
+        }
+
+        .navbar-brand-wematuk span {
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* --- NAV LINKS --- */
+        .nav-link-custom {
+            color: rgba(255, 255, 255, 0.8) !important;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 0.6rem 1rem !important;
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
         }
 
         .nav-link-custom:hover {
             color: #ffffff !important;
-            background: rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.1);
             transform: translateY(-1px);
         }
 
@@ -92,279 +82,268 @@
             background: rgba(255, 255, 255, 0.15);
             color: #ffffff !important;
             font-weight: 600;
-        }
-
-        .nav-link-custom.active::before {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 25%;
-            width: 50%;
-            height: 2px;
-            background: linear-gradient(90deg, #60a5fa 0%, #3b82f6 100%);
-            border-radius: 2px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         .nav-link-custom i {
-            font-size: 1rem;
-            width: 20px;
-            text-align: center;
+            font-size: 1.1rem;
             opacity: 0.9;
         }
 
-        /* Dropdown Styles */
+        /* --- DROPDOWN MEWAH --- */
         .dropdown-menu-custom {
-            background: #1f2937;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
             padding: 0.5rem;
-            margin-top: 0.5rem;
-            min-width: 220px;
+            margin-top: 10px !important;
+            background: #ffffff;
+            animation: slideUp 0.3s ease forwards;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .dropdown-item-custom {
-            padding: 0.75rem 1rem;
-            border-radius: 12px;
-            color: #f3f4f6;
+            padding: 0.7rem 1rem;
+            border-radius: 8px;
+            color: #4b5563;
             font-weight: 500;
-            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            border: none;
+            gap: 0.8rem;
         }
 
         .dropdown-item-custom:hover {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-            color: #ffffff;
-            transform: translateX(5px);
+            background-color: #eff6ff;
+            color: #2563eb;
+            transform: translateX(3px);
         }
 
         .dropdown-item-custom i {
-            width: 18px;
-            text-align: center;
             color: #9ca3af;
+            width: 20px;
+            text-align: center;
+            transition: color 0.2s;
         }
 
         .dropdown-item-custom:hover i {
-            color: #ffffff;
+            color: #2563eb;
         }
 
         .dropdown-divider-custom {
-            border-color: rgba(255, 255, 255, 0.1);
             margin: 0.5rem 0;
+            border-top: 1px solid #f3f4f6;
         }
 
-        .admin-link-box {
+        /* --- ADMIN BADGE --- */
+        .admin-badge {
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            font-weight: 600 !important;
+            font-size: 0.85rem;
+            padding: 0.4rem 0.8rem !important;
         }
 
-        .admin-link-box:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .admin-link-box.active {
-            background: rgba(255, 255, 255, 0.25);
-        }
-
-        /* User Avatar */
+        /* --- USER AVATAR --- */
         .user-avatar {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
             color: #ffffff;
-            font-size: 1rem;
-            margin-right: 0.75rem;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        .nav-link-custom:hover .user-avatar {
-            transform: scale(1.05);
-            border-color: rgba(255, 255, 255, 0.5);
+        /* --- ALERT NOTIFIKASI --- */
+        .alert-custom {
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: #ffffff;
+            border-left: 5px solid;
+            animation: fadeIn 0.5s ease;
         }
 
-        /* Mobile Responsive */
+        .alert-success-custom {
+            border-left-color: #10b981;
+        }
+
+        .alert-success-custom i {
+            color: #10b981;
+            font-size: 1.5rem;
+        }
+
+        .alert-danger-custom {
+            border-left-color: #ef4444;
+        }
+
+        .alert-danger-custom i {
+            color: #ef4444;
+            font-size: 1.5rem;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- MAIN CONTENT & FOOTER --- */
+        main {
+            flex: 1;
+        }
+
+        .footer-wematuk {
+            background: #ffffff;
+            padding: 1.5rem 0;
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.9rem;
+            border-top: 1px solid #e5e7eb;
+            margin-top: auto;
+        }
+
+        /* --- RESPONSIVE --- */
         @media (max-width: 991.98px) {
             .navbar-collapse {
-                background: #1e293b;
-                backdrop-filter: blur(20px);
-                border-radius: 16px;
+                background: rgba(255, 255, 255, 0.98);
                 padding: 1rem;
+                border-radius: 12px;
                 margin-top: 1rem;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-                border: 1px solid rgba(255, 255, 255, 0.1);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             }
 
             .nav-link-custom {
-                color: #f3f4f6 !important;
-                margin: 0.25rem 0;
-                justify-content: flex-start;
+                color: #4b5563 !important;
             }
 
             .nav-link-custom:hover {
-                color: #ffffff !important;
-                background: rgba(59, 130, 246, 0.2);
+                background: #f3f4f6;
+                color: #1e3a8a !important;
             }
 
-            .nav-link-custom.active::before {
-                left: 10%;
-                width: 80%;
+            .nav-link-custom.active {
+                background: #eff6ff;
+                color: #2563eb !important;
+            }
+
+            .admin-badge {
+                background: #1e3a8a;
+                color: white !important;
+            }
+
+            .admin-badge:hover {
+                color: white !important;
             }
         }
 
         /* Navbar Toggler */
         .navbar-toggler {
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+            border: none;
             padding: 0.5rem;
-            width: 48px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .navbar-toggler:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.4);
+            color: white;
+            font-size: 1.2rem;
         }
 
         .navbar-toggler:focus {
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
-        }
-
-        .navbar-toggler-icon {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='3' y1='12' x2='21' y2='12'%3E%3C/line%3E%3Cline x1='3' y1='6' x2='21' y2='6'%3E%3C/line%3E%3Cline x1='3' y1='18' x2='21' y2='18'%3E%3C/line%3E%3C/svg%3E");
-        }
-
-        /* Alert Styles */
-        .alert-custom {
-            border: none;
-            border-radius: 16px;
-            padding: 1rem 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            border-left: 4px solid;
-        }
-
-        .alert-success-custom {
-            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
-            color: #166534;
-            border-left-color: #22c55e;
-        }
-
-        .alert-danger-custom {
-            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-            color: #991b1b;
-            border-left-color: #ef4444;
-        }
-
-        /* Additional Styling for Better Contrast */
-        .navbar-nav .dropdown-menu {
-            --bs-dropdown-link-color: #f3f4f6;
-            --bs-dropdown-link-hover-color: #ffffff;
-            --bs-dropdown-link-hover-bg: #374151;
-            --bs-dropdown-bg: #1f2937;
-            --bs-dropdown-border-color: rgba(255, 255, 255, 0.1);
-        }
-
-        /* Smooth transitions */
-        * {
-            transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+            box-shadow: none;
         }
     </style>
 </head>
 
-<body
-    style="background: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; min-height: 100vh;">
+<body>
 
     <nav class="navbar navbar-expand-lg navbar-wematuk">
         <div class="container">
-            <!-- Brand Logo -->
-            <a class="navbar-brand-wematuk" href="@guest {{ url('/') }} @else {{ route('home') }} @endguest">               
-                TaskA
+            <a class="navbar-brand-wematuk" href="@guest {{ url('/') }} @else {{ route('home') }} @endguest">
+                <i class="fas fa-graduation-cap fa-lg"></i>
+                Si<span>Matkul</span>
             </a>
 
-            <!-- Mobile Toggler -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
+                <i class="fas fa-bars"></i>
             </button>
 
-            <!-- Navigation Items -->
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
+                <ul class="navbar-nav me-auto ms-lg-4">
                     @auth
                         <li class="nav-item">
                             <a class="nav-link-custom {{ request()->routeIs('home', 'tugas.show', 'tugas.cari') ? 'active' : '' }}"
                                 href="{{ route('home') }}">
-                                <i class="fas fa-list-check"></i>
+                                <i class="fas fa-layer-group"></i>
                                 Daftar Tugas
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link-custom {{ request()->routeIs('my-tasks.*') ? 'active' : '' }}"
                                 href="{{ route('my-tasks.index') }}">
-                                <i class="fas fa-tasks"></i>
+                                <i class="fas fa-clipboard-check"></i>
                                 Tugas Saya
                             </a>
                         </li>
                     @endauth
                 </ul>
 
-                <ul class="navbar-nav ms-auto">
-
-                    <!-- 👇 PERUBAHAN 3: Login/Register HANYA tampil jika kita TIDAK di halaman utama/login/register 👇 -->
+                <ul class="navbar-nav ms-auto align-items-lg-center">
                     @guest
                         @if (!request()->is('/') && !request()->is('login') && !request()->is('register'))
                             <li class="nav-item">
                                 <a class="nav-link-custom" href="{{ route('login') }}">
-                                    <i class="fas fa-sign-in-alt"></i>
-                                    Login
+                                    <i class="fas fa-sign-in-alt"></i> Login
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link-custom" href="{{ route('register') }}">
-                                    <i class="fas fa-user-plus"></i>
-                                    Register
+                                    <i class="fas fa-user-plus"></i> Register
                                 </a>
                             </li>
                         @endif
                     @endguest
-                    <!-- 👆 -------------------------------------------------------------------------------------- 👆 -->
 
                     @auth
-                        <!-- Admin Panel -->
                         @if(Auth::user()->role == 'admin')
-                            <li class="nav-item dropdown">
-                                <a class="nav-link-custom admin-link-box dropdown-toggle d-flex align-items-center {{ request()->is('admin/*') || request()->routeIs('tugas.create', 'tugas.edit', 'tugas.trash') ? 'active' : '' }}"
-                                    href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown">                                    
-                                    Web Admin
+                            <li class="nav-item dropdown me-lg-3">
+                                <a class="nav-link-custom admin-badge dropdown-toggle" href="#" id="adminDropdown" role="button"
+                                    data-bs-toggle="dropdown">
+                                    <i class="fas fa-shield-alt"></i> Admin Panel
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-custom" aria-labelledby="adminDropdown">
+                                <ul class="dropdown-menu dropdown-menu-custom shadow-lg" aria-labelledby="adminDropdown">
                                     <li>
                                         <a class="dropdown-item-custom" href="{{ route('admin.dashboard') }}">
-                                            <i class="fas fa-chart-bar"></i>
-                                            Dashboard
+                                            <i class="fas fa-chart-pie"></i> Dashboard
                                         </a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item-custom" href="{{ route('admin.users.index') }}">
-                                            <i class="fas fa-users"></i>
-                                            Kelola User
+                                            <i class="fas fa-users-cog"></i> Kelola User
                                         </a>
                                     </li>
                                     <li>
@@ -372,44 +351,46 @@
                                     </li>
                                     <li>
                                         <a class="dropdown-item-custom" href="{{ route('tugas.create') }}">
-                                            <i class="fas fa-plus-circle"></i>
-                                            Tambah Tugas
+                                            <i class="fas fa-plus-circle text-primary"></i> Tambah Tugas
                                         </a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item-custom" href="{{ route('tugas.trash') }}">
-                                            <i class="fas fa-trash"></i>
-                                            Keranjang Sampah
+                                            <i class="fas fa-trash-alt text-danger"></i> Sampah
                                         </a>
                                     </li>
                                 </ul>
                             </li>
                         @endif
 
-                        <!-- User Menu -->
                         <li class="nav-item dropdown">
-                            <a class="nav-link-custom dropdown-toggle d-flex align-items-center {{ request()->routeIs('profile.edit') ? 'active' : '' }}"
-                                href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
-                                <div class="user-avatar">
-                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                            <a class="nav-link-custom dropdown-toggle p-0" href="#" id="userDropdown" role="button"
+                                data-bs-toggle="dropdown">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="user-avatar">
+                                        {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                                    </div>
+                                    <span class="d-lg-none fw-bold">{{ Auth::user()->name }}</span>
                                 </div>
-                                <span>{{ Auth::user()->name }}</span>
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-custom" aria-labelledby="userDropdown">
+                            <ul class="dropdown-menu dropdown-menu-custom dropdown-menu-end shadow-lg"
+                                aria-labelledby="userDropdown">
+                                <li class="px-3 py-2 border-bottom mb-2">
+                                    <small class="text-muted d-block">Login sebagai</small>
+                                    <span class="fw-bold text-dark">{{ Auth::user()->name }}</span>
+                                </li>
                                 <li>
                                     <a class="dropdown-item-custom" href="{{ route('profile.edit') }}">
-                                        <i class="fas fa-user-edit"></i>
-                                        Profil Saya
+                                        <i class="fas fa-user-circle"></i> Profil Saya
                                     </a>
                                 </li>
                                 <li>
                                     <hr class="dropdown-divider-custom">
                                 </li>
                                 <li>
-                                    <a class="dropdown-item-custom" href="{{ route('logout') }}"
+                                    <a class="dropdown-item-custom text-danger" href="{{ route('logout') }}"
                                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                        <i class="fas fa-sign-out-alt"></i>
-                                        Logout
+                                        <i class="fas fa-sign-out-alt text-danger"></i> Logout
                                     </a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
@@ -423,27 +404,37 @@
         </div>
     </nav>
 
-    <main class="container my-4">
-        <!-- Flash Messages -->
+    <main class="container my-5">
         @if (session('success'))
             <div class="alert alert-success-custom alert-custom">
                 <i class="fas fa-check-circle"></i>
-                {{ session('success') }}
+                <div>
+                    <h6 class="fw-bold mb-0">Berhasil!</h6>
+                    <small>{{ session('success') }}</small>
+                </div>
             </div>
         @endif
 
         @if (session('error'))
             <div class="alert alert-danger-custom alert-custom">
-                <i class="fas fa-exclamation-circle"></i>
-                {{ session('error') }}
+                <i class="fas fa-exclamation-triangle"></i>
+                <div>
+                    <h6 class="fw-bold mb-0">Terjadi Kesalahan!</h6>
+                    <small>{{ session('error') }}</small>
+                </div>
             </div>
         @endif
 
-        <!-- Main Content -->
         @yield('content')
     </main>
 
-    <!-- Bootstrap JS -->
+    <footer class="footer-wematuk">
+        <div class="container">
+            <p class="mb-0">&copy; {{ date('Y') }} <strong>SiMatkul</strong>. Dibuat dengan <i
+                    class="fas fa-heart text-danger"></i> untuk Mahasiswa.</p>
+        </div>
+    </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     @stack('scripts')

@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Daftar Tugas - TaskA')
+@section('title', 'Daftar Tugas - SiMatkul')
 
 @section('content')
         <style>

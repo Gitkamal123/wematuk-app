@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'TaskA')
+@section('title', 'SiMatkul')
 
 @section('content')
     <style>
@@ -223,11 +223,11 @@
 
                         <h1 class="welcome-title">
                             {{-- Selamat Datang di<br> --}}
-                            <span class="brand-name">TaskA</span>
+                            <span class="brand-name">SiMatkul</span>
                         </h1>
 
                         <p class="welcome-subtitle">
-                           Task Assistant.
+                           Sistem Manajemen Tugas Kuliah.
                         </p>
 
                         <!-- Buttons -->

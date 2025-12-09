@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Manajemen Pengguna')
+@section('title', 'Manajemen Pengguna - SiMatkul')
 
 @section('content')
         <style>
@@ -186,12 +186,6 @@
             .dropdown-menu[data-popper-placement^="top"] {
                 margin-bottom: 8px;
             }
-
-            /* desain ubah role tambahan */
-
-            /* --- AUTO DROPUP UNTUK 2 ROW TERAKHIR --- */
-   
-
 
         </style>
 
