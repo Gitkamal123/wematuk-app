@@ -33,38 +33,13 @@
             align-items: center;
             gap: 0.75rem;
             transition: all 0.3s ease;
-            padding: 0.5rem 0;
-            margin-left: -100px;
+            padding: 0.5rem 0;            
         }
 
         .navbar-brand-wematuk:hover {
             transform: translateY(-1px);
             text-shadow: 0 2px 10px rgba(255, 255, 255, 0.2);
         }       
-        .brand-icon {
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .brand-icon i, 
-        .brand-icon svg {
-            color: #ffffff;
-            font-size: 1.2rem; /* Ukuran icon */
-        }
-        /* .brand-icon svg {
-            color: #ffffff;
-            width: 20px;
-            height: 20px;
-        } */
-
 
         .nav-link-custom {
             color: rgba(255, 255, 255, 0.85) !important;
@@ -292,12 +267,11 @@
     <nav class="navbar navbar-expand-lg navbar-wematuk">
         <div class="container">            
             <a class="navbar-brand-wematuk" href="@guest {{ url('/') }} @else {{ route('home') }} @endguest">
-                <div class="brand-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="24" height="24" fill="currentColor">
-                        <path
-                            d="M320 32c-8.1 0-16.1 1.4-23.7 4.1L15.8 137.4C6.3 140.9 0 149.9 0 160s6.3 19.1 15.8 22.6l57.9 20.9C57.3 229.3 48 259.8 48 291.9v28.1c0 28.4-10.8 57.7-22.3 80.8-4.7 9.6-12.1 18.4-15.8 20.8-2.2 1.4-4.4 2.8-6.6 4.1-3.3 1.9-3.3 6.9 0 8.8 2.2 1.3 4.4 2.7 6.6 4.1 3.7 2.3 11.1 11.1 15.8 20.8 11.5 23.1 22.3 52.4 22.3 80.8v28.1c0 17.7 14.3 32 32 32h32c17.7 0 32-14.3 32-32V452c0-28.4 10.8-57.7 22.3-80.8 4.7-9.6 12.1-18.4 15.8-20.8 2.2-1.4 4.4-2.8 6.6-4.1 3.3-1.9 3.3-6.9 0-8.8-2.2-1.3-4.4-2.7-6.6-4.1-3.7-2.3-11.1-11.1-15.8-20.8-11.5-23.1-22.3-52.4-22.3-80.8v-28.1c0-32.1-9.3-62.6-25.7-88.4l57.9-20.9c9.5-3.5 15.8-12.5 15.8-22.6s-6.3-19.1-15.8-22.6L343.7 36.1C336.1 33.4 328.1 32 320 32zM128 288c0-17.7 14.3-32 32-32H480c17.7 0 32 14.3 32 32v64c0 17.7-14.3 32-32 32H160c-17.7 0-32-14.3-32-32V288z" />
-                    </svg>
-                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" style="width: 28px; height: 28px;" fill="#ffffff">
+                    <path
+                        d="M320 32c-8.1 0-16.1 1.4-23.7 4.1L15.8 137.4C6.3 140.9 0 149.9 0 160s6.3 19.1 15.8 22.6l57.9 20.9C57.3 229.3 48 259.8 48 291.9v28.1c0 28.4-10.8 57.7-22.3 80.8-4.7 9.6-12.1 18.4-15.8 20.8-2.2 1.4-4.4 2.8-6.6 4.1-3.3 1.9-3.3 6.9 0 8.8 2.2 1.3 4.4 2.7 6.6 4.1 3.7 2.3 11.1 11.1 15.8 20.8 11.5 23.1 22.3 52.4 22.3 80.8v28.1c0 17.7 14.3 32 32 32h32c17.7 0 32-14.3 32-32V452c0-28.4 10.8-57.7 22.3-80.8 4.7-9.6 12.1-18.4 15.8-20.8 2.2-1.4 4.4-2.8 6.6-4.1 3.3-1.9 3.3-6.9 0-8.8-2.2-1.3-4.4-2.7-6.6-4.1-3.7-2.3-11.1-11.1-15.8-20.8-11.5-23.1-22.3-52.4-22.3-80.8v-28.1c0-32.1-9.3-62.6-25.7-88.4l57.9-20.9c9.5-3.5 15.8-12.5 15.8-22.6s-6.3-19.1-15.8-22.6L343.7 36.1C336.1 33.4 328.1 32 320 32zM128 288c0-17.7 14.3-32 32-32H480c17.7 0 32 14.3 32 32v64c0 17.7-14.3 32-32 32H160c-17.7 0-32-14.3-32-32V288z" />
+                </svg>
+            
                 SiMatkul
             </a>
             <!-- Mobile Toggler -->
