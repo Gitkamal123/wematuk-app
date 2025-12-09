@@ -53,11 +53,16 @@
             transition: all 0.3s ease;
         }
 
+        .brand-icon i, 
         .brand-icon svg {
+            color: #ffffff;
+            font-size: 1.2rem; /* Ukuran icon */
+        }
+        /* .brand-icon svg {
             color: #ffffff;
             width: 20px;
             height: 20px;
-        }
+        } */
 
 
         .nav-link-custom {
@@ -284,12 +289,13 @@
     style="background: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; min-height: 100vh;">
 
     <nav class="navbar navbar-expand-lg navbar-wematuk">
-        <div class="container">
-            <!-- Brand Logo -->
-            <a class="navbar-brand-wematuk" href="@guest {{ url('/') }} @else {{ route('home') }} @endguest">               
+        <div class="container">            
+            <a class="navbar-brand-wematuk" href="@guest {{ url('/') }} @else {{ route('home') }} @endguest">
+                <div class="brand-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
                 SiMatkul
             </a>
-
             <!-- Mobile Toggler -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
