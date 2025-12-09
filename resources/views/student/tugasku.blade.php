@@ -10,9 +10,7 @@
         body {
             background: #f8f9fa;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-
-        /* --- 1. ANIMASI LOAD HALAMAN (Sama seperti referensi) --- */
+        }        
         .fade-in-up {
             animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
             opacity: 0;
@@ -31,9 +29,7 @@
             max-width: 1400px;
             margin: 0 auto;
         }
-
-        /* --- 2. TRANSISI UTAMA (KUNCI EFEK SMOOTH) --- */
-        /* Kita terapkan cubic-bezier dari kode referensi ke semua elemen interaktif */
+       
         .btn-back,
         .stat-card,
         .nav-pills .nav-link,
@@ -104,8 +100,7 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.5);
         }
-
-        /* Efek Hover Stat Card (Mengikuti gaya referensi) */
+       
         .stat-card:hover {
             transform: translateY(-8px) scale(1.02);
             /* Naik & Zoom dikit */
@@ -197,8 +192,7 @@
         .task-card.normal {
             border-left-color: #3b82f6;
         }
-
-        /* EFEK HOVER KARTU TUGAS - SAMA PERSIS REFERENSI */
+       
         .task-card:hover {
             transform: translateY(-8px) scale(1.02);
             /* Naik tinggi & zoom */
@@ -347,8 +341,7 @@
             border-bottom: 1px solid #f1f5f9;
             color: #334155;
         }
-
-        /* Efek Hover Row Tabel (Smooth Lift) */
+        
         .table-custom tbody tr:hover {
             background: #f8fafc;
             transform: translateY(-4px) scale(1.01);
@@ -691,8 +684,7 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // SweetAlert Logic (Sama seperti sebelumnya)
+        document.addEventListener('DOMContentLoaded', function () {           
             @if(session('success'))
                 Swal.fire({
                     icon: 'success',
@@ -724,7 +716,6 @@
                 });
             });
 
-            // Konfirmasi Selesai
             document.querySelectorAll('.btn-complete').forEach(button => {
                 button.addEventListener('click', function (e) {
                     e.preventDefault();
@@ -744,7 +735,6 @@
                 });
             });
 
-            // Konfirmasi Lepas Tugas
             document.querySelectorAll('.btn-remove').forEach(button => {
                 button.addEventListener('click', function (e) {
                     e.preventDefault();
