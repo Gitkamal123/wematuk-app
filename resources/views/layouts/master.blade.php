@@ -1,386 +1,357 @@
 <!DOCTYPE html>
-<html lang="id" class="h-100">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'SiMatkul - Sistem Manajemen Tugas')</title>
 
-    <!-- CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@500;600;700&display=swap"
+        rel="stylesheet">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     @stack('styles')
 
     <style>
-        /* ========== VARIABLES ========== */
         :root {
-            --primary-blue: #2563eb;
-            --light-blue: #dbeafe;
-            --soft-gray: #f8fafc;
-            --dark-text: #1e293b;
-            --medium-text: #64748b;
-            --border-color: #e2e8f0;
-            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            --radius: 12px;
-            --transition: all 0.3s ease;
+            --primary-color: #4f46e5;
+            /* Indigo 600 */
+            --primary-hover: #4338ca;
+            /* Indigo 700 */
+            --secondary-color: #0f172a;
+            /* Slate 900 */
+            --accent-color: #38bdf8;
+            /* Sky 400 */
+            --bg-body: #f1f5f9;
+            /* Slate 100 */
+            --glass-bg: rgba(15, 23, 42, 0.85);
+            /* Dark Glass */
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-light: #e2e8f0;
         }
 
-        /* ========== BASE STYLES ========== */
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: var(--soft-gray);
-            color: var(--dark-text);
-            line-height: 1.6;
+            background-color: var(--bg-body);
+            font-family: 'Inter', sans-serif;
+            color: #334155;
+            display: flex;
+            flex-direction: column;
             min-height: 100vh;
         }
 
-        /* ========== NAVBAR ========== */
-        .navbar-elegant {
-            background: white;
-            box-shadow: var(--shadow-md);
-            padding: 0.75rem 0;
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .navbar-brand {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Navbar Styling (Glassmorphism) */
+        .navbar-custom {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 0.8rem 0;
             position: sticky;
             top: 0;
             z-index: 1000;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
 
-        .navbar-brand-elegant {
-            font-size: 1.75rem;
+        .navbar-brand-custom {
             font-weight: 700;
-            color: var(--primary-blue);
-            text-decoration: none;
+            font-size: 1.5rem;
+            color: #fff !important;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            padding: 0.5rem 0;
+            gap: 10px;
+            transition: transform 0.3s ease;
         }
 
-        .navbar-brand-elegant:hover {
-            color: var(--primary-blue);
+        .navbar-brand-custom:hover {
+            transform: translateY(-2px);
+            text-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
         }
 
-        .logo-circle {
-            width: 40px;
-            height: 40px;
-            background: var(--primary-blue);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .navbar-brand-custom i {
+            color: var(--accent-color);
         }
 
-        .logo-circle i {
-            color: white;
-            font-size: 1.25rem;
-        }
-
-        /* ========== NAV LINKS ========== */
-        .nav-link-elegant {
-            color: var(--medium-text);
+        /* Nav Links */
+        .nav-link-custom {
+            color: rgba(255, 255, 255, 0.7) !important;
             font-weight: 500;
-            padding: 0.5rem 1.25rem;
-            border-radius: var(--radius);
-            transition: var(--transition);
+            font-size: 0.95rem;
+            padding: 0.6rem 1rem !important;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link-custom:hover,
+        .nav-link-custom.active {
+            color: #fff !important;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link-custom.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30%;
+            height: 3px;
+            background: var(--accent-color);
+            border-radius: 10px;
+            box-shadow: 0 0 10px var(--accent-color);
+        }
+
+        /* Admin Badge */
+        .badge-admin {
+            background: linear-gradient(135deg, #ef4444, #b91c1c);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: white !important;
+            box-shadow: 0 2px 10px rgba(239, 68, 68, 0.3);
+        }
+
+        .badge-admin:hover {
+            background: linear-gradient(135deg, #f87171, #dc2626);
+        }
+
+        /* Dropdown Menu */
+        .dropdown-menu-custom {
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+            margin-top: 10px;
+            padding: 0.5rem;
+            animation: slideUp 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dropdown-item-custom {
+            color: #cbd5e1;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            margin: 0 0.125rem;
+            gap: 10px;
+            transition: all 0.2s;
         }
 
-        .nav-link-elegant:hover {
-            color: var(--primary-blue);
-            background-color: var(--light-blue);
+        .dropdown-item-custom:hover {
+            background: var(--primary-color);
+            color: #fff;
+            transform: translateX(5px);
         }
 
-        .nav-link-elegant.active {
-            color: var(--primary-blue);
-            background-color: var(--light-blue);
-            font-weight: 600;
+        .dropdown-divider-custom {
+            border-color: rgba(255, 255, 255, 0.1);
+            margin: 0.5rem 0;
         }
 
-        .nav-link-elegant i {
-            font-size: 1rem;
-            width: 20px;
-        }
-
-        /* ========== USER AVATAR ========== */
-        .avatar-elegant {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, var(--primary-blue), #3b82f6);
+        /* User Avatar */
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 0.9rem;
-            margin-right: 0.75rem;
-            border: 2px solid white;
-            box-shadow: var(--shadow-sm);
+            margin-right: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
         }
 
-        /* ========== DROPDOWN ========== */
-        .dropdown-menu-elegant {
+        /* Main Content Animation */
+        main {
+            flex: 1;
+            animation: fadeIn 0.6s ease-out;
+            padding-top: 2rem;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Alerts */
+        .alert-custom {
             border: none;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-lg);
-            padding: 0.5rem;
-            margin-top: 0.5rem;
-            min-width: 200px;
-            border: 1px solid var(--border-color);
-        }
-
-        .dropdown-item-elegant {
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            color: var(--dark-text);
-            transition: var(--transition);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 12px;
+            color: white;
         }
 
-        .dropdown-item-elegant:hover {
-            background-color: var(--light-blue);
-            color: var(--primary-blue);
+        .alert-success-custom {
+            background: linear-gradient(135deg, #10b981, #059669);
         }
 
-        .dropdown-item-elegant i {
-            width: 18px;
-            color: var(--medium-text);
+        .alert-danger-custom {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
         }
 
-        .dropdown-item-elegant:hover i {
-            color: var(--primary-blue);
-        }
-
-        /* ========== ALERTS ========== */
-        .alert-elegant {
-            border: none;
-            border-radius: var(--radius);
-            padding: 1rem 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: var(--shadow-sm);
-            border-left: 4px solid;
+        /* Footer */
+        .footer-custom {
             background: white;
-        }
-
-        .alert-success-elegant {
-            border-left-color: #10b981;
-            color: #065f46;
-        }
-
-        .alert-error-elegant {
-            border-left-color: #ef4444;
-            color: #991b1b;
-        }
-
-        .alert-elegant i {
-            margin-right: 0.75rem;
-            font-size: 1.25rem;
-        }
-
-        /* ========== MOBILE ========== */
-        @media (max-width: 991.98px) {
-            .navbar-collapse {
-                background: white;
-                border-radius: var(--radius);
-                padding: 1rem;
-                margin-top: 1rem;
-                box-shadow: var(--shadow-lg);
-                border: 1px solid var(--border-color);
-            }
-
-            .nav-link-elegant {
-                margin: 0.25rem 0;
-            }
-        }
-
-        /* ========== MAIN CONTENT ========== */
-        .main-container {
-            padding: 2rem 0;
-            min-height: calc(100vh - 76px);
-        }
-
-        /* ========== UTILITIES ========== */
-        .text-gradient {
-            background: linear-gradient(135deg, var(--primary-blue), #3b82f6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .card-elegant {
-            border: none;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-md);
-            background: white;
-            transition: var(--transition);
-        }
-
-        .card-elegant:hover {
-            box-shadow: var(--shadow-lg);
-        }
-
-        /* ========== SCROLLBAR ========== */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
-
-        /* ========== FOOTER ========== */
-        .footer-elegant {
-            background: white;
-            border-top: 1px solid var(--border-color);
+            border-top: 1px solid #e2e8f0;
             padding: 1.5rem 0;
             margin-top: auto;
+            font-size: 0.9rem;
+            color: #64748b;
         }
 
-        .footer-text {
-            color: var(--medium-text);
-            font-size: 0.9rem;
+        /* Mobile Adjustments */
+        @media (max-width: 991.98px) {
+            .navbar-collapse {
+                background: #1e293b;
+                padding: 1rem;
+                border-radius: 12px;
+                margin-top: 1rem;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            }
+
+            .nav-link-custom.active::after {
+                display: none;
+                /* Disable underline on mobile */
+            }
+
+            .nav-link-custom.active {
+                background: var(--primary-color);
+                color: white !important;
+            }
         }
     </style>
 </head>
 
-<body class="d-flex flex-column min-vh-100">
+<body>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-elegant">
+    <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container">
-            <!-- Brand -->
-            <a class="navbar-brand-elegant" href="@guest {{ url('/') }} @else {{ route('home') }} @endguest">
-                <div class="logo-circle">
-                    <i class="fas fa-graduation-cap"></i>
-                </div>
-                SiMatkul
+            <a class="navbar-brand-custom" href="{{ url('/') }}">
+                <i class="fas fa-graduation-cap"></i> SiMatkul
             </a>
 
-            <!-- Mobile Toggle -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-                <i class="fas fa-bars"></i>
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+                <i class="fas fa-bars text-white fs-4"></i>
             </button>
 
-            <!-- Nav Content -->
-            <div class="collapse navbar-collapse" id="navbarContent">
-                <ul class="navbar-nav me-auto">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                     @auth
                         <li class="nav-item">
-                            <a class="nav-link-elegant {{ request()->routeIs('home', 'tugas.show', 'tugas.cari') ? 'active' : '' }}"
+                            <a class="nav-link-custom {{ request()->routeIs('home', 'tugas.show', 'tugas.cari') ? 'active' : '' }}"
                                 href="{{ route('home') }}">
-                                <i class="fas fa-tasks"></i>
-                                Daftar Tugas
+                                <i class="fas fa-layer-group me-1"></i> Daftar Tugas
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link-elegant {{ request()->routeIs('my-tasks.*') ? 'active' : '' }}"
+                            <a class="nav-link-custom {{ request()->routeIs('my-tasks.*') ? 'active' : '' }}"
                                 href="{{ route('my-tasks.index') }}">
-                                <i class="fas fa-user-check"></i>
-                                Tugas Saya
+                                <i class="fas fa-clipboard-check me-1"></i> Tugas Saya
                             </a>
                         </li>
                     @endauth
                 </ul>
 
-                <ul class="navbar-nav ms-auto align-items-center">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
                     @guest
                         @if (!request()->is('/') && !request()->is('login') && !request()->is('register'))
                             <li class="nav-item">
-                                <a class="nav-link-elegant" href="{{ route('login') }}">
-                                    <i class="fas fa-sign-in-alt"></i>
-                                    Login
-                                </a>
+                                <a class="nav-link-custom" href="{{ route('login') }}">Login</a>
                             </li>
-                            <li class="nav-item ms-2">
-                                <a class="nav-link-elegant" href="{{ route('register') }}">
-                                    <i class="fas fa-user-plus"></i>
-                                    Register
-                                </a>
+                            <li class="nav-item">
+                                <a class="nav-link-custom btn btn-sm btn-outline-light ms-2 px-3"
+                                    style="border:1px solid rgba(255,255,255,0.3);" href="{{ route('register') }}">Register</a>
                             </li>
                         @endif
                     @endguest
 
                     @auth
-                        <!-- Admin Menu -->
                         @if(Auth::user()->role == 'admin')
-                            <li class="nav-item dropdown me-3">
-                                <a class="nav-link-elegant dropdown-toggle {{ request()->is('admin/*') || request()->routeIs('tugas.create', 'tugas.edit', 'tugas.trash') ? 'active' : '' }}"
-                                    href="#" id="adminMenu" data-bs-toggle="dropdown">
-                                    <i class="fas fa-crown"></i>
-                                    Admin
+                            <li class="nav-item dropdown me-lg-2">
+                                <a class="nav-link-custom dropdown-toggle badge-admin d-inline-flex align-items-center gap-2"
+                                    href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown">
+                                    <i class="fas fa-shield-alt"></i> Admin Panel
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-elegant" aria-labelledby="adminMenu">
+                                <ul class="dropdown-menu dropdown-menu-custom" aria-labelledby="adminDropdown">
+                                    <li><a class="dropdown-item-custom" href="{{ route('admin.dashboard') }}"><i
+                                                class="fas fa-chart-line w-5"></i> Dashboard</a></li>
+                                    <li><a class="dropdown-item-custom" href="{{ route('admin.users.index') }}"><i
+                                                class="fas fa-users w-5"></i> Kelola User</a></li>
                                     <li>
-                                        <a class="dropdown-item-elegant" href="{{ route('admin.dashboard') }}">
-                                            <i class="fas fa-chart-line"></i>
-                                            Dashboard
-                                        </a>
+                                        <hr class="dropdown-divider-custom">
                                     </li>
-                                    <li>
-                                        <a class="dropdown-item-elegant" href="{{ route('admin.users.index') }}">
-                                            <i class="fas fa-users"></i>
-                                            Kelola User
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item-elegant" href="{{ route('tugas.create') }}">
-                                            <i class="fas fa-plus-circle"></i>
-                                            Tambah Tugas
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item-elegant" href="{{ route('tugas.trash') }}">
-                                            <i class="fas fa-trash"></i>
-                                            Keranjang Sampah
-                                        </a>
-                                    </li>
+                                    <li><a class="dropdown-item-custom" href="{{ route('tugas.create') }}"><i
+                                                class="fas fa-plus w-5"></i> Tambah Tugas</a></li>
+                                    <li><a class="dropdown-item-custom" href="{{ route('tugas.trash') }}"><i
+                                                class="fas fa-trash-alt w-5"></i> Sampah</a></li>
                                 </ul>
                             </li>
                         @endif
 
-                        <!-- User Menu -->
                         <li class="nav-item dropdown">
-                            <a class="nav-link-elegant dropdown-toggle d-flex align-items-center {{ request()->routeIs('profile.edit') ? 'active' : '' }}"
-                                href="#" id="userMenu" data-bs-toggle="dropdown">
-                                <div class="avatar-elegant">
+                            <a class="nav-link-custom dropdown-toggle d-flex align-items-center" href="#" id="userDropdown"
+                                role="button" data-bs-toggle="dropdown">
+                                <div class="user-avatar">
                                     {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                                 </div>
-                                <span>{{ Auth::user()->name }}</span>
+                                <span class="d-none d-lg-inline">{{ Auth::user()->name }}</span>
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-elegant dropdown-menu-end" aria-labelledby="userMenu">
+                            <ul class="dropdown-menu dropdown-menu-custom dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li class="px-3 py-2 text-muted border-bottom border-secondary mb-2 small">
+                                    Signed in as <br><strong class="text-white">{{ Auth::user()->email }}</strong>
+                                </li>
+                                <li><a class="dropdown-item-custom" href="{{ route('profile.edit') }}"><i
+                                            class="fas fa-user-circle w-5"></i> Profil Saya</a></li>
                                 <li>
-                                    <a class="dropdown-item-elegant" href="{{ route('profile.edit') }}">
-                                        <i class="fas fa-user-edit"></i>
-                                        Profil Saya
-                                    </a>
+                                    <hr class="dropdown-divider-custom">
                                 </li>
                                 <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li>
-                                    <a class="dropdown-item-elegant" href="{{ route('logout') }}"
+                                    <a class="dropdown-item-custom text-danger" href="{{ route('logout') }}"
                                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                        <i class="fas fa-sign-out-alt"></i>
-                                        Logout
+                                        <i class="fas fa-sign-out-alt w-5"></i> Logout
                                     </a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
@@ -394,75 +365,39 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <main class="main-container">
-        <div class="container">
-            <!-- Alerts -->
-            @if (session('success'))
-                <div class="alert alert-success-elegant alert-elegant">
-                    <i class="fas fa-check-circle"></i>
-                    {{ session('success') }}
-                </div>
-            @endif
-
-            @if (session('error'))
-                <div class="alert alert-error-elegant alert-elegant">
-                    <i class="fas fa-exclamation-circle"></i>
-                    {{ session('error') }}
-                </div>
-            @endif
-
-            <!-- Page Content -->
-            <div class="content-area">
-                @yield('content')
+    <main class="container">
+        @if (session('success'))
+            <div class="alert alert-success-custom alert-custom mb-4" role="alert">
+                <i class="fas fa-check-circle fs-5"></i>
+                <div>{{ session('success') }}</div>
             </div>
-        </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger-custom alert-custom mb-4" role="alert">
+                <i class="fas fa-exclamation-triangle fs-5"></i>
+                <div>{{ session('error') }}</div>
+            </div>
+        @endif
+
+        @yield('content')
     </main>
 
-    <!-- Footer -->
-    <footer class="footer-elegant mt-auto">
+    <footer class="footer-custom text-center">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <p class="footer-text mb-0">
-                        <i class="fas fa-heart text-danger me-1"></i>
-                        Sistem Manajemen Tugas Kuliah
-                    </p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <p class="footer-text mb-0">
-                        &copy; {{ date('Y') }} SiMatkul
-                    </p>
-                </div>
-            </div>
+            <p class="mb-0">&copy; {{ date('Y') }} <strong>SiMatkul</strong>. Dibuat dengan <i
+                    class="fas fa-heart text-danger"></i> untuk mahasiswa.</p>
         </div>
     </footer>
 
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    @stack('scripts')
-
     <script>
-        // Auto-hide alerts after 5 seconds
-        setTimeout(() => {
-            document.querySelectorAll('.alert-elegant').forEach(alert => {
-                const bsAlert = new bootstrap.Alert(alert);
-                bsAlert.close();
-            });
-        }, 5000);
-
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        });
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
     </script>
+
+    @stack('scripts')
 </body>
 
 </html>
