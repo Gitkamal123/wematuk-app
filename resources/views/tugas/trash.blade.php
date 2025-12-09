@@ -68,7 +68,6 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            /* Transisi diperhalus */
             transition: all 0.5s ease;
         }
 
@@ -110,12 +109,12 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             overflow: hidden;
             margin-top: 1.5rem;
+            /* HAPUS TRANSISI DI SINI AGAR KOTAK TABEL DIAM */
         }
 
         .table-custom {
             width: 100%;
             border-collapse: separate;
-            /* Ubah ke separate agar border-radius jalan */
             border-spacing: 0;
         }
 
@@ -128,6 +127,8 @@
             color: #4a5568;
             font-weight: 700;
             border-bottom: 2px solid #e2e8f0;
+            cursor: default;
+            /* Kursor biasa saat di header */
         }
 
         .table-custom td {
@@ -135,23 +136,31 @@
             border-bottom: 1px solid #edf2f7;
             vertical-align: middle;
             background-color: #ffffff;
+            /* Pastikan transisi ada di sini juga untuk perubahan warna */
+            transition: background-color 0.3s ease;
         }
 
-        /* --- 3. EFEK HOVER TABEL (Smooth Scale) --- */
+        /* --- 3. EFEK HOVER HANYA PADA BARIS DATA (TR di dalam TBODY) --- */
         .table-custom tbody tr {
             transition: all 0.4s ease;
+            /* Transisi halus */
+            cursor: default;
+            /* Atau pointer jika baris bisa diklik */
         }
 
+        /* Saat mouse di atas baris data */
         .table-custom tbody tr:hover td {
             background-color: #f8fafc;
-            /* Warna background berubah sedikit */
+            /* Ubah warna background cell */
         }
 
         .table-custom tbody tr:hover {
-            transform: scale(1.005);
-            /* Sedikit zoom */
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transform: scale(1.01);
+            /* Zoom sedikit barisnya */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            /* Bayangan lebih menonjol */
             position: relative;
+            /* Agar bayangan terlihat di atas baris lain */
             z-index: 10;
         }
 
