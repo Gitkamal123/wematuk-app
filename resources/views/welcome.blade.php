@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Selamat Datang di WeMaTuK')
+@section('title', 'WeMaTuK')
 
 @section('content')
     <style>

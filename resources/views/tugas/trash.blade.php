@@ -3,15 +3,33 @@
 @section('title', 'Keranjang Sampah - WeMaTuK')
 
 @section('content')
+    {{-- SweetAlert2 untuk notifikasi --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
-        /* STYLE TETAP SAMA SEPERTI SEBELUMNYA */
         body {
             background: #f8f9fa;
-            font-family: sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        /* --- 1. ANIMASI MASUK --- */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translate3d(0, 40px, 0);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+            }
         }
 
         .trash-container {
             padding: 2rem 0;
+            max-width: 1400px;
+            margin: 0 auto;
+            animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
         /* Header & Buttons */
@@ -40,6 +58,7 @@
             color: #e53e3e;
         }
 
+        /* --- 2. UPDATE TOMBOL & HOVER --- */
         .btn-custom {
             padding: 0.6rem 1.2rem;
             border-radius: 10px;
@@ -49,30 +68,39 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            transition: 0.3s;
+            /* Transisi diperhalus */
+            transition: all 0.5s ease;
         }
 
+        /* Tombol Kosongkan Semua (Merah) */
         .btn-danger-custom {
             background: #e53e3e;
             color: white;
+            box-shadow: 0 4px 6px rgba(229, 62, 62, 0.3);
         }
 
         .btn-danger-custom:hover {
             background: #c53030;
             color: white;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(229, 62, 62, 0.4);
         }
 
+        /* Tombol Kembali (Biru Gradasi ke Putih) */
         .btn-back {
-            background: white;
-            border: 2px solid #e2e8f0;
-            color: #4a5568;
+            background: linear-gradient(135deg, #4a90e2 0%, #3182ce 100%);
+            color: #ffffff;
+            border: 2px solid transparent;
+            box-shadow: 0 4px 6px rgba(74, 144, 226, 0.3);
         }
 
         .btn-back:hover {
-            background: #edf2f7;
-            color: #1a202c;
-            transform: translateY(-2px);
+            background: #ffffff;
+            color: #3182ce;
+            border-color: #3182ce;
+            transform: translateX(-5px);
+            /* Geser kiri */
+            box-shadow: 0 6px 12px rgba(74, 144, 226, 0.2);
         }
 
         /* Card & Table */
@@ -86,27 +114,45 @@
 
         .table-custom {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            /* Ubah ke separate agar border-radius jalan */
+            border-spacing: 0;
         }
 
         .table-custom th {
-            background: #f7fafc;
-            padding: 1rem;
+            background: linear-gradient(180deg, #f7fafc 0%, #edf2f7 100%);
+            padding: 1.25rem 1.5rem;
             text-align: left;
             font-size: 0.85rem;
             text-transform: uppercase;
             color: #4a5568;
             font-weight: 700;
+            border-bottom: 2px solid #e2e8f0;
         }
 
         .table-custom td {
-            padding: 1rem;
+            padding: 1.25rem 1.5rem;
             border-bottom: 1px solid #edf2f7;
             vertical-align: middle;
+            background-color: #ffffff;
         }
 
-        .table-custom tr:last-child td {
-            border-bottom: none;
+        /* --- 3. EFEK HOVER TABEL (Smooth Scale) --- */
+        .table-custom tbody tr {
+            transition: all 0.4s ease;
+        }
+
+        .table-custom tbody tr:hover td {
+            background-color: #f8fafc;
+            /* Warna background berubah sedikit */
+        }
+
+        .table-custom tbody tr:hover {
+            transform: scale(1.005);
+            /* Sedikit zoom */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            position: relative;
+            z-index: 10;
         }
 
         /* Content Styling */
@@ -126,6 +172,12 @@
             justify-content: center;
             color: #e53e3e;
             flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+
+        /* Icon berputar sedikit saat row di hover */
+        .table-custom tbody tr:hover .task-icon-wrapper {
+            transform: rotate(15deg);
         }
 
         .task-info strong {
@@ -170,7 +222,7 @@
             display: inline-flex;
             align-items: center;
             gap: 0.3rem;
-            transition: 0.2s;
+            transition: all 0.3s ease;
         }
 
         .btn-restore {
@@ -181,6 +233,7 @@
         .btn-restore:hover {
             background: #38a169;
             color: white;
+            transform: translateY(-2px);
         }
 
         .btn-delete {
@@ -191,6 +244,7 @@
         .btn-delete:hover {
             background: #e53e3e;
             color: white;
+            transform: translateY(-2px);
         }
 
         /* Empty State */
@@ -232,6 +286,10 @@
                 </h1>
 
                 <div class="header-actions">
+                    <a href="{{ route('home') }}" class="btn-custom btn-back">
+                        <i class="fas fa-arrow-left"></i> Kembali ke Dashboard
+                    </a>
+
                     @if($tugas->isNotEmpty())
                         <button type="button" class="btn-custom btn-danger-custom" data-bs-toggle="modal"
                             data-bs-target="#clearAllModal">
@@ -245,7 +303,6 @@
                             Kosongkan Semua
                         </button>
                     @endif
-                    <a href="{{ route('home') }}" class="btn-custom btn-back">Kembali</a>
                 </div>
             </div>
 
@@ -273,7 +330,8 @@
                                                 </svg>
                                             </div>
                                             <div class="task-info">
-                                                <strong>{{ $t->judul }}</strong>
+                                                {{-- Pastikan nama kolom sesuai DB (misal: judul atau tugas) --}}
+                                                <strong>{{ $t->judul ?? $t->tugas }}</strong>
                                                 <small>{{ Str::limit($t->deskripsi, 40) }}</small>
                                             </div>
                                         </div>
@@ -330,7 +388,7 @@
                                                     </div>
                                                     <div class="modal-body text-center p-4">
                                                         <p class="mb-2">Anda yakin ingin menghapus tugas ini selamanya?</p>
-                                                        <h5 class="fw-bold text-danger">{{ $t->judul }}</h5>
+                                                        <h5 class="fw-bold text-danger">{{ $t->judul ?? $t->tugas }}</h5>
                                                         <small class="text-muted">Data yang dihapus tidak bisa kembali!</small>
                                                     </div>
                                                     <div class="modal-footer justify-content-center border-0 pb-4">
