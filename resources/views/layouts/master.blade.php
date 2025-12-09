@@ -34,7 +34,7 @@
             gap: 0.75rem;
             transition: all 0.3s ease;
             padding: 0.5rem 0;
-            margin-left: -15px;
+            margin-left: -100px;
         }
 
         .navbar-brand-wematuk:hover {
