@@ -9,19 +9,20 @@
     <style>
         body {
             background: #f8f9fa;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
-        /* --- ANIMASI MASUK HALAMAN (Load Awal) --- */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translate3d(0, 40px, 0);
-            }
+        /* --- 1. ANIMASI LOAD HALAMAN (Sama seperti referensi) --- */
+        .fade-in-up {
+            animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
 
+        @keyframes fadeInUp {
             to {
                 opacity: 1;
-                transform: translate3d(0, 0, 0);
+                transform: translateY(0);
             }
         }
 
@@ -29,46 +30,46 @@
             padding: 2rem 0;
             max-width: 1400px;
             margin: 0 auto;
-            animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
-        /* --- TRANSISI GLOBAL UNTUK SEMUA ELEMENT YANG BISA DI-HOVER --- */
-        /* Ini kunci agar pergerakan naik turunnya smooth (halus) */
+        /* --- 2. TRANSISI UTAMA (KUNCI EFEK SMOOTH) --- */
+        /* Kita terapkan cubic-bezier dari kode referensi ke semua elemen interaktif */
+        .btn-back,
         .stat-card,
+        .nav-pills .nav-link,
         .task-card,
+        .btn-task,
         .table-custom tbody tr,
         .btn-take,
-        .nav-pills .nav-link,
-        .btn-back {
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
-            /* will-change membantu browser merender animasi lebih lancar */
-            will-change: transform, box-shadow;
+        .btn-table-action {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            /* Timing function dari referensi */
+            position: relative;
+            z-index: 1;
         }
 
-        /* --- CSS TOMBOL KEMBALI --- */
+        /* --- BUTTON BACK --- */
         .btn-back {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.6rem 1.2rem;
-            background: linear-gradient(135deg, #4a90e2 0%, #3182ce 100%);
-            color: #ffffff;
-            border: 2px solid transparent;
-            border-radius: 10px;
+            padding: 0.75rem 1.5rem;
+            background: white;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
             font-weight: 600;
             font-size: 0.9rem;
             text-decoration: none;
-            box-shadow: 0 4px 6px rgba(74, 144, 226, 0.3);
-            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
         }
 
         .btn-back:hover {
-            background: #ffffff;
-            color: #3182ce;
-            border-color: #3182ce;
-            /* Efek naik sedikit dan geser kiri */
-            transform: translateY(-3px) translateX(-3px);
-            box-shadow: 0 8px 15px rgba(74, 144, 226, 0.25);
+            transform: translateY(-3px);
+            /* Naik sedikit */
+            color: #3b82f6;
+            border-color: #3b82f6;
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.1);
         }
 
         /* Header */
@@ -78,199 +79,211 @@
 
         .page-title {
             font-size: 2rem;
-            font-weight: 700;
-            color: #1a202c;
+            font-weight: 800;
+            color: #1f2937;
             margin-bottom: 0.5rem;
         }
 
         .page-subtitle {
-            color: #718096;
+            color: #6b7280;
             font-size: 1rem;
         }
 
-        /* --- STATS CARDS (MODIFIED HOVER) --- */
+        /* --- STATS CARDS --- */
         .stats-row {
             display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
         }
 
         .stat-card {
             flex: 1;
-            background: #ffffff;
-            border-radius: 16px;
+            background: white;
+            border-radius: 20px;
             padding: 1.5rem;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(0, 0, 0, 0.02);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
-        /* Efek Hover Stat Card: Naik ke atas */
+        /* Efek Hover Stat Card (Mengikuti gaya referensi) */
         .stat-card:hover {
-            transform: translateY(-10px);
-            /* Naik 10px */
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-            /* Bayangan makin dalam */
-            border-color: rgba(74, 144, 226, 0.2);
+            transform: translateY(-8px) scale(1.02);
+            /* Naik & Zoom dikit */
+            box-shadow: 0 30px 60px rgba(30, 64, 175, 0.1), 0 5px 15px rgba(30, 64, 175, 0.05);
+            z-index: 10;
         }
 
         .stat-label {
             font-size: 0.85rem;
-            color: #718096;
+            color: #64748b;
             text-transform: uppercase;
+            font-weight: 600;
             letter-spacing: 0.5px;
-            margin-bottom: 0.5rem;
         }
 
         .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-top: 0.5rem;
         }
 
         .stat-value.ongoing {
-            color: #4a90e2;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .stat-value.completed {
-            color: #48bb78;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #1a202c;
-            margin-bottom: 1.5rem;
-            display: none;
+        /* --- NAV TABS --- */
+        .nav-pills .nav-link {
+            color: #64748b;
+            font-weight: 600;
+            background: white;
+            border: 1px solid #f1f5f9;
+            margin-right: 1rem;
+            border-radius: 12px;
+            padding: 0.75rem 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        .nav-pills .nav-link:hover {
+            transform: translateY(-3px);
+            color: #3b82f6;
+            background: white;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-pills .nav-link.active {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+            border-color: transparent;
         }
 
         /* Task Grid */
         .tasks-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 2rem;
             margin-bottom: 3rem;
         }
 
-        /* --- TASK CARD (MODIFIED HOVER) --- */
+        /* --- TASK CARD (CORE EFFECT) --- */
         .task-card {
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-            border-left: 4px solid;
-            position: relative;
+            background: white;
+            border-radius: 24px;
+            /* Lebih bulat sesuai referensi */
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            border: 1px solid #f1f5f9;
+            border-left: 6px solid;
+            display: flex;
+            flex-direction: column;
         }
 
         .task-card.urgent {
-            border-left-color: #e53e3e;
+            border-left-color: #ef4444;
         }
 
         .task-card.warning {
-            border-left-color: #ed8936;
+            border-left-color: #f97316;
         }
 
         .task-card.normal {
-            border-left-color: #48bb78;
+            border-left-color: #3b82f6;
         }
 
-        /* Efek Hover Task Card: Naik lebih tinggi */
+        /* EFEK HOVER KARTU TUGAS - SAMA PERSIS REFERENSI */
         .task-card:hover {
-            transform: translateY(-12px);
-            /* Naik 12px */
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
-            z-index: 10;
-            /* Agar kartu berada di atas elemen lain saat hover */
+            transform: translateY(-8px) scale(1.02);
+            /* Naik tinggi & zoom */
+            box-shadow:
+                0 30px 60px rgba(30, 64, 175, 0.15),
+                0 5px 15px rgba(30, 64, 175, 0.1);
+            z-index: 5;
         }
 
         .task-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #1a202c;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #1f2937;
             margin-bottom: 0.75rem;
             line-height: 1.4;
         }
 
         .task-desc {
-            color: #718096;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            line-height: 1.5;
+            color: #6b7280;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            flex-grow: 1;
         }
 
         .task-deadline {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem;
-            background: #f7fafc;
-            border-radius: 10px;
-            margin-bottom: 1rem;
-        }
-
-        .deadline-icon {
-            width: 18px;
-            height: 18px;
-            flex-shrink: 0;
-        }
-
-        .task-card.urgent .deadline-icon {
-            color: #e53e3e;
-        }
-
-        .task-card.warning .deadline-icon {
-            color: #ed8936;
-        }
-
-        .task-card.normal .deadline-icon {
-            color: #48bb78;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            border: 1px solid #e2e8f0;
         }
 
         .deadline-text {
             font-size: 0.9rem;
             font-weight: 600;
-            color: #2d3748;
+            color: #334155;
         }
 
         /* Status Badge */
         .status-badge {
             display: inline-block;
-            padding: 0.25rem 0.75rem;
+            padding: 0.4rem 1rem;
             border-radius: 50px;
             font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem;
+            letter-spacing: 0.5px;
         }
 
         .status-badge.urgent {
-            background-color: #ffeaea;
-            color: #e53e3e;
+            background: #fef2f2;
+            color: #ef4444;
+            border: 1px solid #fee2e2;
         }
 
         .status-badge.warning {
-            background-color: #feebc8;
-            color: #ed8936;
+            background: #fff7ed;
+            color: #f97316;
+            border: 1px solid #ffedd5;
         }
 
         .status-badge.normal {
-            background-color: #c6f6d5;
-            color: #38a169;
+            background: #eff6ff;
+            color: #3b82f6;
+            border: 1px solid #dbeafe;
         }
 
-        /* Task Actions */
+        /* Buttons Action */
         .task-actions {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.75rem;
         }
 
         .btn-task {
-            flex: 1;
             padding: 0.75rem;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-weight: 600;
             font-size: 0.9rem;
             cursor: pointer;
-            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -278,73 +291,38 @@
         }
 
         .btn-complete {
-            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-            color: #ffffff;
+            flex: 1;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
         }
 
         .btn-complete:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(72, 187, 120, 0.4);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
         }
 
         .btn-remove {
-            background: #f7fafc;
-            color: #718096;
             width: 44px;
-            padding: 0;
+            background: #fee2e2;
+            color: #ef4444;
         }
 
         .btn-remove:hover {
-            background: #e53e3e;
-            color: #ffffff;
-            transform: translateY(-3px);
-        }
-
-        /* --- STYLING TAB NAVIGASI --- */
-        .nav-pills .nav-link {
-            color: #718096;
-            font-weight: 600;
-            background-color: #ffffff;
-            border: 1px solid #e2e8f0;
-            margin-right: 0.5rem;
-            border-radius: 12px;
-            padding: 0.75rem 1.5rem;
-        }
-
-        .nav-pills .nav-link:hover {
-            background-color: #f7fafc;
-            /* Efek hover tab: naik sedikit */
-            transform: translateY(-4px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-        }
-
-        .nav-pills .nav-link.active {
-            background: linear-gradient(135deg, #4a90e2 0%, #3182ce 100%);
+            transform: translateY(-3px) rotate(5deg);
+            background: #ef4444;
             color: white;
-            border-color: transparent;
-            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.4);
-            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(239, 68, 68, 0.2);
         }
 
-        .tab-content {
-            margin-top: 1.5rem;
-            min-height: 300px;
-        }
-
-        /* --- TABEL (MODIFIED HOVER) --- */
+        /* --- TABLE STYLES --- */
         .completed-table,
         .available-tasks {
-            background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
             overflow: hidden;
-            margin-bottom: 3rem;
-        }
-
-        .table-header {
-            padding: 1.5rem;
-            background: #f7fafc;
-            border-bottom: 1px solid #e2e8f0;
+            border: 1px solid #f1f5f9;
         }
 
         .table-custom {
@@ -354,116 +332,87 @@
         }
 
         .table-custom thead th {
-            padding: 1.25rem 1.5rem;
-            background: linear-gradient(180deg, #ebf8ff 0%, #ffffff 100%);
+            padding: 1.5rem;
+            background: #f8fafc;
             font-size: 0.85rem;
             font-weight: 700;
-            color: #2b6cb0;
+            color: #64748b;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            border-bottom: 2px solid #bee3f8;
+            border-bottom: 2px solid #e2e8f0;
         }
 
         .table-custom tbody td {
-            padding: 1.25rem 1.5rem;
-            border-bottom: 1px solid #f0f4f8;
-            color: #2d3748;
+            padding: 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
+            color: #334155;
         }
 
-        /* Efek Hover Baris Tabel: Naik Smooth */
+        /* Efek Hover Row Tabel (Smooth Lift) */
         .table-custom tbody tr:hover {
-            background: linear-gradient(90deg, #f0f9ff 0%, #ffffff 100%);
-            /* Mengganti scale dengan translateY agar seragam "muncul dari bawah" */
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            background: #f8fafc;
+            transform: translateY(-4px) scale(1.01);
+            /* Naik sedikit */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
             position: relative;
-            z-index: 5;
-        }
-
-        .task-name {
-            font-weight: 600;
-            color: #1a202c;
-        }
-
-        .completed-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.35rem;
-            padding: 0.35rem 0.75rem;
-            background: rgba(72, 187, 120, 0.1);
-            color: #48bb78;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .btn-table-action {
-            width: 36px;
-            height: 36px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+            z-index: 2;
         }
 
         .btn-undo {
-            background: rgba(237, 137, 54, 0.1);
-            color: #ed8936;
+            background: #fff7ed;
+            color: #f97316;
         }
 
         .btn-undo:hover {
-            background: #ed8936;
-            color: #ffffff;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            background: #f97316;
+            color: white;
         }
 
         .btn-delete {
-            background: rgba(229, 62, 62, 0.1);
-            color: #e53e3e;
+            background: #fef2f2;
+            color: #ef4444;
             margin-left: 0.5rem;
         }
 
         .btn-delete:hover {
-            background: #e53e3e;
-            color: #ffffff;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            background: #ef4444;
+            color: white;
         }
 
-        /* Available Tasks Header */
+        /* Available Tasks */
         .available-header {
-            padding: 1.5rem;
-            background: linear-gradient(135deg, #ebf8ff 0%, #ffffff 100%);
-            border-bottom: 1px solid #e2e8f0;
+            padding: 2rem;
+            background: white;
+            border-bottom: 1px solid #f1f5f9;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .available-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #2c5282;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #1f2937;
             margin: 0;
         }
 
         .count-badge {
             padding: 0.5rem 1rem;
-            background: linear-gradient(135deg, #4a90e2 0%, #63b3ed 100%);
-            color: #ffffff;
-            border-radius: 20px;
+            background: #eff6ff;
+            color: #3b82f6;
+            border-radius: 50px;
+            font-weight: 700;
             font-size: 0.85rem;
-            font-weight: 600;
         }
 
         .btn-take {
-            padding: 0.5rem 1.25rem;
-            background: linear-gradient(135deg, #4a90e2 0%, #63b3ed 100%);
-            color: #ffffff;
+            padding: 0.6rem 1.25rem;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-weight: 600;
             font-size: 0.85rem;
             cursor: pointer;
@@ -473,39 +422,31 @@
         }
 
         .btn-take:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 15px rgba(74, 144, 226, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
         }
 
         /* Empty State */
         .empty-state {
             text-align: center;
-            padding: 3rem;
+            padding: 4rem 2rem;
         }
 
         .empty-icon {
             width: 80px;
             height: 80px;
-            margin: 0 auto 1rem;
-            color: #cbd5e0;
+            margin-bottom: 1.5rem;
+            color: #e2e8f0;
         }
 
         .empty-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #2d3748;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
             margin-bottom: 0.5rem;
         }
 
-        .empty-text {
-            color: #718096;
-        }
-
         @media (max-width: 768px) {
-            .page-title {
-                font-size: 1.5rem;
-            }
-
             .stats-row {
                 flex-direction: column;
             }
@@ -513,33 +454,24 @@
             .tasks-grid {
                 grid-template-columns: 1fr;
             }
-
-            .table-custom {
-                font-size: 0.85rem;
-            }
-
-            .table-custom thead th,
-            .table-custom tbody td {
-                padding: 0.75rem 1rem;
-            }
         }
     </style>
 
     <div class="tasks-container">
         <div class="container-fluid">
 
-            <div class="mb-4">
+            <div class="mb-5 fade-in-up" style="animation-delay: 0.1s;">
                 <a href="{{ route('home') }}" class="btn-back">
                     <i class="fas fa-arrow-left"></i> Kembali ke Dashboard
                 </a>
             </div>
 
-            <div class="page-header">
+            <div class="page-header fade-in-up" style="animation-delay: 0.2s;">
                 <h1 class="page-title">Manajemen Tugas Saya</h1>
-                <p class="page-subtitle">Kelola tugas kamu</p>
+                <p class="page-subtitle">Kelola tugas aktif dan riwayat pengerjaan Anda.</p>
             </div>
 
-            <div class="stats-row">
+            <div class="stats-row fade-in-up" style="animation-delay: 0.3s;">
                 <div class="stat-card">
                     <div class="stat-label">Sedang Berjalan</div>
                     <div class="stat-value ongoing">{{ $myTasks->where('pivot.is_completed', false)->count() }}</div>
@@ -550,7 +482,7 @@
                 </div>
             </div>
 
-            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <ul class="nav nav-pills mb-4 fade-in-up" id="pills-tab" role="tablist" style="animation-delay: 0.4s;">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="pills-ongoing-tab" data-bs-toggle="pill"
                         data-bs-target="#pills-ongoing" type="button" role="tab" aria-controls="pills-ongoing"
@@ -566,23 +498,21 @@
                 </li>
             </ul>
 
-            <div class="tab-content" id="pills-tabContent">
+            <div class="tab-content fade-in-up" id="pills-tabContent" style="animation-delay: 0.5s;">
 
-                <div class="tab-pane fade show active" id="pills-ongoing" role="tabpanel"
-                    aria-labelledby="pills-ongoing-tab">
+                <div class="tab-pane fade show active" id="pills-ongoing" role="tabpanel">
                     @php
                         $ongoingTasks = $myTasks->where('pivot.is_completed', false);
                     @endphp
 
                     @if($ongoingTasks->isEmpty())
-                        <div class="empty-state"
-                            style="background: #ffffff; border-radius: 16px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04); margin-bottom: 3rem;">
+                        <div class="empty-state bg-white rounded-4 shadow-sm border">
                             <svg xmlns="http://www.w3.org/2000/svg" class="empty-icon" fill="currentColor" viewBox="0 0 16 16">
                                 <path
                                     d="M8.5 2.687c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z" />
                             </svg>
                             <h3 class="empty-title">Tidak Ada Tugas Berjalan</h3>
-                            <p class="empty-text">Anda belum mengambil tugas apapun</p>
+                            <p class="text-muted">Anda belum mengambil tugas apapun.</p>
                         </div>
                     @else
                         <div class="tasks-grid">
@@ -592,7 +522,6 @@
                                     $now = \Carbon\Carbon::now();
                                     $diff = $now->diffInDays($deadline, false);
 
-                                    // LOGIKA STATUS
                                     if ($diff < 0) {
                                         $statusClass = 'urgent';
                                         $statusLabel = 'Lewat Deadline';
@@ -606,7 +535,6 @@
                                 @endphp
 
                                 <div class="task-card {{ $statusClass }}">
-                                    {{-- LABEL STATUS --}}
                                     <div class="status-badge {{ $statusClass }}">
                                         {{ $statusLabel }}
                                     </div>
@@ -615,8 +543,8 @@
                                     <p class="task-desc">{{ Str::limit($task->deskripsi, 90) }}</p>
 
                                     <div class="task-deadline">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="deadline-icon" fill="currentColor"
-                                            viewBox="0 0 16 16">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" class="text-muted"
+                                            fill="currentColor" viewBox="0 0 16 16">
                                             <path
                                                 d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
                                             <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
@@ -627,28 +555,15 @@
                                     <div class="task-actions">
                                         <form action="{{ route('my-tasks.update', $task->id) }}" method="POST"
                                             class="confirm-finish-form" style="flex: 1;">
-                                            @csrf
-                                            @method('PATCH')
+                                            @csrf @method('PATCH')
                                             <button type="submit" class="btn-task btn-complete">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                                    viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
-                                                </svg>
-                                                Selesai
+                                                <i class="fas fa-check"></i> Selesai
                                             </button>
                                         </form>
                                         <form action="{{ route('my-tasks.destroy', $task->id) }}" method="POST" class="delete-form">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn-task btn-remove">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                                    viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
-                                                    <path
-                                                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
-                                                </svg>
+                                            @csrf @method('DELETE')
+                                            <button type="submit" class="btn-task btn-remove" title="Lepas Tugas">
+                                                <i class="fas fa-times"></i>
                                             </button>
                                         </form>
                                     </div>
@@ -658,7 +573,7 @@
                     @endif
                 </div>
 
-                <div class="tab-pane fade" id="pills-history" role="tabpanel" aria-labelledby="pills-history-tab">
+                <div class="tab-pane fade" id="pills-history" role="tabpanel">
                     @php
                         $completedTasks = $myTasks->where('pivot.is_completed', true);
                     @endphp
@@ -679,48 +594,30 @@
                                     <tbody>
                                         @foreach($completedTasks as $task)
                                             <tr>
-                                                <td class="task-name">{{ $task->judul }}</td>
+                                                <td class="fw-bold text-dark">{{ $task->judul }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($task->deadline)->format('d M Y') }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($task->pivot->updated_at)->format('d M Y, H:i') }}</td>
                                                 <td>
-                                                    <span class="completed-badge">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                                            fill="currentColor" viewBox="0 0 16 16">
-                                                            <path
-                                                                d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
-                                                        </svg>
-                                                        Selesai
+                                                    <span
+                                                        class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">
+                                                        <i class="fas fa-check-circle me-1"></i> Selesai
                                                     </span>
                                                 </td>
                                                 <td style="text-align: center;">
                                                     <form action="{{ route('my-tasks.update', $task->id) }}" method="POST"
                                                         style="display: inline;">
-                                                        @csrf
-                                                        @method('PATCH')
+                                                        @csrf @method('PATCH')
                                                         <button type="submit" class="btn-table-action btn-undo"
                                                             title="Kembalikan ke aktif">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                                                fill="currentColor" viewBox="0 0 16 16">
-                                                                <path fill-rule="evenodd"
-                                                                    d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2z" />
-                                                                <path
-                                                                    d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z" />
-                                                            </svg>
+                                                            <i class="fas fa-undo"></i>
                                                         </button>
                                                     </form>
                                                     <form action="{{ route('my-tasks.destroy', $task->id) }}" method="POST"
                                                         class="delete-history-form" style="display: inline;">
-                                                        @csrf
-                                                        @method('DELETE')
+                                                        @csrf @method('DELETE')
                                                         <button type="button" class="btn-table-action btn-delete btn-delete-history"
-                                                            title="Hapus dari riwayat">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                                                fill="currentColor" viewBox="0 0 16 16">
-                                                                <path
-                                                                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
-                                                                <path
-                                                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
-                                                            </svg>
+                                                            title="Hapus Permanen">
+                                                            <i class="fas fa-trash"></i>
                                                         </button>
                                                     </form>
                                                 </td>
@@ -732,15 +629,16 @@
                         </div>
                     @else
                         <div class="empty-state">
-                            <p class="empty-text">Belum ada riwayat tugas selesai.</p>
+                            <p class="text-muted">Belum ada riwayat tugas selesai.</p>
                         </div>
                     @endif
                 </div>
             </div>
 
-            <h2 class="section-title" style="margin-top: 2rem;">Tugas Tersedia</h2>
+            <h2 class="page-title mt-5 mb-4 fade-in-up" style="font-size: 1.5rem; animation-delay: 0.6s;">Tugas Tersedia
+            </h2>
 
-            <div class="available-tasks">
+            <div class="available-tasks fade-in-up" style="animation-delay: 0.7s;">
                 <div class="available-header">
                     <h3 class="available-title">Tugas Yang Tersedia</h3>
                     <span class="count-badge">{{ $availableTasks->count() }} Tersedia</span>
@@ -753,7 +651,7 @@
                                 d="M4.98 4a.5.5 0 0 0-.39.188L1.54 8H6a.5.5 0 0 1 .5.5 1.5 1.5 0 1 0 3 0A.5.5 0 0 1 10 8h4.46l-3.05-3.812A.5.5 0 0 0 11.02 4zm-1.17-.437A1.5 1.5 0 0 1 4.98 3h6.04a1.5 1.5 0 0 1 1.17.563l3.7 4.625a.5.5 0 0 1 .106.374l-.39 3.124A1.5 1.5 0 0 1 14.117 13H1.883a1.5 1.5 0 0 1-1.489-1.314l-.39-3.124a.5.5 0 0 1 .106-.374z" />
                         </svg>
                         <h3 class="empty-title">Tidak Ada Tugas Tersedia</h3>
-                        <p class="empty-text">Belum ada tugas baru dari admin</p>
+                        <p class="text-muted">Belum ada tugas baru dari admin.</p>
                     </div>
                 @else
                     <div class="table-responsive">
@@ -769,7 +667,7 @@
                             <tbody>
                                 @foreach($availableTasks as $task)
                                     <tr>
-                                        <td class="task-name">{{ $task->judul }}</td>
+                                        <td class="fw-bold text-dark">{{ $task->judul }}</td>
                                         <td>{{ Str::limit($task->deskripsi, 60) }}</td>
                                         <td>{{ \Carbon\Carbon::parse($task->deadline)->format('d M Y') }}</td>
                                         <td style="text-align: center;">
@@ -777,12 +675,7 @@
                                                 @csrf
                                                 <input type="hidden" name="task_id" value="{{ $task->id }}">
                                                 <button type="submit" class="btn-take">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                                        fill="currentColor" viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-                                                    </svg>
-                                                    Ambil Tugas
+                                                    <i class="fas fa-plus-circle"></i> Ambil Tugas
                                                 </button>
                                             </form>
                                         </td>
@@ -799,8 +692,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-
-            // Flash message (hanya untuk session success dari controller)
+            // SweetAlert Logic (Sama seperti sebelumnya)
             @if(session('success'))
                 Swal.fire({
                     icon: 'success',
@@ -813,24 +705,21 @@
                 });
             @endif
 
-            // Hanya konfirmasi hapus dari riwayat
+            // Konfirmasi Hapus History
             document.querySelectorAll('.btn-delete-history').forEach(button => {
                 button.addEventListener('click', function (e) {
-                    e.preventDefault(); // Mencegah form submit langsung
                     const form = this.closest('.delete-history-form');
                     Swal.fire({
                         title: 'Hapus dari Riwayat?',
                         text: "Data tugas ini akan dihapus dari riwayat selesai.",
                         icon: 'warning',
                         showCancelButton: true,
-                        confirmButtonColor: '#e53e3e',
-                        cancelButtonColor: '#718096',
+                        confirmButtonColor: '#ef4444',
+                        cancelButtonColor: '#64748b',
                         confirmButtonText: 'Ya, Hapus',
                         cancelButtonText: 'Batal'
                     }).then((result) => {
-                        if (result.isConfirmed) {
-                            form.submit();
-                        }
+                        if (result.isConfirmed) form.submit();
                     });
                 });
             });
@@ -845,19 +734,17 @@
                         text: "Tugas akan dipindahkan ke riwayat selesai.",
                         icon: 'question',
                         showCancelButton: true,
-                        confirmButtonColor: '#48bb78',
-                        cancelButtonColor: '#718096',
+                        confirmButtonColor: '#10b981',
+                        cancelButtonColor: '#64748b',
                         confirmButtonText: 'Ya, Selesai!',
                         cancelButtonText: 'Batal'
                     }).then((result) => {
-                        if (result.isConfirmed) {
-                            form.submit();
-                        }
+                        if (result.isConfirmed) form.submit();
                     });
                 });
             });
 
-            // Konfirmasi Lepas Tugas (Opsional, agar user tidak salah klik)
+            // Konfirmasi Lepas Tugas
             document.querySelectorAll('.btn-remove').forEach(button => {
                 button.addEventListener('click', function (e) {
                     e.preventDefault();
@@ -867,19 +754,15 @@
                         text: "Anda harus mengambil ulang jika ingin mengerjakannya lagi.",
                         icon: 'warning',
                         showCancelButton: true,
-                        confirmButtonColor: '#e53e3e',
-                        cancelButtonColor: '#718096',
+                        confirmButtonColor: '#ef4444',
+                        cancelButtonColor: '#64748b',
                         confirmButtonText: 'Ya, Lepas',
                         cancelButtonText: 'Batal'
                     }).then((result) => {
-                        if (result.isConfirmed) {
-                            form.submit();
-                        }
+                        if (result.isConfirmed) form.submit();
                     });
                 });
             });
-
         });
     </script>
-
 @endsection
