@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Daftar Tugas - WeMaTuK')
+@section('title', 'Daftar Tugas - TaskA')
 
 @section('content')
         <style>
@@ -773,7 +773,7 @@
             <div class="d-flex justify-content-between align-items-center mb-5 fade-in-up" style="animation-delay: 0.1s;">
                 <div>
                     <h1 class="tugas-title">Daftar Tugas</h1>
-                    <p class="text-muted mb-0 mt-2 header-subtitle">Website Manajemen Tugas - Untuk Siswa atau Mahasiswa</p>
+                    <p class="text-muted mb-0 mt-2 header-subtitle">Task Assistant - Untuk mahasiswa TRI A</p>
                 </div>
 
                 <div class="d-flex gap-3 flex-wrap">

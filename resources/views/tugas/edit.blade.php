@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Edit Tugas - WeMaTuK')
+@section('title', 'Edit Tugas - TaskA')
 
 @section('content')
     <style>

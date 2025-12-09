@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Keranjang Sampah - WeMaTuK')
+@section('title', 'Keranjang Sampah - TaskA')
 
 @section('content')
     {{-- SweetAlert2 untuk notifikasi --}}
@@ -68,10 +68,9 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            transition: all 0.5s ease;
+            transition: all 0.7s ease;
         }
-
-        /* Tombol Kosongkan Semua (Merah) */
+        
         .btn-danger-custom {
             background: #e53e3e;
             color: white;
@@ -135,17 +134,13 @@
             padding: 1.25rem 1.5rem;
             border-bottom: 1px solid #edf2f7;
             vertical-align: middle;
-            background-color: #ffffff;
-            /* Pastikan transisi ada di sini juga untuk perubahan warna */
+            background-color: #ffffff;            
             transition: background-color 0.3s ease;
         }
 
-        /* --- 3. EFEK HOVER HANYA PADA BARIS DATA (TR di dalam TBODY) --- */
         .table-custom tbody tr {
-            transition: all 0.4s ease;
-            /* Transisi halus */
-            cursor: default;
-            /* Atau pointer jika baris bisa diklik */
+            transition: all 0.7s ease;  
+            cursor: default;            
         }
 
         /* Saat mouse di atas baris data */
@@ -183,8 +178,7 @@
             flex-shrink: 0;
             transition: transform 0.3s ease;
         }
-
-        /* Icon berputar sedikit saat row di hover */
+        
         .table-custom tbody tr:hover .task-icon-wrapper {
             transform: rotate(15deg);
         }

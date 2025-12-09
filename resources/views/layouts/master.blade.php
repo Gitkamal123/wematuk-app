@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'WeMaTuK - Website Manajemen Tugas Kuliah')</title>
+    <title>@yield('title', 'TaskA - Task Assistant')</title>
 
     <!-- CSS (Bootstrap & Font Awesome) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -295,9 +295,8 @@
     <nav class="navbar navbar-expand-lg navbar-wematuk">
         <div class="container">
             <!-- Brand Logo -->
-            <a class="navbar-brand-wematuk" href="@guest {{ url('/') }} @else {{ route('home') }} @endguest">
-                <!-- 👇 PERUBAHAN 1: Ikon "papan ujian" (div class="brand-icon") sudah dihapus 👇 -->
-                WeMaTuK
+            <a class="navbar-brand-wematuk" href="@guest {{ url('/') }} @else {{ route('home') }} @endguest">               
+                TaskA
             </a>
 
             <!-- Mobile Toggler -->

@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'WeMaTuK')
+@section('title', 'TaskA')
 
 @section('content')
     <style>
@@ -220,14 +220,14 @@
                             </svg>
                         </div>
 
-    
+
                         <h1 class="welcome-title">
                             {{-- Selamat Datang di<br> --}}
-                            <span class="brand-name">WeMaTuK</span>
+                            <span class="brand-name">TaskA</span>
                         </h1>
 
                         <p class="welcome-subtitle">
-                           Website Manajemen Tugas Kuliah.
+                           Task Assistant.
                         </p>
 
                         <!-- Buttons -->

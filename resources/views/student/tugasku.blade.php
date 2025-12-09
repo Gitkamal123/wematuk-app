@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Manajemen Tugas Saya - WeMaTuK')
+@section('title', 'Manajemen Tugas Saya - TaskA')
 
 @section('content')
     {{-- SweetAlert2 untuk notifikasi --}}

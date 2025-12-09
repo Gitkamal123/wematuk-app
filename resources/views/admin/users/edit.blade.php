@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Ubah Role User - WeMaTuK')
+@section('title', 'Ubah Role User - TaskA')
 
 @section('content')
     <style>
