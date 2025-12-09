@@ -265,21 +265,16 @@
     style="background: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; min-height: 100vh;">
 
     <nav class="navbar navbar-expand-lg navbar-wematuk">
-        <div class="container">            
+        <div class="container">
             <a class="navbar-brand-wematuk" href="@guest {{ url('/') }} @else {{ route('home') }} @endguest">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" style="width: 28px; height: 28px;" fill="#ffffff">
-                    <path
-                        d="M320 32c-8.1 0-16.1 1.4-23.7 4.1L15.8 137.4C6.3 140.9 0 149.9 0 160s6.3 19.1 15.8 22.6l57.9 20.9C57.3 229.3 48 259.8 48 291.9v28.1c0 28.4-10.8 57.7-22.3 80.8-4.7 9.6-12.1 18.4-15.8 20.8-2.2 1.4-4.4 2.8-6.6 4.1-3.3 1.9-3.3 6.9 0 8.8 2.2 1.3 4.4 2.7 6.6 4.1 3.7 2.3 11.1 11.1 15.8 20.8 11.5 23.1 22.3 52.4 22.3 80.8v28.1c0 17.7 14.3 32 32 32h32c17.7 0 32-14.3 32-32V452c0-28.4 10.8-57.7 22.3-80.8 4.7-9.6 12.1-18.4 15.8-20.8 2.2-1.4 4.4-2.8 6.6-4.1 3.3-1.9 3.3-6.9 0-8.8-2.2-1.3-4.4-2.7-6.6-4.1-3.7-2.3-11.1-11.1-15.8-20.8-11.5-23.1-22.3-52.4-22.3-80.8v-28.1c0-32.1-9.3-62.6-25.7-88.4l57.9-20.9c9.5-3.5 15.8-12.5 15.8-22.6s-6.3-19.1-15.8-22.6L343.7 36.1C336.1 33.4 328.1 32 320 32zM128 288c0-17.7 14.3-32 32-32H480c17.7 0 32 14.3 32 32v64c0 17.7-14.3 32-32 32H160c-17.7 0-32-14.3-32-32V288z" />
-                </svg>
-            
+                <i class="fas fa-graduation-cap" style="font-size: 1.8rem; color: #ffffff;"></i>
                 SiMatkul
             </a>
-            <!-- Mobile Toggler -->
+    
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
-            <!-- Navigation Items -->
+    
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     @auth
@@ -299,8 +294,8 @@
                         </li>
                     @endauth
                 </ul>
-
-                <ul class="navbar-nav ms-auto">                    
+    
+                <ul class="navbar-nav ms-auto">
                     @guest
                         @if (!request()->is('/') && !request()->is('login') && !request()->is('register'))
                             <li class="nav-item">
@@ -316,13 +311,12 @@
                                 </a>
                             </li>
                         @endif
-                    @endguest                   
+                    @endguest
                     @auth
-                        <!-- Admin Panel -->
                         @if(Auth::user()->role == 'admin')
                             <li class="nav-item dropdown">
                                 <a class="nav-link-custom admin-link-box dropdown-toggle d-flex align-items-center {{ request()->is('admin/*') || request()->routeIs('tugas.create', 'tugas.edit', 'tugas.trash') ? 'active' : '' }}"
-                                    href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown">                                    
+                                    href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown">
                                     Web Admin
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-custom" aria-labelledby="adminDropdown">
@@ -357,7 +351,6 @@
                             </li>
                         @endif
 
-                        <!-- User Menu -->
                         <li class="nav-item dropdown">
                             <a class="nav-link-custom dropdown-toggle d-flex align-items-center {{ request()->routeIs('profile.edit') ? 'active' : '' }}"
                                 href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
