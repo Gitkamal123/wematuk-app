@@ -12,7 +12,7 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
-        /* --- 3. ANIMASI KONTEN MUNCUL DARI BAWAH --- */
+        /* --- ANIMASI MASUK HALAMAN (Load Awal) --- */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -29,45 +29,46 @@
             padding: 2rem 0;
             max-width: 1400px;
             margin: 0 auto;
-            /* Terapkan animasi di sini */
             animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
-        /* --- CSS TOMBOL KEMBALI (UPDATED) --- */
+        /* --- TRANSISI GLOBAL UNTUK SEMUA ELEMENT YANG BISA DI-HOVER --- */
+        /* Ini kunci agar pergerakan naik turunnya smooth (halus) */
+        .stat-card,
+        .task-card,
+        .table-custom tbody tr,
+        .btn-take,
+        .nav-pills .nav-link,
+        .btn-back {
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+            /* will-change membantu browser merender animasi lebih lancar */
+            will-change: transform, box-shadow;
+        }
+
+        /* --- CSS TOMBOL KEMBALI --- */
         .btn-back {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
             padding: 0.6rem 1.2rem;
-            /* Warna Awal: Biru */
             background: linear-gradient(135deg, #4a90e2 0%, #3182ce 100%);
             color: #ffffff;
-            border: 2px solid transparent; /* Border transparan agar ukuran tetap sama */
+            border: 2px solid transparent;
             border-radius: 10px;
             font-weight: 600;
             font-size: 0.9rem;
             text-decoration: none;
             box-shadow: 0 4px 6px rgba(74, 144, 226, 0.3);
             margin-bottom: 1.5rem;
-                        
-            transition: all 0.5s ease;
         }
 
         .btn-back:hover {
-            /* Warna Hover: Putih dengan Border Biru */
             background: #ffffff;
             color: #3182ce;
             border-color: #3182ce;
-            transform: translateX(-5px); /* Geser sedikit ke kiri */
-            box-shadow: 0 6px 12px rgba(74, 144, 226, 0.2);
-        }
-        
-        .btn-back i {
-            transition: transform 0.5s ease;
-        }
-        
-        .btn-back:hover i {
-            transform: translateX(-3px); /* Animasi panah ikut bergerak */
+            /* Efek naik sedikit dan geser kiri */
+            transform: translateY(-3px) translateX(-3px);
+            box-shadow: 0 8px 15px rgba(74, 144, 226, 0.25);
         }
 
         /* Header */
@@ -87,7 +88,7 @@
             font-size: 1rem;
         }
 
-        /* Stats Cards */
+        /* --- STATS CARDS (MODIFIED HOVER) --- */
         .stats-row {
             display: flex;
             gap: 1rem;
@@ -100,6 +101,16 @@
             border-radius: 16px;
             padding: 1.5rem;
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+        }
+
+        /* Efek Hover Stat Card: Naik ke atas */
+        .stat-card:hover {
+            transform: translateY(-10px);
+            /* Naik 10px */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            /* Bayangan makin dalam */
+            border-color: rgba(74, 144, 226, 0.2);
         }
 
         .stat-label {
@@ -123,14 +134,12 @@
             color: #48bb78;
         }
 
-        /* Section Title */
         .section-title {
             font-size: 1.5rem;
             font-weight: 700;
             color: #1a202c;
             margin-bottom: 1.5rem;
             display: none;
-            /* Hide old title because using tabs */
         }
 
         /* Task Grid */
@@ -141,13 +150,12 @@
             margin-bottom: 3rem;
         }
 
-        /* Task Card */
+        /* --- TASK CARD (MODIFIED HOVER) --- */
         .task-card {
             background: #ffffff;
             border-radius: 16px;
             padding: 1.5rem;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);            
-            transition: all 0.6s ease;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
             border-left: 4px solid;
             position: relative;
         }
@@ -164,9 +172,13 @@
             border-left-color: #48bb78;
         }
 
+        /* Efek Hover Task Card: Naik lebih tinggi */
         .task-card:hover {
-            transform: translateY(-8px); /* Naik lebih tinggi */
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+            transform: translateY(-12px);
+            /* Naik 12px */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+            z-index: 10;
+            /* Agar kartu berada di atas elemen lain saat hover */
         }
 
         .task-title {
@@ -258,7 +270,7 @@
             font-weight: 600;
             font-size: 0.9rem;
             cursor: pointer;
-            transition: all 0.6s ease;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -271,8 +283,8 @@
         }
 
         .btn-complete:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(72, 187, 120, 0.4);
         }
 
         .btn-remove {
@@ -285,9 +297,10 @@
         .btn-remove:hover {
             background: #e53e3e;
             color: #ffffff;
+            transform: translateY(-3px);
         }
 
-        /* --- 1. STYLING TAB NAVIGASI --- */
+        /* --- STYLING TAB NAVIGASI --- */
         .nav-pills .nav-link {
             color: #718096;
             font-weight: 600;
@@ -296,12 +309,13 @@
             margin-right: 0.5rem;
             border-radius: 12px;
             padding: 0.75rem 1.5rem;
-            transition: all 0.4s ease;
         }
 
         .nav-pills .nav-link:hover {
             background-color: #f7fafc;
-            transform: translateY(-2px);
+            /* Efek hover tab: naik sedikit */
+            transform: translateY(-4px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
         }
 
         .nav-pills .nav-link.active {
@@ -309,6 +323,7 @@
             color: white;
             border-color: transparent;
             box-shadow: 0 4px 12px rgba(74, 144, 226, 0.4);
+            transform: translateY(-2px);
         }
 
         .tab-content {
@@ -316,7 +331,7 @@
             min-height: 300px;
         }
 
-        /* --- 2. TABEL GRADASI BIRU PUTIH --- */
+        /* --- TABEL (MODIFIED HOVER) --- */
         .completed-table,
         .available-tasks {
             background: #ffffff;
@@ -338,15 +353,12 @@
             border-spacing: 0;
         }
 
-        /* Header Tabel Gradasi Biru */
         .table-custom thead th {
             padding: 1.25rem 1.5rem;
             background: linear-gradient(180deg, #ebf8ff 0%, #ffffff 100%);
-            /* Gradasi halus */
             font-size: 0.85rem;
             font-weight: 700;
             color: #2b6cb0;
-            /* Biru tua */
             text-transform: uppercase;
             letter-spacing: 0.5px;
             border-bottom: 2px solid #bee3f8;
@@ -358,17 +370,14 @@
             color: #2d3748;
         }
 
-        /* Hover Baris Gradasi */
-        .table-custom tbody tr {            
-            transition: all 0.5s ease;
-        }
-
+        /* Efek Hover Baris Tabel: Naik Smooth */
         .table-custom tbody tr:hover {
             background: linear-gradient(90deg, #f0f9ff 0%, #ffffff 100%);
-            /* Efek hover biru muda ke putih */
-            transform: scale(1.005);
-            /* Sedikit zoom effect */
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            /* Mengganti scale dengan translateY agar seragam "muncul dari bawah" */
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            position: relative;
+            z-index: 5;
         }
 
         .task-name {
@@ -394,7 +403,7 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.5s ease;
+            transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -408,6 +417,7 @@
         .btn-undo:hover {
             background: #ed8936;
             color: #ffffff;
+            transform: translateY(-2px);
         }
 
         .btn-delete {
@@ -419,6 +429,7 @@
         .btn-delete:hover {
             background: #e53e3e;
             color: #ffffff;
+            transform: translateY(-2px);
         }
 
         /* Available Tasks Header */
@@ -456,15 +467,14 @@
             font-weight: 600;
             font-size: 0.85rem;
             cursor: pointer;
-            transition: all 0.4s ease;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
         }
 
         .btn-take:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 15px rgba(74, 144, 226, 0.3);
         }
 
         /* Empty State */
